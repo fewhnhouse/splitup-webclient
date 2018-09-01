@@ -7,6 +7,7 @@ import { HttpLink } from "apollo-link-http";
 import { onError } from "apollo-link-error";
 import { ApolloLink } from "apollo-link";
 import Login from './Login';
+import Dashboard from './Dashboard';
 
 const client = new ApolloClient({
   link: ApolloLink.from([
@@ -29,10 +30,7 @@ const client = new ApolloClient({
 
 const App = () => (
   <ApolloProvider client={client}>
-    <div>
-      <h2>My first Apollo app 🚀</h2>
-      <Login/>
-    </div>
+    <Dashboard/>
   </ApolloProvider>
 );
 
