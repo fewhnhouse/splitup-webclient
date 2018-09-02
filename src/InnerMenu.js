@@ -1,19 +1,22 @@
 import React from "react";
 import { List, Avatar, Card } from "antd";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 const InnerMenu = ({ opened, data }) => (
   <StyledInnerMenu opened={opened}>
     <List
       itemLayout="horizontal"
       dataSource={data}
-      renderItem={item => (
-        <StyledListItem>
-          <List.Item.Meta
-            avatar={<Avatar icon="user" />}
-            title={<a href="#">{item.title}</a>}
-          />
-        </StyledListItem>
+      renderItem={(item, index) => (
+        <Link to={`/groups/${index}`}>
+          <StyledListItem>
+            <List.Item.Meta
+              avatar={<Avatar icon="user" />}
+              title={<a href="#">{item.title}</a>}
+            />
+          </StyledListItem>
+        </Link>
       )}
     />
   </StyledInnerMenu>

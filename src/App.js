@@ -6,8 +6,7 @@ import { InMemoryCache } from "apollo-cache-inmemory";
 import { HttpLink } from "apollo-link-http";
 import { onError } from "apollo-link-error";
 import { ApolloLink } from "apollo-link";
-import Login from './Login';
-import Dashboard from './Dashboard';
+import Main from './Main';
 
 const client = new ApolloClient({
   link: ApolloLink.from([
@@ -30,7 +29,7 @@ const client = new ApolloClient({
 
 const App = () => (
   <ApolloProvider client={client}>
-    <Dashboard/>
+    <Main/>
   </ApolloProvider>
 );
 

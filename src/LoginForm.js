@@ -1,6 +1,6 @@
 import React from "react";
 import { Form, Icon, Input, Button, Checkbox } from "antd";
-import './LoginForm.css';
+import "./LoginForm.css";
 
 const FormItem = Form.Item;
 
@@ -15,7 +15,14 @@ class LoginForm extends React.Component {
             email: values.email,
             password: values.password
           }
-        }).then(res => console.log("res:", res.data), err => console.log(err));
+        }).then(
+          res => {
+            console.log("res:", res.data);
+            localStorage.setItem("access-token", res.data.token);
+            localStorage.setItem("username", res.data.user.name);
+          },
+          err => console.log(err)
+        );
       }
     });
   };
