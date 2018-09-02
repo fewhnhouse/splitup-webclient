@@ -13,7 +13,7 @@ const InnerMenu = ({ opened, data }) => (
           <StyledListItem>
             <List.Item.Meta
               avatar={<Avatar icon="user" />}
-              title={<a href="#">{item.title}</a>}
+              title={<p>{item.title}</p>}
             />
           </StyledListItem>
         </Link>

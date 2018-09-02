@@ -5,7 +5,7 @@ import FooterMenu from "./FooterMenu";
 import Dashboard from "./Dashboard";
 import TopBar from "./TopBar";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-
+import { UserProvider } from "./UserContext";
 const { Footer, Header } = Layout;
 
 const Home = () => (
@@ -57,7 +57,7 @@ class Main extends React.Component {
     super(props);
     this.state = {
       opened: false,
-      loggedIn: true
+      loggedIn: false
     };
   }
 
@@ -69,29 +69,40 @@ class Main extends React.Component {
     this.setState({ opened: false });
   };
 
+  componentDidMount() {
+    const token = localStorage.getItem("token");
+    if (token !== "") {
+      this.setState({
+        loggedIn: true
+      });
+    }
+  }
+
   render() {
     return (
       <Router>
-        <Layout>
-          <Header style={{ padding: 0 }}>
-            <TopBar />
-          </Header>
+        <UserProvider>
           <Layout>
-            <Route exact path="/" component={Dashboard} />
-            <Route path="/about" component={About} />
-            <Route path="/groups" component={Groups} />
+            <Header style={{ padding: 0 }}>
+              <TopBar />
+            </Header>
+            <Layout>
+              <Route exact path="/" component={Dashboard} />
+              <Route path="/about" component={About} />
+              <Route path="/groups" component={Groups} />
 
-            {this.state.loggedIn ? <div /> : <div>logged out.</div>}
+              {this.state.loggedIn ? <div /> : <div>logged out.</div>}
+            </Layout>
+            <StyledFooter
+              onMouseEnter={this.onMouseEnter}
+              onMouseLeave={this.onMouseLeave}
+            >
+              {this.state.loggedIn ? (
+                <FooterMenu opened={this.state.opened} />
+              ) : null}
+            </StyledFooter>
           </Layout>
-          <StyledFooter
-            onMouseEnter={this.onMouseEnter}
-            onMouseLeave={this.onMouseLeave}
-          >
-            {this.state.loggedIn ? (
-              <FooterMenu opened={this.state.opened} />
-            ) : null}
-          </StyledFooter>
-        </Layout>
+        </UserProvider>
       </Router>
     );
   }

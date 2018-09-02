@@ -5,11 +5,18 @@ import "./LoginForm.css";
 const FormItem = Form.Item;
 
 class LoginForm extends React.Component {
-  handleSubmit = (e, mutate) => {
+  constructor(props) {
+    super(props);
+    this.state = {
+      name: "",
+      email: "",
+      token: ""
+    };
+  }
+  handleSubmit = (e, mutate, setLoginData) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        console.log("Received values of form: ", values);
         mutate({
           variables: {
             email: values.email,
@@ -17,9 +24,13 @@ class LoginForm extends React.Component {
           }
         }).then(
           res => {
-            console.log("res:", res.data);
-            localStorage.setItem("access-token", res.data.token);
-            localStorage.setItem("username", res.data.user.name);
+            const { name, email } = res.data.login.user;
+            const token = res.data.login.token;
+            localStorage.setItem("username", name);
+            localStorage.setItem("email", email);
+            localStorage.setItem("token", token);
+
+            setLoginData(name, email);
           },
           err => console.log(err)
         );
@@ -29,9 +40,12 @@ class LoginForm extends React.Component {
 
   render() {
     const { getFieldDecorator } = this.props.form;
-    const { mutate } = this.props;
+    const { mutate, setLoginData } = this.props;
     return (
-      <Form onSubmit={e => this.handleSubmit(e, mutate)} className="login-form">
+      <Form
+        onSubmit={e => this.handleSubmit(e, mutate, setLoginData)}
+        className="login-form"
+      >
         <FormItem>
           {getFieldDecorator("email", {
             rules: [{ required: true, message: "Please input your email!" }]

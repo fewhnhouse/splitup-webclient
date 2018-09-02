@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
 import WrappedLoginForm from "./LoginForm";
+import { UserContext } from "./UserContext";
 
 const LOGIN = gql`
   mutation Login($email: String!, $password: String!) {
@@ -10,6 +11,7 @@ const LOGIN = gql`
       user {
         id
         name
+        email
       }
     }
   }
@@ -24,7 +26,14 @@ export default class LoginPopup extends Component {
     return (
       <Mutation mutation={LOGIN}>
         {(mutate, { loading, err, data }) => (
-          <WrappedLoginForm mutate={mutate} />
+          <UserContext.Consumer>
+            {value => (
+              <WrappedLoginForm
+                mutate={mutate}
+                setLoginData={value.setLoginData}
+              />
+            )}
+          </UserContext.Consumer>
         )}
       </Mutation>
     );
