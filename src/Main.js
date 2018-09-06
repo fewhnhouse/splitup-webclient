@@ -1,9 +1,9 @@
 import { Layout, Breadcrumb, Button, Divider, Popover } from "antd";
 import React from "react";
 import styled from "styled-components";
-import FooterMenu from "./FooterMenu";
-import Dashboard from "./Dashboard";
-import TopBar from "./TopBar";
+import FooterMenu from "./footer/FooterMenu";
+import Dashboard from "./pages/Dashboard";
+import TopBar from "./header/TopBar";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import { UserProvider } from "./UserContext";
 const { Footer, Header } = Layout;
