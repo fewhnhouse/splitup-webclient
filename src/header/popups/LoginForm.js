@@ -29,7 +29,7 @@ class LoginForm extends React.Component {
             localStorage.setItem("username", name);
             localStorage.setItem("email", email);
             localStorage.setItem("token", token);
-
+            this.props.client.resetStore();
             setLoginData(name, email);
           },
           err => console.log(err)

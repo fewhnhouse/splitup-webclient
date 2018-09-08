@@ -1,25 +1,9 @@
 import React from "react";
 import { List, Avatar, Card } from "antd";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
 
-const InnerMenu = ({ opened, data }) => (
-  <StyledInnerMenu opened={opened}>
-    <List
-      itemLayout="horizontal"
-      dataSource={data}
-      renderItem={(item, index) => (
-        <Link to={`/groups/${index}`}>
-          <StyledListItem>
-            <List.Item.Meta
-              avatar={<Avatar icon="user" />}
-              title={<p>{item.title}</p>}
-            />
-          </StyledListItem>
-        </Link>
-      )}
-    />
-  </StyledInnerMenu>
+const InnerMenu = ({ opened, children }) => (
+  <StyledInnerMenu opened={opened}>{children}</StyledInnerMenu>
 );
 
 const StyledInnerMenu = styled(Card)`
@@ -28,13 +12,5 @@ const StyledInnerMenu = styled(Card)`
   overflow-y: scroll;
 `;
 
-const StyledListItem = styled(List.Item)`
-  &:hover {
-    a {
-      color: #1890ff;
-    }
-  }
-  cursor: pointer;
-`;
 
 export default InnerMenu;

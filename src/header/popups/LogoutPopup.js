@@ -1,55 +1,62 @@
 import React from "react";
 import { Button, Popover, Divider, List, Icon, Avatar } from "antd";
 import styled from "styled-components";
+import { ApolloConsumer } from "react-apollo";
 
-function onLogoutClick(value) {
+function onLogoutClick(value, client) {
+  console.log(client);
   localStorage.clear();
   value.setLoginData("", "");
+  client.resetStore();
 }
 
 const LogoutContent = ({ value }) => (
   <div style={{ display: "flex", flexDirection: "column" }}>
-    <List>
-      <StyledListItem>
-        <List.Item.Meta
-          avatar={
-            <Avatar
-              size="small"
-              style={{ color: "#f56a00", backgroundColor: "#fde3cf" }}
-              shape="square"
-              icon="profile"
+    <ApolloConsumer>
+      {client => (
+        <List>
+          <StyledListItem>
+            <List.Item.Meta
+              avatar={
+                <Avatar
+                  size="small"
+                  style={{ color: "#f56a00", backgroundColor: "#fde3cf" }}
+                  shape="square"
+                  icon="profile"
+                />
+              }
+              title="Profile"
             />
-          }
-          title="Profile"
-        />
-      </StyledListItem>
-      <StyledListItem>
-        <List.Item.Meta
-          avatar={
-            <Avatar
-              size="small"
-              style={{ color: "#f56a00", backgroundColor: "#fde3cf" }}
-              shape="square"
-              icon="setting"
+          </StyledListItem>
+          <StyledListItem>
+            <List.Item.Meta
+              avatar={
+                <Avatar
+                  size="small"
+                  style={{ color: "#f56a00", backgroundColor: "#fde3cf" }}
+                  shape="square"
+                  icon="setting"
+                />
+              }
+              title="Settings"
             />
-          }
-          title="Settings"
-        />
-      </StyledListItem>
-      <StyledListItem onClick={() => onLogoutClick(value)}>
-        <List.Item.Meta
-          avatar={
-            <Avatar
-              size="small"
-              style={{ color: "#f56a00", backgroundColor: "#fde3cf" }}
-              shape="square"
-              icon="logout"
+          </StyledListItem>
+          <StyledListItem onClick={() => onLogoutClick(value, client)}>
+            <List.Item.Meta
+              avatar={
+                <Avatar
+                  size="small"
+                  style={{ color: "#f56a00", backgroundColor: "#fde3cf" }}
+                  shape="square"
+                  icon="logout"
+                />
+              }
+              title="Sign out"
             />
-          }
-          title="Sign out"
-        />
-      </StyledListItem>
-    </List>
+          </StyledListItem>
+        </List>
+      )}
+    </ApolloConsumer>
   </div>
 );
 

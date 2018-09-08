@@ -35,17 +35,20 @@ const LOGIN = gql`
 const Content = ({ mutation, Form, switchView }) => (
   <div style={{ width: "300px" }}>
     <Mutation mutation={mutation}>
-      {(mutate, { loading, err, data }) => (
-        <UserContext.Consumer>
-          {value => (
-            <Form
-              mutate={mutate}
-              switchView={switchView}
-              setLoginData={value.setLoginData}
-            />
-          )}
-        </UserContext.Consumer>
-      )}
+      {(mutate, { client, loading, err, data }) => {
+        return (
+          <UserContext.Consumer>
+            {value => (
+              <Form
+                mutate={mutate}
+                client={client}
+                switchView={switchView}
+                setLoginData={value.setLoginData}
+              />
+            )}
+          </UserContext.Consumer>
+        );
+      }}
     </Mutation>
   </div>
 );
