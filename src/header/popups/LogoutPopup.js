@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Popover, Divider, List, Icon } from "antd";
+import { Button, Popover, Divider, List, Icon, Avatar } from "antd";
 import styled from "styled-components";
 
 function onLogoutClick(value) {
@@ -8,28 +8,66 @@ function onLogoutClick(value) {
 }
 
 const LogoutContent = ({ value }) => (
-  <div style={{ width: "150px", display: "flex", flexDirection: "column" }}>
+  <div style={{ display: "flex", flexDirection: "column" }}>
     <List>
       <StyledListItem>
-        <Icon type="user" />
-        Profile
+        <List.Item.Meta
+          avatar={
+            <Avatar
+              size="small"
+              style={{ color: "#f56a00", backgroundColor: "#fde3cf" }}
+              shape="square"
+              icon="profile"
+            />
+          }
+          title="Profile"
+        />
       </StyledListItem>
       <StyledListItem>
-        <Icon type="user" />
-        Settings
+        <List.Item.Meta
+          avatar={
+            <Avatar
+              size="small"
+              style={{ color: "#f56a00", backgroundColor: "#fde3cf" }}
+              shape="square"
+              icon="setting"
+            />
+          }
+          title="Settings"
+        />
       </StyledListItem>
       <StyledListItem onClick={() => onLogoutClick(value)}>
-        <Icon type="user" />
-        Logout
+        <List.Item.Meta
+          avatar={
+            <Avatar
+              size="small"
+              style={{ color: "#f56a00", backgroundColor: "#fde3cf" }}
+              shape="square"
+              icon="logout"
+            />
+          }
+          title="Sign out"
+        />
       </StyledListItem>
     </List>
   </div>
 );
 
 const LogoutTitle = ({ name, email }) => (
-  <div>
-    <p>Logged in as {name}</p>
-    <p style={{ fontWeight: 200, fontSize: "12px", color: "grey" }}>{email}</p>
+  <div style={{ display: "flex", flexDirection: "row" }}>
+    <Avatar
+      style={{ marginTop: "8px", marginRight: "12px" }}
+      icon="user"
+      size="large"
+      shape="square"
+    />
+    <div style={{ marginTop: "5px" }}>
+      <p>Logged in as {name}</p>
+      <p style={{ fontWeight: 200, fontSize: "12px", color: "grey" }}>
+        {email}
+      </p>
+    </div>
+    <div />
   </div>
 );
 

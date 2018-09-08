@@ -4,7 +4,7 @@ import "./LoginForm.css";
 
 const FormItem = Form.Item;
 
-class LoginForm extends React.Component {
+class SignupForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -17,20 +17,28 @@ class LoginForm extends React.Component {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
+          console.log(values);
         mutate({
           variables: {
             email: values.email,
+            name: values.name,
             password: values.password
           }
         }).then(
           res => {
-            const { name, email } = res.data.login.user;
-            const token = res.data.login.token;
-            localStorage.setItem("username", name);
-            localStorage.setItem("email", email);
-            localStorage.setItem("token", token);
+            if (values.signin) {
+              console.log("signing in.");
+              const { name, email } = res.data.signup.user;
+              const token = res.data.signup.token;
+              localStorage.setItem("username", name);
+              localStorage.setItem("email", email);
+              localStorage.setItem("token", token);
 
-            setLoginData(name, email);
+              setLoginData(name, email);
+            } else {
+              console.log("dont sign in.");
+              this.props.switchView();
+            }
           },
           err => console.log(err)
         );
@@ -47,12 +55,25 @@ class LoginForm extends React.Component {
         className="login-form"
       >
         <FormItem>
+          {getFieldDecorator("name", {
+            rules: [{ required: true, message: "Please input your Name!" }]
+          })(
+            <Input
+              prefix={<Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />}
+              type="user"
+              placeholder="Name"
+            />
+          )}
+        </FormItem>
+        <FormItem>
           {getFieldDecorator("email", {
             rules: [{ required: true, message: "Please input your email!" }]
           })(
             <Input
-              prefix={<Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />}
-              placeholder="email"
+              prefix={
+                <Icon type="inbox" style={{ color: "rgba(0,0,0,.25)" }} />
+              }
+              placeholder="Email"
             />
           )}
         </FormItem>
@@ -68,27 +89,24 @@ class LoginForm extends React.Component {
           )}
         </FormItem>
         <FormItem>
-          {getFieldDecorator("remember", {
+          {getFieldDecorator("signin", {
             valuePropName: "checked",
             initialValue: true
-          })(<Checkbox>Remember me</Checkbox>)}
-          <a className="login-form-forgot" href="">
-            Forgot password
-          </a>
+          })(<Checkbox>Sign in after completion</Checkbox>)}
           <Button
             type="primary"
             htmlType="submit"
             className="login-form-button"
           >
-            Sign in
+            Sign up
           </Button>
-          Or <a onClick={this.props.switchView}>register now!</a>
+          Or <a onClick={this.props.switchView}>sign in!</a>
         </FormItem>
       </Form>
     );
   }
 }
 
-const WrappedLoginForm = Form.create()(LoginForm);
+const WrappedSignupForm = Form.create()(SignupForm);
 
-export default WrappedLoginForm;
+export default WrappedSignupForm;

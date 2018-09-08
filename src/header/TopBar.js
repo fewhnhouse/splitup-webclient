@@ -1,9 +1,9 @@
 import React from "react";
 import { Button, Popover, Divider, List, Icon } from "antd";
-import LoginPopup from "./popups/LoginPopup";
+import SignupPopup from "./popups/LoginSignupPopup";
 import LogoutPopup from "./popups/LogoutPopup";
 import styled from "styled-components";
-import { UserContext } from "../UserContext";
+import { UserContext } from "../utils/UserContext";
 
 const content = (
   <div style={{ width: "300px", height: "300px" }}>
@@ -20,7 +20,7 @@ const TopBar = () => {
           <StyledContainer>
             <div style={{ float: "right" }}>
               {value.name === "" ? (
-                <LoginPopup />
+                <SignupPopup />
               ) : (
                 <LogoutPopup value={value} />
               )}

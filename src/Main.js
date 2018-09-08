@@ -5,7 +5,7 @@ import FooterMenu from "./footer/FooterMenu";
 import Dashboard from "./pages/Dashboard";
 import TopBar from "./header/TopBar";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import { UserProvider } from "./UserContext";
+import { UserProvider } from "./utils/UserContext";
 const { Footer, Header } = Layout;
 
 const Home = () => (
