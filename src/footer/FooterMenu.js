@@ -26,7 +26,7 @@ const FooterMenu = ({ opened }) => (
       <Link to="/groups">
         <Icon type="usergroup-add" />
         Groups
-        <InnerMenu opened={opened} type="groups">
+        <InnerMenu opened={opened} type="Groups">
           <Groups />
         </InnerMenu>
       </Link>
@@ -42,7 +42,7 @@ const FooterMenu = ({ opened }) => (
     >
       <Icon type="home" />
       Dashboard
-      <InnerMenu opened={opened} type="dashboard">
+      <InnerMenu opened={opened} type="Dashboard">
         <Groups />
       </InnerMenu>
     </Menu.Item>
@@ -57,7 +57,7 @@ const FooterMenu = ({ opened }) => (
     >
       <Icon type="team" />
       Friends
-      <InnerMenu opened={opened} type="friends">
+      <InnerMenu opened={opened} type="Friends">
         <Groups />
       </InnerMenu>
     </Menu.Item>

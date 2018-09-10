@@ -20,7 +20,6 @@ export default class Groups extends Component {
       <div>
         <Query query={GROUPS}>
           {({ loading, err, data }) => {
-            console.log("data:", data, err, loading);
             if (loading) {
               return <div>Loading...</div>;
             }
