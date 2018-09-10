@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Popover, Divider, List, Icon, Avatar } from "antd";
+import { Button, Popover, List, Avatar } from "antd";
 import styled from "styled-components";
 import { ApolloConsumer } from "react-apollo";
 

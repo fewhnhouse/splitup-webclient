@@ -1,18 +1,18 @@
-import { Layout, Breadcrumb, Button, Divider, Popover } from "antd";
+import { Layout } from "antd";
 import React from "react";
 import styled from "styled-components";
 import FooterMenu from "./footer/FooterMenu";
 import Dashboard from "./pages/Dashboard";
 import TopBar from "./header/TopBar";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Link,
+  Redirect
+} from "react-router-dom";
 import { UserProvider } from "./utils/UserContext";
-const { Footer, Header } = Layout;
 
-const Home = () => (
-  <div>
-    <h2>Home</h2>
-  </div>
-);
+const { Footer, Header } = Layout;
 
 const About = () => (
   <div>
@@ -20,6 +20,11 @@ const About = () => (
   </div>
 );
 
+const Login = () => (
+  <div>
+    <h2>Please login.</h2>
+  </div>
+);
 const Group = ({ match }) => (
   <div>
     <h3>Group {match.params.groupId}</h3>
@@ -52,6 +57,24 @@ const Groups = ({ match }) => (
   </div>
 );
 
+const PrivateRoute = ({ component: Component, loggedIn, ...rest }) => (
+  <Route
+    {...rest}
+    render={props =>
+      loggedIn ? (
+        <Component {...props} />
+      ) : (
+        <Redirect
+          to={{
+            pathname: "/login",
+            state: { from: props.location }
+          }}
+        />
+      )
+    }
+  />
+);
+
 class Main extends React.Component {
   constructor(props) {
     super(props);
@@ -72,6 +95,7 @@ class Main extends React.Component {
   componentDidMount() {
     const token = localStorage.getItem("token");
     if (token !== "") {
+      console.log(token);
       this.setState({
         loggedIn: true
       });
@@ -89,7 +113,17 @@ class Main extends React.Component {
             <Layout>
               <Route exact path="/" component={Dashboard} />
               <Route path="/about" component={About} />
-              <Route path="/groups" component={Groups} />
+              <Route path="/login" component={Login} />
+              <PrivateRoute
+                path="/groups"
+                loggedIn={this.state.loggedIn}
+                component={Groups}
+              />
+              <PrivateRoute
+                path="/friends"
+                loggedIn={this.state.loggedIn}
+                component={About}
+              />
 
               {this.state.loggedIn ? <div /> : <div>logged out.</div>}
             </Layout>

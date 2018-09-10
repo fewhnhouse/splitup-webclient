@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Popover, Divider, List, Icon } from "antd";
+import { Button, Popover, Divider } from "antd";
 import SignupPopup from "./popups/LoginSignupPopup";
 import LogoutPopup from "./popups/LogoutPopup";
 import styled from "styled-components";

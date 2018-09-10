@@ -1,16 +1,58 @@
 import React from "react";
-import { List, Avatar, Card } from "antd";
+import { Card, Button } from "antd";
+import AddModal from "./AddModal";
 import styled from "styled-components";
 
-const InnerMenu = ({ opened, children }) => (
-  <StyledInnerMenu opened={opened}>{children}</StyledInnerMenu>
-);
+class InnerMenu extends React.Component {
+  state = {
+    visible: false
+  };
+
+  showModal = () => {
+    this.setState({
+      visible: true
+    });
+  };
+
+  handleCancel = e => {
+    console.log(e);
+    this.setState({
+      visible: false
+    });
+  };
+
+  handleOk = e => {
+    console.log(e);
+    this.setState({
+      visible: false
+    });
+  };
+
+  render() {
+    const { opened, children, type } = this.props;
+    return (
+      <Container opened={opened}>
+        <StyledInnerMenu>{children}</StyledInnerMenu>
+        <Button onClick={this.showModal} type="primary">{`Add ${type}`}</Button>
+        <AddModal
+          visible={this.state.visible}
+          handleCancel={this.handleCancel}
+          handleOk={this.handleOk}
+          type={type}
+          placeholder=""
+        />
+      </Container>
+    );
+  }
+}
 
 const StyledInnerMenu = styled(Card)`
-  display: ${props => (props.opened ? "" : "none")};
   height: 200px;
   overflow-y: scroll;
 `;
 
+const Container = styled.div`
+  display: ${props => (props.opened ? "" : "none")};
+`;
 
 export default InnerMenu;

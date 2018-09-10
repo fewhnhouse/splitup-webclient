@@ -5,20 +5,7 @@ import Groups from "./Groups";
 import { Menu, Icon } from "antd";
 import { Link } from "react-router-dom";
 
-const menuData = [
-  {
-    title: "Ant Design Title 1"
-  },
-  {
-    title: "Ant Design Title 2"
-  },
-  {
-    title: "Ant Design Title 3"
-  },
-  {
-    title: "Ant Design Title 4"
-  }
-];
+
 
 const FooterMenu = ({ opened }) => (
   <StyledMenu
@@ -39,7 +26,7 @@ const FooterMenu = ({ opened }) => (
       <Link to="/groups">
         <Icon type="usergroup-add" />
         Groups
-        <InnerMenu opened={opened}>
+        <InnerMenu opened={opened} type="groups">
           <Groups />
         </InnerMenu>
       </Link>
@@ -55,7 +42,7 @@ const FooterMenu = ({ opened }) => (
     >
       <Icon type="home" />
       Dashboard
-      <InnerMenu opened={opened}>
+      <InnerMenu opened={opened} type="dashboard">
         <Groups />
       </InnerMenu>
     </Menu.Item>
@@ -70,7 +57,7 @@ const FooterMenu = ({ opened }) => (
     >
       <Icon type="team" />
       Friends
-      <InnerMenu opened={opened}>
+      <InnerMenu opened={opened} type="friends">
         <Groups />
       </InnerMenu>
     </Menu.Item>
@@ -80,7 +67,7 @@ const FooterMenu = ({ opened }) => (
 const StyledMenu = styled(Menu)`
   line-height: 64px;
   display: flex;
-  height: ${props => (props.opened ? "300px" : "80px")};
+  height: ${props => (props.opened ? "350px" : "80px")};
   transition: height 0.3s ease-in-out;
 `;
 
