@@ -30,8 +30,17 @@ class AddModal extends React.Component {
   };
   _handleOk = async addFriend => {
     this.props.handleOk();
-    const result = await addFriend({ variables: { id: this.state.id } });
-    console.log(result);
+    addFriend({ variables: { id: this.state.id } }).then(
+      res =>
+        message.success(
+          `${this.state.value} was successfully added to Friends List.`
+        ),
+      err => message.error("Something went wrong: ", err)
+    );
+    this.setState({
+      id: "",
+      value: ""
+    })
   };
   render() {
     const { visible, handleOk, handleCancel, type, placeholder } = this.props;

@@ -36,6 +36,7 @@ class InnerMenu extends React.Component {
         {type === "Dashboard" ? null : (
           <div>
             <Button
+              icon="plus"
               onClick={this.showModal}
               type="primary"
             >{`Add ${type}`}</Button>

@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import InnerMenu from "./InnerMenu";
 import Groups from "./Groups";
+import Friends from './Friends';
 import { Menu, Icon } from "antd";
 import { Link } from "react-router-dom";
 
@@ -58,7 +59,7 @@ const FooterMenu = ({ opened }) => (
       <Icon type="team" />
       Friends
       <InnerMenu opened={opened} type="Friends">
-        <Groups />
+        <Friends />
       </InnerMenu>
     </Menu.Item>
   </StyledMenu>
