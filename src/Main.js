@@ -3,6 +3,7 @@ import React from "react";
 import styled from "styled-components";
 import FooterMenu from "./footer/FooterMenu";
 import Dashboard from "./pages/Dashboard";
+import Group from './pages/Group';
 import TopBar from "./header/TopBar";
 import {
   BrowserRouter as Router,
@@ -25,11 +26,7 @@ const Login = () => (
     <h2>Please login.</h2>
   </div>
 );
-const Group = ({ match }) => (
-  <div>
-    <h3>Group {match.params.groupId}</h3>
-  </div>
-);
+
 
 const Groups = ({ match }) => (
   <div>
@@ -64,12 +61,14 @@ const PrivateRoute = ({ component: Component, loggedIn, ...rest }) => (
       loggedIn ? (
         <Component {...props} />
       ) : (
-        <Redirect
+        /*<Redirect
           to={{
             pathname: "/login",
             state: { from: props.location }
           }}
         />
+        */
+       null
       )
     }
   />
