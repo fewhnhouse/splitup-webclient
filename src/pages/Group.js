@@ -7,10 +7,14 @@ import {
   Divider,
   Icon,
   Input,
-  Popconfirm
+  Popconfirm,
+  Tabs
 } from "antd";
 import styled from "styled-components";
 import Upload from "./Upload";
+import History from "./History";
+
+const TabPane = Tabs.TabPane;
 
 const Item = List.Item;
 
@@ -149,6 +153,19 @@ const Group = ({
         </Item>
         <Item>Admin: </Item>
       </List>
+      <div style={{ height: "300px" }}>
+        <Tabs defaultActiveKey="1">
+          <TabPane tab={<span><Icon type="home" theme="outlined" />Overview</span>} key="1">
+            Pane 2
+          </TabPane>
+          <TabPane tab={<span><Icon type="clock-circle" theme="outlined" />History</span>} key="2">
+            <History />
+          </TabPane>
+          <TabPane tab={<span><Icon type="project" theme="outlined" />Create Expense</span>} key="3">
+            Pane 3
+          </TabPane>
+        </Tabs>
+      </div>
     </InnerContainer>
   </Card>
 );
