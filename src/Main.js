@@ -3,7 +3,7 @@ import React from "react";
 import styled from "styled-components";
 import FooterMenu from "./footer/FooterMenu";
 import Dashboard from "./pages/Dashboard";
-import Group from './pages/Group';
+import Group from './pages/GroupContainer';
 import TopBar from "./header/TopBar";
 import {
   BrowserRouter as Router,

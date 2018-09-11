@@ -3,15 +3,18 @@ import { ApolloProvider } from "react-apollo";
 import { ApolloClient } from "apollo-client";
 import { InMemoryCache } from "apollo-cache-inmemory";
 import { createHttpLink } from "apollo-link-http";
+import { createUploadLink } from 'apollo-upload-client';
 import { setContext } from "apollo-link-context";
 import { onError } from "apollo-link-error";
 import { ApolloLink } from "apollo-link";
+
 import Main from "./Main";
 
-const httpLink = createHttpLink({
+const uploadLink = createUploadLink({
   uri: "http://localhost:4000",
   credentials: "same-origin"
 });
+
 
 const authLink = setContext((_, { headers }) => {
   // get the authentication token from local storage if it exists
@@ -36,7 +39,7 @@ const client = new ApolloClient({
         );
       if (networkError) console.log(`[Network error]: ${networkError}`);
     }),
-    authLink.concat(httpLink)
+    authLink.concat(uploadLink)
   ]),
   cache: new InMemoryCache()
 });
