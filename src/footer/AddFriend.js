@@ -2,6 +2,7 @@ import React from "react";
 import { Modal, message } from "antd";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
+import UserSelect from "./FriendsModal";
 
 const ADD_FRIEND = gql`
   mutation AddFriend($id: ID!) {
@@ -10,7 +11,37 @@ const ADD_FRIEND = gql`
     }
   }
 `;
-class AddModal extends React.Component {
+
+const CREATE_GROUP = gql`
+  mutation CreateGroup($input: CreateGroupInput!) {
+    createGroup(input: $input) {
+      id
+      title
+      participants
+    }
+  }
+`;
+
+const ADD_PARTICIPANTS = gql`
+  mutation AddGroupParticipant($groupId: ID!, $userId: ID!) {
+    addGroupParticipant(groupId: $groupId, userId: $userId) {
+      id
+      title
+      participants
+    }
+  }
+`;
+
+const REMOVE_PARTICIPANTS = gql`
+  mutation RemoveGroupParticipant($groupId: ID!, $userId: ID!) {
+    removeGroupParticipant(groupId: $groupId, userId: $userId) {
+      id
+      title
+      participants
+    }
+  }
+`;
+export default class AddFriend extends React.Component {
   state = {
     value: "",
     id: ""
@@ -40,29 +71,27 @@ class AddModal extends React.Component {
     this.setState({
       id: "",
       value: ""
-    })
+    });
   };
   render() {
-    const { visible, handleOk, handleCancel, type, placeholder } = this.props;
+    const { visible, handleOk, handleCancel, type } = this.props;
     return (
       <Mutation mutation={ADD_FRIEND}>
         {(addFriend, { data }) => (
           <Modal
-            title={`Add ${type}`}
+            title={`Add Friend`}
             visible={visible}
             onOk={() => this._handleOk(addFriend)}
             onCancel={handleCancel}
           >
-            {React.cloneElement(this.props.children, {
-              handleChange: this._handleChange,
-              handleSearch: this._handleSearch,
-              value: this.state.value
-            })}
+            <UserSelect
+              handleChange={this._handleChange}
+              handleSearch={this._handleSearch}
+              value={this.state.value}
+            />
           </Modal>
         )}
       </Mutation>
     );
   }
 }
-
-export default AddModal;

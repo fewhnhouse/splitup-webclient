@@ -16,7 +16,7 @@ const FRIENDS = gql`
   }
 `;
 
-export default class Groups extends Component {
+export default class Friends extends Component {
   render() {
     return (
       <div>

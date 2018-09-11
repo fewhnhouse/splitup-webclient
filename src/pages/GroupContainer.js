@@ -2,6 +2,7 @@ import React from "react";
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
 import Group from "./Group";
+import { message } from "antd";
 
 const GROUP = gql`
   query Group($id: ID!) {
@@ -32,6 +33,23 @@ const months = [
 ];
 
 export default class GroupContainer extends React.Component {
+  saveConfirm = () => {
+    message.success("Changes saved.");
+    this.setState({ editable: false });
+  };
+
+  deleteConfirm = () => {
+    message.success("Group deleted.");
+    this.setState({ editable: false });
+  };
+
+  onClickEdit = () => {
+    this.setState(prevState => ({ editable: !prevState.editable }));
+  };
+
+  state = {
+    editable: false
+  };
   render() {
     return (
       <Query query={GROUP} variables={{ id: this.props.match.params.groupId }}>
@@ -59,10 +77,13 @@ export default class GroupContainer extends React.Component {
             const title = data.group.title;
             return (
               <Group
+                onClickEdit={this.onClickEdit}
+                saveConfirm={this.saveConfirm}
+                deleteConfirm={this.deleteConfirm}
                 date={dateString}
                 participants={participants}
                 title={title}
-                editable
+                editable={this.state.editable}
               />
             );
           }
@@ -71,4 +92,3 @@ export default class GroupContainer extends React.Component {
     );
   }
 }
-

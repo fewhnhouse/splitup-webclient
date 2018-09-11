@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import InnerMenu from "./InnerMenu";
-import Groups from "./Groups";
-import Friends from './Friends';
+import Groups from "./GroupsMenuList";
+import Friends from './FriendsMenuList';
 import { Menu, Icon } from "antd";
 import { Link } from "react-router-dom";
 

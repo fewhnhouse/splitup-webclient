@@ -1,26 +1,99 @@
 import React from "react";
-import {Card, Button, List, Avatar, Divider, Icon} from 'antd';
+import {
+  Card,
+  Button,
+  List,
+  Avatar,
+  Divider,
+  Icon,
+  Input,
+  Popconfirm
+} from "antd";
 import styled from "styled-components";
-import Upload from './Upload';
+import Upload from "./Upload";
 
 const Item = List.Item;
 
-const Group = ({ title, date, participants, editable }) => (
+const Group = ({
+  title,
+  date,
+  participants,
+  editable,
+  saveConfirm,
+  deleteConfirm,
+  cancel,
+  onClickEdit
+}) => (
   <Card style={{ margin: "40px" }}>
-    <Button
-      style={{
-        position: "absolute",
-        right: "15px",
-        top: "15px",
-        fontSize: "20px"
-      }}
-      icon="edit"
-      theme="outlined"
-    />
+    {editable ? (
+      <div
+        style={{
+          position: "absolute",
+          right: "15px",
+          top: "15px",
+          fontSize: "20px",
+          display: "flex"
+        }}
+      >
+        <Popconfirm
+          title="Are you sure you want to save your changes?"
+          onConfirm={saveConfirm}
+          onCancel={cancel}
+          okText="Yes"
+          cancelText="No"
+        >
+          <Button
+            style={{ marginRight: "5px" }}
+            type="primary"
+            ghost
+            icon="save"
+          >
+            Save
+          </Button>
+        </Popconfirm>
+
+        <Button
+          style={{ marginRight: "5px" }}
+          type="default"
+          icon="close-circle"
+          onClick={onClickEdit}
+        >
+          Discard
+        </Button>
+        <Popconfirm
+          placement="topRight"
+          title="Are you sure you want to delete this group?"
+          onConfirm={deleteConfirm}
+          onCancel={cancel}
+          okText="Yes"
+          cancelText="No"
+        >
+          <Button type="danger" ghost icon="delete">
+            Delete
+          </Button>
+        </Popconfirm>
+      </div>
+    ) : (
+      <Button
+        style={{
+          position: "absolute",
+          right: "15px",
+          top: "15px",
+          fontSize: "20px"
+        }}
+        icon="edit"
+        theme="outlined"
+        onClick={onClickEdit}
+      />
+    )}
     <div style={{ display: "flex", flexDirection: "row" }}>
-      {editable ? <Upload/> : <Avatar shape="square" size={112} icon="user" />}
+      {editable ? <Upload /> : <Avatar shape="square" size={112} icon="user" />}
       <div style={{ flexDirection: "column", marginLeft: "15px" }}>
-        <h1 style={{ marginBottom: "5px" }}>{title}</h1>
+        {editable ? (
+          <Input size="large" placeholder="Group title" />
+        ) : (
+          <h1 style={{ marginBottom: "5px" }}>{title}</h1>
+        )}
 
         <div
           style={{
@@ -49,9 +122,30 @@ const Group = ({ title, date, participants, editable }) => (
     </div>
     <InnerContainer>
       <List>
-        <Item>Description</Item>
         <Item>
-          Members: <span style={{ textAlign: "right" }}>12</span>
+          {editable ? (
+            <Input placeholder="Description" />
+          ) : (
+            <span>Description</span>
+          )}
+        </Item>
+        <Item>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+              width: "100%"
+            }}
+          >
+            <span>
+              Members: <span style={{ textAlign: "right" }}>12</span>
+            </span>
+
+            <Button style={{ float: "right" }} icon="plus" type="primary">
+              Add Member
+            </Button>
+          </div>
         </Item>
         <Item>Admin: </Item>
       </List>
