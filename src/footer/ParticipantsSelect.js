@@ -15,8 +15,6 @@ const USERS = gql`
 `;
 
 export default class AddUser extends React.Component {
-
-
   render() {
     const { values, searchValue, handleChange, handleSearch } = this.props;
     return (
@@ -25,21 +23,18 @@ export default class AddUser extends React.Component {
           if (error) {
             return `Error!: ${error}`;
           } else {
-            console.log(data);
-            /*this.setState({
-              data: data.users ? data.users : []
-            });
-            */
             return (
               <Select
                 mode="multiple"
                 value={values}
                 placeholder={"Search for users"}
-                style={{ width: "100%" }}
-                defaultActiveFirstOption={false}
-                filterOption={false}
+                style={{ width: "100%", marginBottom: "24px" }}
                 onSearch={handleSearch}
-                onChange={(value) => handleChange(value, data.users ? data.users : [])}
+                labelInValue
+                filterOption={false}
+                onChange={value =>
+                  handleChange(value, data.users ? data.users : [])
+                }
                 notFoundContent={
                   loading ? (
                     <Spin size="small" />
@@ -50,7 +45,9 @@ export default class AddUser extends React.Component {
               >
                 {data.users
                   ? data.users.map((d, index) => (
-                      <Option key={d.id} >{d.name}</Option>
+                      <Option key={d.id} value={d.id}>
+                        {d.name}
+                      </Option>
                     ))
                   : null}
               </Select>

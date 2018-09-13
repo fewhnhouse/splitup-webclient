@@ -1,9 +1,9 @@
 import React from "react";
-import { Modal, message } from "antd";
+import { Modal, message, Input, Form } from "antd";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
 import ParticipantsSelect from "./ParticipantsSelect";
-
+import AddGroupForm from "./AddGroupForm";
 const ADD_FRIEND = gql`
   mutation AddFriend($id: ID!) {
     addFriend(id: $id) {
@@ -17,7 +17,10 @@ const CREATE_GROUP = gql`
     createGroup(input: $input) {
       id
       title
-      participants
+      participants {
+        id
+        name
+      }
     }
   }
 `;
@@ -44,8 +47,9 @@ const REMOVE_PARTICIPANTS = gql`
 export default class AddGroup extends React.Component {
   state = {
     searchValue: "",
-    names: [],
-    ids: []
+    values: [],
+    title: "",
+    description: ""
   };
 
   _handleSearch = searchValue => {
@@ -53,35 +57,49 @@ export default class AddGroup extends React.Component {
       searchValue
     });
   };
-  _handleChange = (selectedIds, data) => {
-    console.log(selectedIds);
-    const filteredData = data.filter(
-      d => selectedIds.includes(d.id) || selectedIds.includes(d.name)
-    );
-    console.log(filteredData);
-    const names = filteredData.map(d => d.name);
-    const ids = filteredData.map(d => d.id);
-
+  _handleChange = data => {
     this.setState({
-      names,
-      ids
+      values: data
     });
   };
 
   _handleOk = async createGroup => {
     this.props.handleOk();
-    createGroup({ variables: { id: this.state.id } }).then(
-      res =>
-        message.success(
-          `${this.state.value} was successfully added to Friends List.`
-        ),
-      err => message.error("Something went wrong: ", err)
-    );
+    const input = {
+      title: this.state.title,
+      description: this.state.description,
+      participants: this.state.values.map(val => val.key)
+    };
+    console.log(input);
+    const then = await createGroup({
+      variables: {
+        input
+      }
+    });
+    if (then.error) {
+      message.error("Something went wrong: ", then.error);
+    } else {
+      message.success(`Group was successfully created.`);
+    }
     this.setState({
-      id: "",
-      value: ""
+      values: [],
+      title: "",
+      description: ""
     });
   };
+
+  _onChangeDescription = evt => {
+    this.setState({
+      description: evt.target.value
+    });
+  };
+
+  _onChangeTitle = evt => {
+    this.setState({
+      title: evt.target.value
+    });
+  };
+
   render() {
     const { visible, handleOk, handleCancel, type } = this.props;
     return (
@@ -93,10 +111,16 @@ export default class AddGroup extends React.Component {
             onOk={() => this._handleOk(createGroup)}
             onCancel={handleCancel}
           >
+            <AddGroupForm
+              onChangeDescription={this._onChangeDescription}
+              onChangeTitle={this._onChangeTitle}
+              description={this.state.description}
+              title={this.state.title}
+            />
             <ParticipantsSelect
               handleChange={this._handleChange}
               handleSearch={this._handleSearch}
-              values={this.state.names}
+              values={this.state.values}
               searchValue={this.state.searchValue}
             />
           </Modal>
