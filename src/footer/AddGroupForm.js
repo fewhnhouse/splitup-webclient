@@ -23,19 +23,13 @@ class CreateGroupForm extends React.Component {
     return (
       <Form>
         <FormItem>
-          <Input
-            prefix={<Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />}
-            value={title}
-            onChange={onChangeTitle}
-            placeholder="title"
-          />
+          <Input value={title} onChange={onChangeTitle} placeholder="Title" />
         </FormItem>
         <FormItem>
           <Input
-            prefix={<Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />}
             value={description}
             onChange={onChangeDescription}
-            placeholder="description"
+            placeholder="Description"
           />
         </FormItem>
       </Form>

@@ -8,11 +8,21 @@ const GROUP = gql`
   query Group($id: ID!) {
     group(id: $id) {
       title
+      description
       createdAt
       participants {
         name
         id
       }
+    }
+  }
+`;
+
+const EDIT_GROUP = gql`
+  mutation EditGroup($title: String!, $description: String!) {
+    editGroup(title: $title, description: $description) {
+      title
+      description
     }
   }
 `;
@@ -73,8 +83,9 @@ export default class GroupContainer extends React.Component {
               months[date.getMonth()]
             } ${date.getFullYear()}`;
 
-            const participants = data.group.participants.length;
+            const participants = data.group.participants;
             const title = data.group.title;
+            const description = data.group.description;
             return (
               <Group
                 onClickEdit={this.onClickEdit}
@@ -83,6 +94,7 @@ export default class GroupContainer extends React.Component {
                 date={dateString}
                 participants={participants}
                 title={title}
+                description={description}
                 editable={this.state.editable}
               />
             );

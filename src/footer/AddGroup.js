@@ -70,7 +70,6 @@ export default class AddGroup extends React.Component {
       description: this.state.description,
       participants: this.state.values.map(val => val.key)
     };
-    console.log(input);
     const then = await createGroup({
       variables: {
         input

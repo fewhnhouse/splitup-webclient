@@ -25,6 +25,7 @@ const Group = ({
   editable,
   saveConfirm,
   deleteConfirm,
+  description,
   cancel,
   onClickEdit
 }) => (
@@ -119,7 +120,7 @@ const Group = ({
           </p>
           <p>
             <Icon style={{ marginRight: "5px" }} type="team" theme="outlined" />
-            {participants}
+            {participants.length}
           </p>
         </div>
       </div>
@@ -130,7 +131,7 @@ const Group = ({
           {editable ? (
             <Input placeholder="Description" />
           ) : (
-            <span>Description</span>
+            <span>Description:  {description}</span>
           )}
         </Item>
         <Item>
@@ -142,10 +143,17 @@ const Group = ({
               width: "100%"
             }}
           >
-            <span>
-              Members: <span style={{ textAlign: "right" }}>12</span>
-            </span>
-
+            <span style={{ paddingRight: "10px" }}>Members:</span>
+            <div style={{ width: "100%" }}>
+              {participants.map((el, index) => (
+                <span>
+                  <a>{el.name}</a>
+                  {participants.length - 1 !== index ? (
+                    <Divider type="vertical" />
+                  ) : null}
+                </span>
+              ))}
+            </div>
             <Button style={{ float: "right" }} icon="plus" type="primary">
               Add Member
             </Button>
@@ -155,13 +163,37 @@ const Group = ({
       </List>
       <div style={{ height: "300px" }}>
         <Tabs defaultActiveKey="1">
-          <TabPane tab={<span><Icon type="home" theme="outlined" />Overview</span>} key="1">
+          <TabPane
+            tab={
+              <span>
+                <Icon type="home" theme="outlined" />
+                Overview
+              </span>
+            }
+            key="1"
+          >
             Pane 2
           </TabPane>
-          <TabPane tab={<span><Icon type="clock-circle" theme="outlined" />History</span>} key="2">
+          <TabPane
+            tab={
+              <span>
+                <Icon type="clock-circle" theme="outlined" />
+                History
+              </span>
+            }
+            key="2"
+          >
             <History />
           </TabPane>
-          <TabPane tab={<span><Icon type="project" theme="outlined" />Create Expense</span>} key="3">
+          <TabPane
+            tab={
+              <span>
+                <Icon type="project" theme="outlined" />
+                Create Expense
+              </span>
+            }
+            key="3"
+          >
             Pane 3
           </TabPane>
         </Tabs>

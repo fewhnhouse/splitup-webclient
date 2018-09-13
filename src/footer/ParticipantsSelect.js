@@ -27,7 +27,7 @@ export default class AddUser extends React.Component {
               <Select
                 mode="multiple"
                 value={values}
-                placeholder={"Search for users"}
+                placeholder={"Search for friends to add"}
                 style={{ width: "100%", marginBottom: "24px" }}
                 onSearch={handleSearch}
                 labelInValue
