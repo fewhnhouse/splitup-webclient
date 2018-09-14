@@ -29,6 +29,12 @@ const EDIT_GROUP = gql`
   }
 `;
 
+const DELETE_GROUP = gql`
+  mutation DeleteGroup($id: ID!) {
+    id
+  }
+`;
+
 const months = [
   "January",
   "February",
@@ -109,9 +115,7 @@ export default class GroupContainer extends React.Component {
             } ${date.getFullYear()}`;
 
             return (
-              <Mutation
-                mutation={EDIT_GROUP}
-              >
+              <Mutation mutation={EDIT_GROUP}>
                 {(editGroup, { data }) => (
                   <Group
                     groupId={this.props.match.params.groupId}

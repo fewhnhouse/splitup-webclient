@@ -118,111 +118,109 @@ class Group extends React.Component {
 
     return (
       <Card style={{ margin: "40px" }}>
-        <GroupEditButton
-          saveConfirm={saveConfirm}
-          editedTitle={editedTitle}
-          cancel={cancel}
-          deleteConfirm={deleteConfirm}
-          onClickEdit={onClickEdit}
-          editable={editable}
-        />
-        <Header
-          title={title}
-          value={editedTitle}
-          onChange={onChangeTitle}
-          date={date}
-          participants={participants}
-          editable={editable}
-        />
-        <InnerContainer>
-          <List>
-            <Item>
-              {editable ? (
-                <span style={{ width: "100%" }}>
-                  <h3>Description: </h3>
+        <Tabs defaultActiveKey="1">
+          <TabPane
+            tab={
+              <span>
+                <Icon type="home" theme="outlined" />
+                Overview
+              </span>
+            }
+            key="1"
+          >
+            <GroupEditButton
+              saveConfirm={saveConfirm}
+              editedTitle={editedTitle}
+              cancel={cancel}
+              deleteConfirm={deleteConfirm}
+              onClickEdit={onClickEdit}
+              editable={editable}
+            />
+            <Header
+              title={title}
+              value={editedTitle}
+              onChange={onChangeTitle}
+              date={date}
+              participants={participants}
+              editable={editable}
+            />
+            <InnerContainer>
+              <List>
+                <Item>
+                  {editable ? (
+                    <span style={{ width: "100%" }}>
+                      <h3>Description: </h3>
 
-                  <Input
-                    value={editedDescription}
-                    placeholder={description}
-                    onChange={onChangeDescription}
-                  />
-                </span>
-              ) : (
-                <span>
-                  <h3>Description: </h3>
-                  <p>{description}</p>
-                </span>
-              )}
-            </Item>
-            <Item>
-              <div style={{ width: "100%" }}>
-                <h3 style={{ paddingRight: "10px" }}>Members:</h3>
-                <div
-                  style={{
-                    width: "100%"
-                  }}
-                >
-                  {participants.map((el, index) => (
-                    <span key={index}>
-                      <a>{el.name}</a>
-                      {participants.length - 1 !== index ? (
-                        <Divider type="vertical" />
-                      ) : null}
+                      <Input
+                        value={editedDescription}
+                        placeholder={description}
+                        onChange={onChangeDescription}
+                      />
                     </span>
-                  ))}
-                  <Button
-                    onClick={this._onClickShow}
-                    style={{ float: "right" }}
-                    icon="plus"
-                    type="primary"
-                  >
-                    Add Member
-                  </Button>
-                </div>
-              </div>
-            </Item>
-            <Item>
-              <h3>Admin</h3>{" "}
-            </Item>
-          </List>
-          <div style={{ height: "300px" }}>
-            <Tabs defaultActiveKey="1">
-              <TabPane
-                tab={
-                  <span>
-                    <Icon type="home" theme="outlined" />
-                    Overview
-                  </span>
-                }
-                key="1"
-              >
-                Pane 2
-              </TabPane>
-              <TabPane
-                tab={
-                  <span>
-                    <Icon type="clock-circle" theme="outlined" />
-                    History
-                  </span>
-                }
-                key="2"
-              >
-                <History />
-              </TabPane>
-              <TabPane
-                tab={
-                  <span>
-                    <Icon type="project" theme="outlined" />
-                    Create Expense
-                  </span>
-                }
-                key="3"
-              >
-                Pane 3
-              </TabPane>
-            </Tabs>
-          </div>
-        </InnerContainer>
+                  ) : (
+                    <span>
+                      <h3>Description: </h3>
+                      <p>{description}</p>
+                    </span>
+                  )}
+                </Item>
+                <Item>
+                  <div style={{ width: "100%" }}>
+                    <h3 style={{ paddingRight: "10px" }}>Members:</h3>
+                    <div
+                      style={{
+                        width: "100%"
+                      }}
+                    >
+                      {participants.map((el, index) => (
+                        <span key={index}>
+                          <a>{el.name}</a>
+                          {participants.length - 1 !== index ? (
+                            <Divider type="vertical" />
+                          ) : null}
+                        </span>
+                      ))}
+                      <Button
+                        onClick={this._onClickShow}
+                        style={{ float: "right" }}
+                        icon="plus"
+                        type="primary"
+                      >
+                        Add Member
+                      </Button>
+                    </div>
+                  </div>
+                </Item>
+                <Item>
+                  <h3>Admin</h3>{" "}
+                </Item>
+              </List>
+            </InnerContainer>
+          </TabPane>
+          <TabPane
+            tab={
+              <span>
+                <Icon type="clock-circle" theme="outlined" />
+                History
+              </span>
+            }
+            key="2"
+          >
+            <History />
+          </TabPane>
+          <TabPane
+            tab={
+              <span>
+                <Icon type="project" theme="outlined" />
+                Create Expense
+              </span>
+            }
+            key="3"
+          >
+            Pane 3
+          </TabPane>
+        </Tabs>
+
         <AddMemberModal
           participants={participants}
           groupId={groupId}

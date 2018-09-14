@@ -14,8 +14,8 @@ const GroupEditButton = ({
       <div
         style={{
           position: "absolute",
-          right: "32px",
-          top: "24px",
+          right: "0px",
+          top: "60px",
           fontSize: "20px",
           display: "flex"
         }}
@@ -63,8 +63,8 @@ const GroupEditButton = ({
       <Button
         style={{
           position: "absolute",
-          right: "32px",
-          top: "24px",
+          right: "0px",
+          top: "60px",
           fontSize: "20px"
         }}
         icon="edit"

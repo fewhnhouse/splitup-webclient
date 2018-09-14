@@ -127,7 +127,7 @@ class Main extends React.Component {
             onMouseEnter={this.onMouseEnter}
             onMouseLeave={this.onMouseLeave}
           >
-            {loggedIn ? <FooterMenu opened={true} /> : null}
+            {loggedIn ? <FooterMenu opened={this.state.opened} /> : null}
           </StyledFooter>
         </Layout>
       </Router>

@@ -4,6 +4,7 @@ import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
 import ParticipantsSelect from "../utils/ParticipantsSelect";
 import AddGroupForm from "./AddGroupForm";
+import create from "antd/lib/icon/IconFont";
 const ADD_FRIEND = gql`
   mutation AddFriend($id: ID!) {
     addFriend(id: $id) {
@@ -17,6 +18,7 @@ const CREATE_GROUP = gql`
     createGroup(input: $input) {
       id
       title
+      description
     }
   }
 `;
@@ -26,6 +28,7 @@ const GROUPS = gql`
     groups {
       id
       title
+      description
     }
   }
 `;
@@ -93,6 +96,7 @@ export default class AddGroup extends React.Component {
         mutation={CREATE_GROUP}
         update={(cache, { data: { createGroup } }) => {
           const { groups } = cache.readQuery({ query: GROUPS });
+          console.log("cache:",createGroup, groups);
           cache.writeQuery({
             query: GROUPS,
             data: { groups: groups.concat([createGroup]) }
