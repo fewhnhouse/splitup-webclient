@@ -31,7 +31,7 @@ class InnerMenu extends React.Component {
             <Button
               icon="plus"
               onClick={this.showModal}
-              type="primary"
+              type="default"
             >{`Add ${type}`}</Button>
             {type === "Friends" ? (
               <AddFriend
@@ -49,14 +49,13 @@ class InnerMenu extends React.Component {
               />
             )}
           </ButtonContainer>
-        )}
+            )}
       </Container>
     );
   }
 }
 
 const ButtonContainer = styled.div`
-  background: none;
   min-height: 64px;
   box-shadow: 0 -5px 5px -5px #333;
   z-index: 10;
@@ -67,7 +66,7 @@ const ButtonContainer = styled.div`
 
 const StyledInnerMenu = styled.div`
   height: 200px;
-  padding: 0px 10px;
+  padding: 0px 0px;
   overflow-y: scroll;
 `;
 

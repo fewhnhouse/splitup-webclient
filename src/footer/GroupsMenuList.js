@@ -34,14 +34,23 @@ export default class Groups extends Component {
                   renderItem={item => (
                     <List.Item>
                       <Link
-                        style={{ width: "100%", textAlign: "left" }}
+                        style={{
+                          width: "100%",
+                          textAlign: "left",
+                        }}
                         to={`/groups/${item.id}`}
                         key={item.id}
                       >
                         <List.Item.Meta
                           avatar={<Avatar shape="square" icon="appstore" />}
-                          title={item.title}
-                          description={item.description}
+                          title={
+                            <h4 style={{ color: "#f3f3f3" }}>{item.title}</h4>
+                          }
+                          description={
+                            <span style={{ color: "lightgrey" }}>
+                              item.description
+                            </span>
+                          }
                         />
                       </Link>
                     </List.Item>
@@ -55,9 +64,3 @@ export default class Groups extends Component {
     );
   }
 }
-
-const StyledAvatar = styled(Avatar)`
-  i {
-    margin: 0;
-  }
-`;

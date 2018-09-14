@@ -1,4 +1,4 @@
-import { Layout } from "antd";
+import { Layout , Button} from "antd";
 import React from "react";
 import styled from "styled-components";
 import FooterMenu from "./footer/FooterMenu";
@@ -135,8 +135,6 @@ class Main extends React.Component {
   }
 }
 
-
-
 const StyledFooter = styled(Footer)`
   position: fixed;
   z-index: 1;
@@ -145,10 +143,9 @@ const StyledFooter = styled(Footer)`
   padding: 0px;
   margin: 0px;
   border-top: 2px solid #1890ff;
-  box-shadow: 2px 0px 8px lightgray;
 
   &:before {
-    background: #f9fcff;
+    background: #1890ff;
     content: "";
     height: 40rem;
     left: -5%;
@@ -156,8 +153,8 @@ const StyledFooter = styled(Footer)`
     right: -5%;
     transform-origin: 0 0;
     transform: rotateZ(-4deg);
+    box-shadow: 2px 0px 8px lightgray;
     z-index: 0;
-    border-top: 2px solid #1890ff;
   }
 `;
 

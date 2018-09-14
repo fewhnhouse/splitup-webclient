@@ -35,13 +35,20 @@ export default class Friends extends Component {
                   renderItem={item => (
                     <List.Item>
                       <Link
-                        style={{ width: "100%", textAlign: "left" }}
+                        style={{
+                          width: "100%",
+                          padding: "0px 20px",
+                          textAlign: "left",
+                          color: "white"
+                        }}
                         to={`/friends/${item.id}`}
                         key={item.id}
                       >
                         <List.Item.Meta
                           avatar={<Avatar shape="square" icon="user" />}
-                          title={item.name}
+                          title={
+                            <h4 style={{ color: "#f3f3f3" }}>{item.name}</h4>
+                          }
                         />
                       </Link>
                     </List.Item>
