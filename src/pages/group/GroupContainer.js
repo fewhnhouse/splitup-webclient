@@ -22,6 +22,7 @@ const GROUP = gql`
 const EDIT_GROUP = gql`
   mutation EditGroup($id: ID!, $title: String!, $description: String!) {
     editGroup(id: $id, title: $title, description: $description) {
+      id
       title
       description
     }
@@ -108,9 +109,12 @@ export default class GroupContainer extends React.Component {
             } ${date.getFullYear()}`;
 
             return (
-              <Mutation mutation={EDIT_GROUP}>
+              <Mutation
+                mutation={EDIT_GROUP}
+              >
                 {(editGroup, { data }) => (
                   <Group
+                    refetch={refetch}
                     groupId={this.props.match.params.groupId}
                     onClickEdit={this.onClickEdit}
                     saveConfirm={() => this.saveConfirm(editGroup, id)}

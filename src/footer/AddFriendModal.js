@@ -6,30 +6,39 @@ import { Select, Spin } from "antd";
 const Option = Select.Option;
 
 const USERS = gql`
-  query Users($name_contains: String) {
-    users(name_contains: $name_contains, includeFriends: false) {
+  query Users($where: MyUserWhereInput!) {
+    users(where: $where) {
       name
       id
+    }
+    me {
+      id
+      friends {
+        id
+      }
     }
   }
 `;
 
 export default class AddUser extends React.Component {
-
-
   render() {
     const { value, handleChange, handleSearch } = this.props;
+    const where = {
+      name_contains: value
+    };
     return (
-      <Query query={USERS} variables={{ name_contains: value }}>
+      <Query query={USERS} variables={{ where }}>
         {({ loading, error, data }) => {
           if (error) {
             return `Error!: ${error}`;
+          } else if (loading) {
+            return "Loading...";
           } else {
-            console.log(data);
-            /*this.setState({
-              data: data.users ? data.users : []
-            });
-            */
+            const options = data.users.filter(
+              el =>
+                !data.me.friends.find(friend => friend.id === el.id) &&
+                el.id !== data.me.id
+            );
             return (
               <Select
                 showSearch
@@ -39,7 +48,9 @@ export default class AddUser extends React.Component {
                 defaultActiveFirstOption={false}
                 filterOption={false}
                 onSearch={handleSearch}
-                onChange={(value) => handleChange(value, data.users ? data.users : [])}
+                onChange={value =>
+                  handleChange(value, data.users ? data.users : [])
+                }
                 notFoundContent={
                   loading ? (
                     <Spin size="small" />
@@ -48,11 +59,15 @@ export default class AddUser extends React.Component {
                   ) : null
                 }
               >
-                {data.users
-                  ? data.users.map((d, index) => (
-                      <Option key={d.id}>{d.name}</Option>
-                    ))
-                  : null}
+                {options.length ? (
+                  options.map((d, index) => (
+                    <Option key={d.id}>{d.name}</Option>
+                  ))
+                ) : (
+                  <Option disabled key="nothing-found">
+                    Nothing found.
+                  </Option>
+                )}
               </Select>
             );
           }

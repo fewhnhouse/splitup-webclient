@@ -7,8 +7,25 @@ import gql from "graphql-tag";
 const EDIT_GROUP = gql`
   mutation AddGroupParticipants($input: AddGroupParticipantsInput!) {
     addGroupParticipants(input: $input) {
+      id
       participants {
         name
+        id
+      }
+    }
+  }
+`;
+
+const GROUP = gql`
+  query Group($id: ID!) {
+    group(id: $id) {
+      id
+      title
+      description
+      createdAt
+      participants {
+        name
+        id
       }
     }
   }
@@ -35,7 +52,7 @@ export default class AddMemberModal extends React.Component {
       participants
     };
     console.log(input);
-    editGroup({ variables: {input} });
+    editGroup({ variables: { input } });
     this.props.handleOk();
   };
 
