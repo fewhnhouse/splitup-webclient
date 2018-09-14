@@ -114,7 +114,6 @@ export default class GroupContainer extends React.Component {
               >
                 {(editGroup, { data }) => (
                   <Group
-                    refetch={refetch}
                     groupId={this.props.match.params.groupId}
                     onClickEdit={this.onClickEdit}
                     saveConfirm={() => this.saveConfirm(editGroup, id)}

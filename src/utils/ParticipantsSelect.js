@@ -16,16 +16,30 @@ const USERS = gql`
 
 export default class AddUser extends React.Component {
   render() {
-    const { values, searchValue, handleChange, handleSearch } = this.props;
+    const {
+      values,
+      searchValue,
+      handleChange,
+      handleSearch,
+      skip
+    } = this.props;
     const where = {
       name_contains: searchValue
-    }
+    };
+
     return (
       <Query query={USERS} variables={{ where }}>
         {({ loading, error, data }) => {
           if (error) {
             return `Error!: ${error}`;
+          } else if (loading) {
+            return "Loading";
           } else {
+            const options = data.users
+              ? skip
+                ? data.users.filter(el => !skip.find(s => s.id === el.id))
+                : data.users
+              : [];
             return (
               <Select
                 mode="multiple"
@@ -46,13 +60,17 @@ export default class AddUser extends React.Component {
                   ) : null
                 }
               >
-                {data.users
-                  ? data.users.map((d, index) => (
-                      <Option key={d.id} value={d.id}>
-                        {d.name}
-                      </Option>
-                    ))
-                  : null}
+                {options.length ? (
+                  options.map((d, index) => (
+                    <Option key={d.id} value={d.id}>
+                      {d.name}
+                    </Option>
+                  ))
+                ) : (
+                  <Option key="nothing-found" disabled>
+                    Nothing found.
+                  </Option>
+                )}
               </Select>
             );
           }

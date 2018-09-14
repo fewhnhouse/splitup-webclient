@@ -16,21 +16,6 @@ const EDIT_GROUP = gql`
   }
 `;
 
-const GROUP = gql`
-  query Group($id: ID!) {
-    group(id: $id) {
-      id
-      title
-      description
-      createdAt
-      participants {
-        name
-        id
-      }
-    }
-  }
-`;
-
 export default class AddMemberModal extends React.Component {
   state = {
     values: [],
@@ -51,14 +36,12 @@ export default class AddMemberModal extends React.Component {
       groupId: this.props.groupId,
       participants
     };
-    console.log(input);
     editGroup({ variables: { input } });
     this.props.handleOk();
   };
 
   _handleCancel = () => {};
   render() {
-    console.log(this.props.groupId);
     return (
       <Mutation mutation={EDIT_GROUP}>
         {(editGroup, { data }) => (
@@ -69,6 +52,7 @@ export default class AddMemberModal extends React.Component {
             onCancel={this.props.handleCancel}
           >
             <ParticipantsSelect
+              skip={this.props.participants}
               handleChange={this._handleChange}
               handleSearch={this._handleSearch}
               values={this.state.values}

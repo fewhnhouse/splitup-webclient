@@ -224,6 +224,7 @@ class Group extends React.Component {
           </div>
         </InnerContainer>
         <AddMemberModal
+          participants={participants}
           groupId={groupId}
           visible={this.state.showModal}
           handleCancel={this._handleOk}
