@@ -17,10 +17,15 @@ const CREATE_GROUP = gql`
     createGroup(input: $input) {
       id
       title
-      participants {
-        id
-        name
-      }
+    }
+  }
+`;
+
+const GROUPS = gql`
+  query {
+    groups {
+      id
+      title
     }
   }
 `;
@@ -102,7 +107,16 @@ export default class AddGroup extends React.Component {
   render() {
     const { visible, handleOk, handleCancel, type } = this.props;
     return (
-      <Mutation mutation={CREATE_GROUP}>
+      <Mutation
+        mutation={CREATE_GROUP}
+        update={(cache, { data: { createGroup } }) => {
+          const { groups } = cache.readQuery({ query: GROUPS });
+          cache.writeQuery({
+            query: GROUPS,
+            data: { groups: groups.concat([createGroup]) }
+          });
+        }}
+      >
         {(createGroup, { data }) => (
           <Modal
             title={`Add Group`}
