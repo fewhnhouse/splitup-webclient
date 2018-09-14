@@ -111,6 +111,7 @@ export default class GroupContainer extends React.Component {
               <Mutation mutation={EDIT_GROUP}>
                 {(editGroup, { data }) => (
                   <Group
+                    groupId={this.props.match.params.groupId}
                     onClickEdit={this.onClickEdit}
                     saveConfirm={() => this.saveConfirm(editGroup, id)}
                     deleteConfirm={this.deleteConfirm}

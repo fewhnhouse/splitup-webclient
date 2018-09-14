@@ -1,8 +1,7 @@
 import React from "react";
 import { Card, Button } from "antd";
-import AddFriend from "./AddFriend";
-import AddGroup from "./AddGroup";
-import CreateGroup from "./GroupModal";
+import AddFriend from "./AddFriendModalContainer";
+import AddGroup from "./AddGroupModalContainer";
 import styled from "styled-components";
 
 class InnerMenu extends React.Component {
@@ -13,12 +12,6 @@ class InnerMenu extends React.Component {
   showModal = () => {
     this.setState({
       visible: true
-    });
-  };
-
-  handleCancel = e => {
-    this.setState({
-      visible: false
     });
   };
 
@@ -43,14 +36,14 @@ class InnerMenu extends React.Component {
             {type === "Friends" ? (
               <AddFriend
                 visible={this.state.visible}
-                handleCancel={this.handleCancel}
+                handleCancel={this.handleOk}
                 handleOk={this.handleOk}
                 type={type}
               />
             ) : (
               <AddGroup
                 visible={this.state.visible}
-                handleCancel={this.handleCancel}
+                handleCancel={this.handleOk}
                 handleOk={this.handleOk}
                 type={type}
               />

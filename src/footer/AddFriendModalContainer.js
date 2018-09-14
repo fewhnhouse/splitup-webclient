@@ -2,7 +2,7 @@ import React from "react";
 import { Modal, message } from "antd";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
-import UserSelect from "./FriendsModal";
+import UserSelect from "./AddFriendModal";
 
 const ADD_FRIEND = gql`
   mutation AddFriend($id: ID!) {

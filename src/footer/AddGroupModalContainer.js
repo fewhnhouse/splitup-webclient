@@ -2,8 +2,8 @@ import React from "react";
 import { Modal, message, Input, Form } from "antd";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
-import ParticipantsSelect from "./ParticipantsSelect";
-import AddGroupForm from "./AddGroupForm";
+import ParticipantsSelect from "../utils/ParticipantsSelect";
+import AddGroupForm from "./AddGroupModal";
 const ADD_FRIEND = gql`
   mutation AddFriend($id: ID!) {
     addFriend(id: $id) {

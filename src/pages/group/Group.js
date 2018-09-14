@@ -14,7 +14,7 @@ import styled from "styled-components";
 import GroupEditButton from "./GroupEditButton";
 import Upload from "./Upload";
 import History from "./History";
-import ParticipantsSelect from "../footer/ParticipantsSelect";
+import AddMemberModal from "./AddMemberModal";
 
 const TabPane = Tabs.TabPane;
 
@@ -90,6 +90,10 @@ class Group extends React.Component {
     showModal: false
   };
 
+  _handleOk = () => {
+    this.setState({ showModal: false });
+  };
+
   _onClickShow = () => {
     this.setState(prevState => ({ showModal: !prevState.showModal }));
   };
@@ -98,6 +102,7 @@ class Group extends React.Component {
     const {
       title,
       date,
+      groupId,
       participants,
       editable,
       saveConfirm,
@@ -218,9 +223,12 @@ class Group extends React.Component {
             </Tabs>
           </div>
         </InnerContainer>
-        <Modal visible={this.state.showModal} title="Add member">
-          <ParticipantsSelect />
-        </Modal>
+        <AddMemberModal
+          groupId={groupId}
+          visible={this.state.showModal}
+          handleCancel={this._handleOk}
+          handleOk={this._handleOk}
+        />
       </Card>
     );
   }

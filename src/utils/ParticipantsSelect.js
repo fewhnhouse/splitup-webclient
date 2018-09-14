@@ -6,8 +6,8 @@ import { Select, Spin } from "antd";
 const Option = Select.Option;
 
 const USERS = gql`
-  query Users($name_contains: String) {
-    users(name_contains: $name_contains, includeFriends: true) {
+  query Users($where: MyUserWhereInput!) {
+    users(where: $where) {
       name
       id
     }
@@ -17,8 +17,11 @@ const USERS = gql`
 export default class AddUser extends React.Component {
   render() {
     const { values, searchValue, handleChange, handleSearch } = this.props;
+    const where = {
+      name_contains: searchValue
+    }
     return (
-      <Query query={USERS} variables={{ name_contains: searchValue }}>
+      <Query query={USERS} variables={{ where }}>
         {({ loading, error, data }) => {
           if (error) {
             return `Error!: ${error}`;
