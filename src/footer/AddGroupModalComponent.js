@@ -113,7 +113,7 @@ export default class AddGroup extends React.Component {
               title={this.state.title}
             />
             <ParticipantsSelect
-              skip={[{ id: user.id }]}
+              skip={[user.id]}
               handleChange={this._handleChange}
               handleSearch={this._handleSearch}
               values={this.state.values}

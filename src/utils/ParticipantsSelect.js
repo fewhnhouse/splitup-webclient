@@ -24,7 +24,8 @@ export default class AddUser extends React.Component {
       skip
     } = this.props;
     const where = {
-      name_contains: searchValue
+      name_contains: searchValue,
+      id_not_in: skip
     };
 
     return (

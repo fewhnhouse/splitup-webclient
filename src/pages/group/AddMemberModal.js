@@ -38,6 +38,10 @@ export default class AddMemberModal extends React.Component {
     };
     editGroup({ variables: { input } });
     this.props.handleOk();
+    this.setState({
+      values: [],
+      searchValue: ""
+    });
   };
 
   _handleCancel = () => {};
@@ -52,7 +56,7 @@ export default class AddMemberModal extends React.Component {
             onCancel={this.props.handleCancel}
           >
             <ParticipantsSelect
-              skip={this.props.participants}
+              skip={this.props.participants.map(el => el.id)}
               handleChange={this._handleChange}
               handleSearch={this._handleSearch}
               values={this.state.values}
