@@ -3,18 +3,24 @@ import { ApolloProvider } from "react-apollo";
 import { ApolloClient } from "apollo-client";
 import { InMemoryCache } from "apollo-cache-inmemory";
 import { createHttpLink } from "apollo-link-http";
-import { createUploadLink } from 'apollo-upload-client';
+import { createUploadLink } from "apollo-upload-client";
 import { setContext } from "apollo-link-context";
 import { onError } from "apollo-link-error";
 import { ApolloLink } from "apollo-link";
+import { Provider } from "react-redux";
+import { createStore } from "redux";
+import reducers from "./redux/reducers";
 
 import Main from "./Main";
+
+const store = createStore(reducers);
+
+console.log(store.getState());
 
 const uploadLink = createUploadLink({
   uri: "http://localhost:4000",
   credentials: "same-origin"
 });
-
 
 const authLink = setContext((_, { headers }) => {
   // get the authentication token from local storage if it exists
@@ -45,9 +51,11 @@ const client = new ApolloClient({
 });
 
 const App = () => (
-  <ApolloProvider client={client}>
-    <Main />
-  </ApolloProvider>
+  <Provider store={store}>
+    <ApolloProvider client={client}>
+      <Main />
+    </ApolloProvider>
+  </Provider>
 );
 
 export default App;

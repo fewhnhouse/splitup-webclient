@@ -7,205 +7,223 @@ import {
   Divider,
   Icon,
   Input,
-  Popconfirm,
+  Modal,
   Tabs
 } from "antd";
 import styled from "styled-components";
+import GroupEditButton from "./GroupEditButton";
 import Upload from "./Upload";
 import History from "./History";
+import ParticipantsSelect from "../footer/ParticipantsSelect";
 
 const TabPane = Tabs.TabPane;
 
 const Item = List.Item;
 
-const Group = ({
-  title,
-  date,
-  participants,
-  editable,
-  saveConfirm,
-  deleteConfirm,
-  description,
-  cancel,
-  onClickEdit
-}) => (
-  <Card style={{ margin: "40px" }}>
-    {editable ? (
-      <div
-        style={{
-          position: "absolute",
-          right: "15px",
-          top: "15px",
-          fontSize: "20px",
-          display: "flex"
-        }}
-      >
-        <Popconfirm
-          title="Are you sure you want to save your changes?"
-          onConfirm={saveConfirm}
-          onCancel={cancel}
-          okText="Yes"
-          cancelText="No"
-        >
-          <Button
-            style={{ marginRight: "5px" }}
-            type="primary"
-            ghost
-            icon="save"
-          >
-            Save
-          </Button>
-        </Popconfirm>
+class Header extends React.Component {
+  state = {
+    title: ""
+  };
 
-        <Button
-          style={{ marginRight: "5px" }}
-          type="default"
-          icon="close-circle"
-          onClick={onClickEdit}
-        >
-          Discard
-        </Button>
-        <Popconfirm
-          placement="topRight"
-          title="Are you sure you want to delete this group?"
-          onConfirm={deleteConfirm}
-          onCancel={cancel}
-          okText="Yes"
-          cancelText="No"
-        >
-          <Button type="danger" ghost icon="delete">
-            Delete
-          </Button>
-        </Popconfirm>
-      </div>
-    ) : (
-      <Button
-        style={{
-          position: "absolute",
-          right: "15px",
-          top: "15px",
-          fontSize: "20px"
-        }}
-        icon="edit"
-        theme="outlined"
-        onClick={onClickEdit}
-      />
-    )}
-    <div style={{ display: "flex", flexDirection: "row" }}>
-      {editable ? <Upload /> : <Avatar shape="square" size={112} icon="user" />}
-      <div style={{ flexDirection: "column", marginLeft: "15px" }}>
+  render() {
+    const { title, date, editable, participants } = this.props;
+    return (
+      <div style={{ display: "flex", flexDirection: "row" }}>
         {editable ? (
-          <Input size="large" placeholder="Group title" />
+          <Upload />
         ) : (
-          <h1 style={{ marginBottom: "5px" }}>{title}</h1>
+          <Avatar shape="square" size={112} icon="user" />
         )}
-
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            color: "lightgrey"
-          }}
-        >
-          <p>
-            <Icon
-              style={{ marginRight: "5px" }}
-              type="calendar"
-              theme="outlined"
-            />
-            {date}
-          </p>
-          <p>
-            <Divider type="vertical" />
-          </p>
-          <p>
-            <Icon style={{ marginRight: "5px" }} type="team" theme="outlined" />
-            {participants.length}
-          </p>
-        </div>
-      </div>
-    </div>
-    <InnerContainer>
-      <List>
-        <Item>
+        <div style={{ flexDirection: "column", marginLeft: "15px" }}>
           {editable ? (
-            <Input placeholder="Description" />
+            <Input
+              size="large"
+              placeholder={this.props.title}
+              value={this.props.value}
+              onChange={this.props.onChange}
+            />
           ) : (
-            <span>Description:  {description}</span>
+            <h1 style={{ marginBottom: "5px" }}>{title}</h1>
           )}
-        </Item>
-        <Item>
+
           <div
             style={{
               display: "flex",
               flexDirection: "row",
-              justifyContent: "space-between",
-              width: "100%"
+              color: "lightgrey"
             }}
           >
-            <span style={{ paddingRight: "10px" }}>Members:</span>
-            <div style={{ width: "100%" }}>
-              {participants.map((el, index) => (
-                <span>
-                  <a>{el.name}</a>
-                  {participants.length - 1 !== index ? (
-                    <Divider type="vertical" />
-                  ) : null}
-                </span>
-              ))}
-            </div>
-            <Button style={{ float: "right" }} icon="plus" type="primary">
-              Add Member
-            </Button>
+            <p>
+              <Icon
+                style={{ marginRight: "5px" }}
+                type="calendar"
+                theme="outlined"
+              />
+              {date}
+            </p>
+            <p>
+              <Divider type="vertical" />
+            </p>
+            <p>
+              <Icon
+                style={{ marginRight: "5px" }}
+                type="team"
+                theme="outlined"
+              />
+              {participants.length}
+            </p>
           </div>
-        </Item>
-        <Item>Admin: </Item>
-      </List>
-      <div style={{ height: "300px" }}>
-        <Tabs defaultActiveKey="1">
-          <TabPane
-            tab={
-              <span>
-                <Icon type="home" theme="outlined" />
-                Overview
-              </span>
-            }
-            key="1"
-          >
-            Pane 2
-          </TabPane>
-          <TabPane
-            tab={
-              <span>
-                <Icon type="clock-circle" theme="outlined" />
-                History
-              </span>
-            }
-            key="2"
-          >
-            <History />
-          </TabPane>
-          <TabPane
-            tab={
-              <span>
-                <Icon type="project" theme="outlined" />
-                Create Expense
-              </span>
-            }
-            key="3"
-          >
-            Pane 3
-          </TabPane>
-        </Tabs>
+        </div>
       </div>
-    </InnerContainer>
-  </Card>
-);
+    );
+  }
+}
+
+class Group extends React.Component {
+  state = {
+    showModal: false
+  };
+
+  _onClickShow = () => {
+    this.setState(prevState => ({ showModal: !prevState.showModal }));
+  };
+
+  render() {
+    const {
+      title,
+      date,
+      participants,
+      editable,
+      saveConfirm,
+      deleteConfirm,
+      description,
+      cancel,
+      onClickEdit,
+      editedTitle,
+      editedDescription,
+      onChangeTitle,
+      onChangeDescription
+    } = this.props;
+
+    return (
+      <Card style={{ margin: "40px" }}>
+        <GroupEditButton
+          saveConfirm={saveConfirm}
+          editedTitle={editedTitle}
+          cancel={cancel}
+          deleteConfirm={deleteConfirm}
+          onClickEdit={onClickEdit}
+          editable={editable}
+        />
+        <Header
+          title={title}
+          value={editedTitle}
+          onChange={onChangeTitle}
+          date={date}
+          participants={participants}
+          editable={editable}
+        />
+        <InnerContainer>
+          <List>
+            <Item>
+              {editable ? (
+                <span style={{ width: "100%" }}>
+                  <h3>Description: </h3>
+
+                  <Input
+                    value={editedDescription}
+                    placeholder={description}
+                    onChange={onChangeDescription}
+                  />
+                </span>
+              ) : (
+                <span>
+                  <h3>Description: </h3>
+                  <p>{description}</p>
+                </span>
+              )}
+            </Item>
+            <Item>
+              <div style={{ width: "100%" }}>
+                <h3 style={{ paddingRight: "10px" }}>Members:</h3>
+                <div
+                  style={{
+                    width: "100%"
+                  }}
+                >
+                  {participants.map((el, index) => (
+                    <span>
+                      <a>{el.name}</a>
+                      {participants.length - 1 !== index ? (
+                        <Divider type="vertical" />
+                      ) : null}
+                    </span>
+                  ))}
+                  <Button
+                    onClick={this._onClickShow}
+                    style={{ float: "right" }}
+                    icon="plus"
+                    type="primary"
+                  >
+                    Add Member
+                  </Button>
+                </div>
+              </div>
+            </Item>
+            <Item>
+              <h3>Admin</h3>{" "}
+            </Item>
+          </List>
+          <div style={{ height: "300px" }}>
+            <Tabs defaultActiveKey="1">
+              <TabPane
+                tab={
+                  <span>
+                    <Icon type="home" theme="outlined" />
+                    Overview
+                  </span>
+                }
+                key="1"
+              >
+                Pane 2
+              </TabPane>
+              <TabPane
+                tab={
+                  <span>
+                    <Icon type="clock-circle" theme="outlined" />
+                    History
+                  </span>
+                }
+                key="2"
+              >
+                <History />
+              </TabPane>
+              <TabPane
+                tab={
+                  <span>
+                    <Icon type="project" theme="outlined" />
+                    Create Expense
+                  </span>
+                }
+                key="3"
+              >
+                Pane 3
+              </TabPane>
+            </Tabs>
+          </div>
+        </InnerContainer>
+        <Modal visible={this.state.showModal} title="Add member">
+          <ParticipantsSelect />
+        </Modal>
+      </Card>
+    );
+  }
+}
 
 const InnerContainer = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 20px;
+  padding: 24px 0px;
 `;
 
 export default Group;

@@ -1,5 +1,5 @@
 import React from "react";
-import { Query } from "react-apollo";
+import { Query, Mutation } from "react-apollo";
 import gql from "graphql-tag";
 import Group from "./Group";
 import { message } from "antd";
@@ -7,6 +7,7 @@ import { message } from "antd";
 const GROUP = gql`
   query Group($id: ID!) {
     group(id: $id) {
+      id
       title
       description
       createdAt
@@ -19,8 +20,8 @@ const GROUP = gql`
 `;
 
 const EDIT_GROUP = gql`
-  mutation EditGroup($title: String!, $description: String!) {
-    editGroup(title: $title, description: $description) {
+  mutation EditGroup($id: ID!, $title: String!, $description: String!) {
+    editGroup(id: $id, title: $title, description: $description) {
       title
       description
     }
@@ -43,8 +44,19 @@ const months = [
 ];
 
 export default class GroupContainer extends React.Component {
-  saveConfirm = () => {
-    message.success("Changes saved.");
+  saveConfirm = (editGroup, id) => {
+    const { description, title } = this.state;
+    console.log({ id, description, title });
+    editGroup({
+      variables: { id, description, title }
+    }).then(
+      res => {
+        message.success("Changes saved.");
+      },
+      err => {
+        message.error("An error occured while saving the group.");
+      }
+    );
     this.setState({ editable: false });
   };
 
@@ -54,16 +66,35 @@ export default class GroupContainer extends React.Component {
   };
 
   onClickEdit = () => {
-    this.setState(prevState => ({ editable: !prevState.editable }));
+    this.setState(prevState => ({
+      editable: !prevState.editable,
+      description: "",
+      title: ""
+    }));
+  };
+
+  onChangeTitle = e => {
+    this.setState({
+      title: e.target.value
+    });
+  };
+
+  onChangeDescription = e => {
+    this.setState({
+      description: e.target.value
+    });
   };
 
   state = {
-    editable: false
+    editable: false,
+    title: "",
+    description: ""
   };
+
   render() {
     return (
       <Query query={GROUP} variables={{ id: this.props.match.params.groupId }}>
-        {({ loading, err, data }) => {
+        {({ loading, err, data, refetch }) => {
           if (loading) {
             return <div>Loading...</div>;
           }
@@ -71,32 +102,34 @@ export default class GroupContainer extends React.Component {
             return <div>Error.</div>;
           } else {
             const date = new Date(data.group.createdAt);
-
-            console.log(
-              date.getDate() +
-                "." +
-                months[date.getMonth()] +
-                " " +
-                date.getFullYear()
-            );
+            const { id, title, description, participants } = data.group;
             const dateString = `${date.getDate()}. ${
               months[date.getMonth()]
             } ${date.getFullYear()}`;
 
-            const participants = data.group.participants;
-            const title = data.group.title;
-            const description = data.group.description;
             return (
-              <Group
-                onClickEdit={this.onClickEdit}
-                saveConfirm={this.saveConfirm}
-                deleteConfirm={this.deleteConfirm}
-                date={dateString}
-                participants={participants}
-                title={title}
-                description={description}
-                editable={this.state.editable}
-              />
+              <Mutation mutation={EDIT_GROUP}>
+                {(editGroup, { data }) => (
+                  <Group
+                    onClickEdit={this.onClickEdit}
+                    saveConfirm={() => this.saveConfirm(editGroup, id)}
+                    deleteConfirm={this.deleteConfirm}
+                    date={dateString}
+                    participants={participants}
+                    title={data ? data.editGroup.title : title}
+                    description={
+                      data && data.editGroup.description
+                        ? data.editGroup.description
+                        : description
+                    }
+                    editable={this.state.editable}
+                    onChangeDescription={this.onChangeDescription}
+                    onChangeTitle={this.onChangeTitle}
+                    editedTitle={this.state.title}
+                    editedDescription={this.state.description}
+                  />
+                )}
+              </Mutation>
             );
           }
         }}
