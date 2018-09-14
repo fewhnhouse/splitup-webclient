@@ -13,11 +13,11 @@ class SignupForm extends React.Component {
       token: ""
     };
   }
-  handleSubmit = (e, mutate, setLoginData) => {
+  handleSubmit = (e, mutate) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-          console.log(values);
+        console.log(values);
         mutate({
           variables: {
             email: values.email,
@@ -27,16 +27,15 @@ class SignupForm extends React.Component {
         }).then(
           res => {
             if (values.signin) {
-              console.log("signing in.");
-              const { name, email } = res.data.signup.user;
+              const { id, name, email } = res.data.signup.user;
               const token = res.data.signup.token;
-              localStorage.setItem("username", name);
+              localStorage.setItem("name", name);
               localStorage.setItem("email", email);
+              localStorage.setItem("id", id);
               localStorage.setItem("token", token);
+              this.props.addMe(id, name, email, token);
               this.props.client.resetStore();
-              setLoginData(name, email);
             } else {
-              console.log("dont sign in.");
               this.props.switchView();
             }
           },
@@ -48,12 +47,9 @@ class SignupForm extends React.Component {
 
   render() {
     const { getFieldDecorator } = this.props.form;
-    const { mutate, setLoginData } = this.props;
+    const { mutate } = this.props;
     return (
-      <Form
-        onSubmit={e => this.handleSubmit(e, mutate, setLoginData)}
-        className="login-form"
-      >
+      <Form onSubmit={e => this.handleSubmit(e, mutate)} className="login-form">
         <FormItem>
           {getFieldDecorator("name", {
             rules: [{ required: true, message: "Please input your Name!" }]

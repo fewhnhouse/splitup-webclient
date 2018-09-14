@@ -3,14 +3,13 @@ import { Button, Popover, List, Avatar } from "antd";
 import styled from "styled-components";
 import { ApolloConsumer } from "react-apollo";
 
-function onLogoutClick(value, client) {
-  console.log(client);
+function onLogoutClick(resetMe, client) {
   localStorage.clear();
-  value.setLoginData("", "");
+  resetMe();
   client.resetStore();
 }
 
-const LogoutContent = ({ value }) => (
+const LogoutContent = ({ resetMe }) => (
   <div style={{ display: "flex", flexDirection: "column" }}>
     <ApolloConsumer>
       {client => (
@@ -41,7 +40,7 @@ const LogoutContent = ({ value }) => (
               title="Settings"
             />
           </StyledListItem>
-          <StyledListItem onClick={() => onLogoutClick(value, client)}>
+          <StyledListItem onClick={() => onLogoutClick(resetMe, client)}>
             <List.Item.Meta
               avatar={
                 <Avatar
@@ -60,7 +59,7 @@ const LogoutContent = ({ value }) => (
   </div>
 );
 
-const LogoutTitle = ({ name, email }) => (
+const LogoutTitle = ({ user }) => (
   <div style={{ display: "flex", flexDirection: "row" }}>
     <Avatar
       style={{ marginTop: "8px", marginRight: "12px" }}
@@ -69,26 +68,33 @@ const LogoutTitle = ({ name, email }) => (
       shape="square"
     />
     <div style={{ marginTop: "5px" }}>
-      <p>Logged in as {name}</p>
+      <p>Logged in as {user.name}</p>
       <p style={{ fontWeight: 200, fontSize: "12px", color: "grey" }}>
-        {email}
+        {user.email}
       </p>
     </div>
     <div />
   </div>
 );
 
-const LogoutPopup = ({ value }) => (
-  <Popover
-    content={<LogoutContent value={value} />}
-    title={<LogoutTitle name={value.name} email={value.email} />}
-    trigger="click"
-  >
-    <Button style={{ margin: "10px" }} type="default" icon="user" key="1">
-      {value.name}
-    </Button>
-  </Popover>
-);
+class LogoutPopup extends React.Component {
+  render() {
+    const { user, resetMe } = this.props;
+
+    console.log("props", this.props);
+    return (
+      <Popover
+        content={<LogoutContent resetMe={resetMe} />}
+        title={<LogoutTitle user={user} />}
+        trigger="click"
+      >
+        <Button style={{ margin: "10px" }} type="default" icon="user" key="1">
+          {user ? user.name : ""}
+        </Button>
+      </Popover>
+    );
+  }
+}
 
 const StyledListItem = styled(List.Item)`
   &:hover {

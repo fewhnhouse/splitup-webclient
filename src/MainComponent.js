@@ -3,15 +3,15 @@ import React from "react";
 import styled from "styled-components";
 import FooterMenu from "./footer/FooterMenu";
 import Dashboard from "./pages/Dashboard";
-import Group from './pages/GroupContainer';
-import TopBar from "./header/TopBar";
+import Group from "./pages/GroupContainer";
+import TopBarContainer from "./header/TopBarContainer";
+
 import {
   BrowserRouter as Router,
   Route,
   Link,
   Redirect
 } from "react-router-dom";
-import { UserProvider } from "./utils/UserContext";
 
 const { Footer, Header } = Layout;
 
@@ -26,7 +26,6 @@ const Login = () => (
     <h2>Please login.</h2>
   </div>
 );
-
 
 const Groups = ({ match }) => (
   <div>
@@ -60,16 +59,14 @@ const PrivateRoute = ({ component: Component, loggedIn, ...rest }) => (
     render={props =>
       loggedIn ? (
         <Component {...props} />
-      ) : (
-        /*<Redirect
+      ) : /*<Redirect
           to={{
             pathname: "/login",
             state: { from: props.location }
           }}
         />
         */
-       null
-      )
+      null
     }
   />
 );
@@ -78,8 +75,7 @@ class Main extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      opened: false,
-      loggedIn: false
+      opened: false
     };
   }
 
@@ -93,49 +89,47 @@ class Main extends React.Component {
 
   componentDidMount() {
     const token = localStorage.getItem("token");
-    if (token !== "") {
-      console.log(token);
-      this.setState({
-        loggedIn: true
-      });
+    const name = localStorage.getItem("name");
+    const email = localStorage.getItem("email");
+    const id = localStorage.getItem("id");
+    if (token !== "" && token !== null && token !== undefined) {
+      this.props.addMe(id, name, email, token);
     }
   }
 
   render() {
+    const loggedIn =
+      this.props.user.name !== undefined && this.props.user.name !== "";
     return (
       <Router>
-        <UserProvider>
+        <Layout>
+          <Header style={{ padding: 0 }}>
+            <TopBarContainer />
+          </Header>
           <Layout>
-            <Header style={{ padding: 0 }}>
-              <TopBar />
-            </Header>
-            <Layout>
-              <Route exact path="/" component={Dashboard} />
-              <Route path="/about" component={About} />
-              <Route path="/login" component={Login} />
-              <PrivateRoute
-                path="/groups"
-                loggedIn={this.state.loggedIn}
-                component={Groups}
-              />
-              <PrivateRoute
-                path="/friends"
-                loggedIn={this.state.loggedIn}
-                component={About}
-              />
+            <Route exact path="/" component={Dashboard} />
+            <Route path="/about" component={About} />
+            <Route path="/login" component={Login} />
+            <PrivateRoute
+              path="/groups"
+              loggedIn={loggedIn}
+              component={Groups}
+            />
+            <PrivateRoute
+              path="/friends"
+              loggedIn={loggedIn}
+              component={About}
+            />
 
-              {this.state.loggedIn ? <div /> : <div>logged out.</div>}
-            </Layout>
-            <StyledFooter
-              onMouseEnter={this.onMouseEnter}
-              onMouseLeave={this.onMouseLeave}
-            >
-              {this.state.loggedIn ? (
-                <FooterMenu opened={this.state.opened} />
-              ) : null}
-            </StyledFooter>
+            {loggedIn ? <div /> : <div>logged out.</div>}
           </Layout>
-        </UserProvider>
+          <StyledFooter
+            onMouseEnter={this.onMouseEnter}
+            onMouseLeave={this.onMouseLeave}
+          >
+            {loggedIn ? <FooterMenu opened={this.state.opened} /> : null}
+          </StyledFooter>
+        </Layout>
       </Router>
     );
   }

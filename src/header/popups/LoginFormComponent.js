@@ -13,7 +13,7 @@ class LoginForm extends React.Component {
       token: ""
     };
   }
-  handleSubmit = (e, mutate, setLoginData) => {
+  handleSubmit = (e, mutate) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
@@ -24,13 +24,14 @@ class LoginForm extends React.Component {
           }
         }).then(
           res => {
-            const { name, email } = res.data.login.user;
+            const { id, name, email } = res.data.login.user;
             const token = res.data.login.token;
-            localStorage.setItem("username", name);
+            localStorage.setItem("name", name);
             localStorage.setItem("email", email);
             localStorage.setItem("token", token);
+            localStorage.setItem("id", id);
+            this.props.addMe(id, name, email, token);
             this.props.client.resetStore();
-            setLoginData(name, email);
           },
           err => console.log(err)
         );
@@ -40,12 +41,9 @@ class LoginForm extends React.Component {
 
   render() {
     const { getFieldDecorator } = this.props.form;
-    const { mutate, setLoginData } = this.props;
+    const { mutate } = this.props;
     return (
-      <Form
-        onSubmit={e => this.handleSubmit(e, mutate, setLoginData)}
-        className="login-form"
-      >
+      <Form onSubmit={e => this.handleSubmit(e, mutate)} className="login-form">
         <FormItem>
           {getFieldDecorator("email", {
             rules: [{ required: true, message: "Please input your email!" }]

@@ -11,7 +11,7 @@ import { Provider } from "react-redux";
 import { createStore } from "redux";
 import reducers from "./redux/reducers";
 
-import Main from "./Main";
+import Main from "./MainContainer";
 
 const store = createStore(reducers);
 

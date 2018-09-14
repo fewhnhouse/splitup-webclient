@@ -1,9 +1,8 @@
 import React, { Component } from "react";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
-import WrappedSignupForm from "./SignupForm";
-import WrappedLoginForm from "./LoginForm";
-import { UserContext } from "../../utils/UserContext";
+import SignupFormContainer from "./SignupFormContainer";
+import LoginFormContainer from "./LoginFormContainer";
 import { Button, Popover } from "antd";
 
 const SIGNUP = gql`
@@ -37,16 +36,11 @@ const Content = ({ mutation, Form, switchView }) => (
     <Mutation mutation={mutation}>
       {(mutate, { client, loading, err, data }) => {
         return (
-          <UserContext.Consumer>
-            {value => (
-              <Form
-                mutate={mutate}
-                client={client}
-                switchView={switchView}
-                setLoginData={value.setLoginData}
-              />
-            )}
-          </UserContext.Consumer>
+          <Form
+            mutate={mutate}
+            client={client}
+            switchView={switchView}
+          />
         );
       }}
     </Mutation>
@@ -76,13 +70,13 @@ export default class LoginPopup extends Component {
             <Content
               mutation={LOGIN}
               switchView={this.switchView}
-              Form={WrappedLoginForm}
+              Form={LoginFormContainer}
             />
           ) : (
             <Content
               mutation={SIGNUP}
               switchView={this.switchView}
-              Form={WrappedSignupForm}
+              Form={SignupFormContainer}
             />
           )
         }

@@ -61,9 +61,15 @@ class Header extends React.Component {
               />
               {date}
             </p>
-            <p>
-              <Divider type="vertical" />
-            </p>
+            <Divider
+              style={{
+                marginTop: "5px",
+                display: "block",
+                lineHeight: "1.5",
+                fontSize: "14px"
+              }}
+              type="vertical"
+            />
             <p>
               <Icon
                 style={{ marginRight: "5px" }}
@@ -152,7 +158,7 @@ class Group extends React.Component {
                   }}
                 >
                   {participants.map((el, index) => (
-                    <span>
+                    <span key={index}>
                       <a>{el.name}</a>
                       {participants.length - 1 !== index ? (
                         <Divider type="vertical" />

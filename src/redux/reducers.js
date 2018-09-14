@@ -1,10 +1,30 @@
 import { combineReducers } from "redux";
-import { ADD_FRIEND, ADD_GROUP, ADD_TOKEN } from "./actionTypes";
+import { ADD_FRIEND, ADD_GROUP, ADD_ME, RESET_ME } from "./actionTypes";
 
-function friends(state = [], action) {
+const initialMe = {
+  name: "",
+  id: "",
+  email: "",
+  friends: [],
+  token: ""
+};
+function me(state = {...initialMe}, action) {
   switch (action.type) {
+    case ADD_ME:
+      return {
+        ...state,
+        name: action.name,
+        id: action.id,
+        email: action.email,
+        token: action.token
+      };
+    case RESET_ME:
+      return {
+        initialMe
+      };
     case ADD_FRIEND:
-      return { ...state, id: action.id };
+      return { ...state, friends: [...state.friends, action.friend] };
+
     default:
       return state;
   }
@@ -19,15 +39,6 @@ function groups(state = [], action) {
   }
 }
 
-function utils(state = {}, action) {
-  switch (action.type) {
-    case ADD_TOKEN:
-      return { ...state, token: action.token };
-    default:
-      return state;
-  }
-}
-
-const reducers = combineReducers({ utils, groups, friends });
+const reducers = combineReducers({ groups, me });
 
 export default reducers;

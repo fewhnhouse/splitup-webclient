@@ -1,15 +1,15 @@
-import { ADD_TOKEN, ADD_GROUP, ADD_FRIEND } from "./actionTypes";
+import { ADD_GROUP, ADD_FRIEND, ADD_ME, RESET_ME } from "./actionTypes";
 
-const actions = {
-  addToken(token) {
-    return { type: ADD_TOKEN, token };
-  },
-  addGroup(id) {
-    return { type: ADD_GROUP, id };
-  },
-  addFriend(id) {
-    return { type: ADD_FRIEND, id };
-  }
-};
+export function addGroup(id) {
+  return { type: ADD_GROUP, id };
+}
+export function addFriend(id) {
+  return { type: ADD_FRIEND, id };
+}
+export function addMe(id, name, email, token) {
+  return { type: ADD_ME, id, name, email, token };
+}
 
-export default actions;
+export function resetMe() {
+  return { type: RESET_ME };
+}
