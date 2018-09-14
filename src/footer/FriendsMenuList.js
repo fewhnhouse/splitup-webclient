@@ -28,7 +28,6 @@ export default class Friends extends Component {
             if (err) {
               return <div>Error.</div>;
             } else {
-              console.log("d", data);
               return (
                 <List itemLayout="horizontal">
                   {data

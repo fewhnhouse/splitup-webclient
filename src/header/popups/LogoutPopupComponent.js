@@ -81,7 +81,6 @@ class LogoutPopup extends React.Component {
   render() {
     const { user, resetMe } = this.props;
 
-    console.log("props", this.props);
     return (
       <Popover
         content={<LogoutContent resetMe={resetMe} />}

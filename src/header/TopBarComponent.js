@@ -12,7 +12,6 @@ const content = (
 );
 
 const TopBar = ({ user }) => {
-  console.log("topbar user:", user.name);
   return (
     <StyledContainer>
       <div style={{ float: "right" }}>
