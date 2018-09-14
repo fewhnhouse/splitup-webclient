@@ -10,6 +10,7 @@ const GROUPS = gql`
     groups {
       id
       title
+      description
     }
   }
 `;
@@ -27,20 +28,25 @@ export default class Groups extends Component {
               return <div>Error.</div>;
             } else {
               return (
-                <List itemLayout="horizontal">
-                  {data
-                    ? data.groups.map(group => (
-                        <Link to={`/groups/${group.id}`} key={group.id}>
-                          <StyledListItem>
-                            <List.Item.Meta
-                              avatar={<Avatar icon="user" />}
-                              title={<p>{group.title}</p>}
-                            />
-                          </StyledListItem>
-                        </Link>
-                      ))
-                    : null}
-                </List>
+                <List
+                  itemLayout="horizontal"
+                  dataSource={data ? data.groups : []}
+                  renderItem={item => (
+                    <List.Item>
+                      <Link
+                        style={{ width: "100%", textAlign: "left" }}
+                        to={`/groups/${item.id}`}
+                        key={item.id}
+                      >
+                        <List.Item.Meta
+                          avatar={<Avatar shape="square" icon="appstore" />}
+                          title={item.title}
+                          description={item.description}
+                        />
+                      </Link>
+                    </List.Item>
+                  )}
+                />
               );
             }
           }}
@@ -50,11 +56,8 @@ export default class Groups extends Component {
   }
 }
 
-const StyledListItem = styled(List.Item)`
-  &:hover {
-    a {
-      color: #1890ff;
-    }
+const StyledAvatar = styled(Avatar)`
+  i {
+    margin: 0;
   }
-  cursor: pointer;
 `;

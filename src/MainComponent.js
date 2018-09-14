@@ -127,13 +127,15 @@ class Main extends React.Component {
             onMouseEnter={this.onMouseEnter}
             onMouseLeave={this.onMouseLeave}
           >
-            {loggedIn ? <FooterMenu opened={this.state.opened} /> : null}
+            {loggedIn ? <FooterMenu opened={true} /> : null}
           </StyledFooter>
         </Layout>
       </Router>
     );
   }
 }
+
+
 
 const StyledFooter = styled(Footer)`
   position: fixed;
@@ -144,6 +146,19 @@ const StyledFooter = styled(Footer)`
   margin: 0px;
   border-top: 2px solid #1890ff;
   box-shadow: 2px 0px 8px lightgray;
+
+  &:before {
+    background: #f9fcff;
+    content: "";
+    height: 40rem;
+    left: -5%;
+    position: absolute;
+    right: -5%;
+    transform-origin: 0 0;
+    transform: rotateZ(-4deg);
+    z-index: 0;
+    border-top: 2px solid #1890ff;
+  }
 `;
 
 export default Main;

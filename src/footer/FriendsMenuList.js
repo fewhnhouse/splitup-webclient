@@ -29,20 +29,24 @@ export default class Friends extends Component {
               return <div>Error.</div>;
             } else {
               return (
-                <List itemLayout="horizontal">
-                  {data
-                    ? data.me.friends.map(friend => (
-                        <Link to={`/friends/${friend.id}`} key={friend.id}>
-                          <StyledListItem>
-                            <List.Item.Meta
-                              avatar={<Avatar icon="user" />}
-                              title={<p>{friend.name}</p>}
-                            />
-                          </StyledListItem>
-                        </Link>
-                      ))
-                    : null}
-                </List>
+                <List
+                  itemLayout="horizontal"
+                  dataSource={data ? data.me.friends : []}
+                  renderItem={item => (
+                    <List.Item>
+                      <Link
+                        style={{ width: "100%", textAlign: "left" }}
+                        to={`/friends/${item.id}`}
+                        key={item.id}
+                      >
+                        <List.Item.Meta
+                          avatar={<Avatar shape="square" icon="user" />}
+                          title={item.name}
+                        />
+                      </Link>
+                    </List.Item>
+                  )}
+                />
               );
             }
           }}
@@ -51,12 +55,3 @@ export default class Friends extends Component {
     );
   }
 }
-
-const StyledListItem = styled(List.Item)`
-  &:hover {
-    a {
-      color: #1890ff;
-    }
-  }
-  cursor: pointer;
-`;

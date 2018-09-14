@@ -15,8 +15,6 @@ import Main from "./MainContainer";
 
 const store = createStore(reducers);
 
-console.log(store.getState());
-
 const uploadLink = createUploadLink({
   uri: "http://localhost:4000",
   credentials: "same-origin"

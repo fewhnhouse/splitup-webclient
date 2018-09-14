@@ -67,9 +67,10 @@ const TopBar = ({ user }) => {
 
 const StyledContainer = styled.div`
   display: flex;
+  box-shadow: 2px 4px 8px blue;
   justify-content: flex-end;
   height: 65px;
-  background: white;
+  background: #f9fcff;
   box-shadow: 0 2px 8px #f0f1f2;
 `;
 export default TopBar;

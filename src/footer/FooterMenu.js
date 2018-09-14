@@ -2,11 +2,9 @@ import React from "react";
 import styled from "styled-components";
 import InnerMenu from "./InnerMenu";
 import Groups from "./GroupsMenuList";
-import Friends from './FriendsMenuList';
+import Friends from "./FriendsMenuList";
 import { Menu, Icon } from "antd";
 import { Link } from "react-router-dom";
-
-
 
 const FooterMenu = ({ opened }) => (
   <StyledMenu
@@ -18,46 +16,44 @@ const FooterMenu = ({ opened }) => (
     <Menu.Item
       style={{
         flex: 1,
-        fontSize: "20px",
-        margin: "5px",
         textAlign: "center"
       }}
       key="1"
     >
       <Link to="/groups">
-        <Icon type="usergroup-add" />
-        Groups
-        <InnerMenu opened={opened} type="Groups">
-          <Groups />
-        </InnerMenu>
+        <h2>
+          <Icon type="usergroup-add" />
+          Groups
+        </h2>
       </Link>
-    </Menu.Item>
-    <Menu.Item
-      style={{
-        flex: 1,
-        fontSize: "20px",
-        margin: "5px",
-        textAlign: "center"
-      }}
-      key="2"
-    >
-      <Icon type="home" />
-      Dashboard
-      <InnerMenu opened={opened} type="Dashboard">
+      <InnerMenu opened={opened} type="Groups">
         <Groups />
       </InnerMenu>
     </Menu.Item>
     <Menu.Item
       style={{
         flex: 1,
-        fontSize: "20px",
-        margin: "5px",
+        textAlign: "center"
+      }}
+      key="2"
+    >
+      <h2>
+        <Icon type="home" />
+        Dashboard
+      </h2>
+      <InnerMenu opened={opened} type="Dashboard" />
+    </Menu.Item>
+    <Menu.Item
+      style={{
+        flex: 1,
         textAlign: "center"
       }}
       key="3"
     >
-      <Icon type="team" />
-      Friends
+      <h2>
+        <Icon type="team" />
+        Friends
+      </h2>
       <InnerMenu opened={opened} type="Friends">
         <Friends />
       </InnerMenu>
