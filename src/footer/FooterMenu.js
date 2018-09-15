@@ -72,5 +72,6 @@ const StyledMenu = styled(Menu)`
 
 const StyledHeader = styled.h2`
   color: white;
+  margin-bottom: 0;
 `;
 export default FooterMenu;

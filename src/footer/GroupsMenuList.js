@@ -36,21 +36,15 @@ export default class Groups extends Component {
                       <Link
                         style={{
                           width: "100%",
-                          textAlign: "left",
+                          textAlign: "left"
                         }}
                         to={`/groups/${item.id}`}
                         key={item.id}
                       >
                         <List.Item.Meta
                           avatar={<Avatar shape="square" icon="appstore" />}
-                          title={
-                            <h4 style={{ color: "#f3f3f3" }}>{item.title}</h4>
-                          }
-                          description={
-                            <span style={{ color: "lightgrey" }}>
-                              {item.description}
-                            </span>
-                          }
+                          title={item.title}
+                          description={item.description}
                         />
                       </Link>
                     </List.Item>

@@ -46,9 +46,7 @@ export default class Friends extends Component {
                       >
                         <List.Item.Meta
                           avatar={<Avatar shape="square" icon="user" />}
-                          title={
-                            <h4 style={{ color: "#f3f3f3" }}>{item.name}</h4>
-                          }
+                          title={item.name}
                         />
                       </Link>
                     </List.Item>
