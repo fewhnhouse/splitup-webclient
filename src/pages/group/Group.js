@@ -1,92 +1,74 @@
 import React from "react";
-import {
-  Card,
-  Button,
-  List,
-  Avatar,
-  Divider,
-  Icon,
-  Input,
-  Modal,
-  Tabs
-} from "antd";
-import styled from "styled-components";
+import { Card, Icon, Tabs } from "antd";
 import GroupEditButton from "./GroupEditButton";
-import Upload from "./Upload";
 import History from "./History";
 import AddMemberModal from "./AddMemberModal";
+import Header from "./GroupHeader";
+import GroupInner from "./GroupInner";
+import { Query } from "react-apollo";
+import gql from "graphql-tag";
 
 const TabPane = Tabs.TabPane;
 
-const Item = List.Item;
-
-class Header extends React.Component {
-  state = {
-    title: ""
-  };
-
-  render() {
-    const { title, date, editable, participants } = this.props;
-    return (
-      <div style={{ display: "flex", flexDirection: "row" }}>
-        {editable ? (
-          <Upload />
-        ) : (
-          <Avatar shape="square" size={112} icon="user" />
-        )}
-        <div style={{ flexDirection: "column", marginLeft: "15px" }}>
-          {editable ? (
-            <Input
-              size="large"
-              placeholder={this.props.title}
-              value={this.props.value}
-              onChange={this.props.onChange}
-            />
-          ) : (
-            <h1 style={{ marginBottom: "5px" }}>{title}</h1>
-          )}
-
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              color: "lightgrey"
-            }}
-          >
-            <p>
-              <Icon
-                style={{ marginRight: "5px" }}
-                type="calendar"
-                theme="outlined"
-              />
-              {date}
-            </p>
-            <Divider
-              style={{
-                marginTop: "5px",
-                display: "block",
-                lineHeight: "1.5",
-                fontSize: "14px"
-              }}
-              type="vertical"
-            />
-            <p>
-              <Icon
-                style={{ marginRight: "5px" }}
-                type="team"
-                theme="outlined"
-              />
-              {participants.length}
-            </p>
-          </div>
-        </div>
-      </div>
-    );
+const GROUP = gql`
+  query Group($id: ID!) {
+    group(id: $id) {
+      id
+      title
+      description
+      createdAt
+      participants {
+        name
+        id
+      }
+    }
   }
-}
+`;
+
+const months = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December"
+];
 
 class Group extends React.Component {
+  closeModal = () => {
+    this.setState({ editable: false });
+  };
+
+  onClickEdit = () => {
+    this.setState(prevState => ({
+      editable: !prevState.editable,
+      description: "",
+      title: ""
+    }));
+  };
+
+  onChangeTitle = e => {
+    this.setState({
+      title: e.target.value
+    });
+  };
+
+  onChangeDescription = e => {
+    this.setState({
+      description: e.target.value
+    });
+  };
+
   state = {
+    editable: false,
+    title: "",
+    description: "",
     showModal: false
   };
 
@@ -99,142 +81,97 @@ class Group extends React.Component {
   };
 
   render() {
-    const {
-      title,
-      date,
-      groupId,
-      participants,
-      editable,
-      saveConfirm,
-      deleteConfirm,
-      description,
-      cancel,
-      onClickEdit,
-      editedTitle,
-      editedDescription,
-      onChangeTitle,
-      onChangeDescription
-    } = this.props;
+    const groupId = this.props.match.params.groupId;
 
     return (
-      <Card style={{ margin: "40px" }}>
-        <Tabs defaultActiveKey="1">
-          <TabPane
-            tab={
-              <span>
-                <Icon type="home" theme="outlined" />
-                Overview
-              </span>
-            }
-            key="1"
-          >
-            <GroupEditButton
-              saveConfirm={saveConfirm}
-              editedTitle={editedTitle}
-              cancel={cancel}
-              deleteConfirm={deleteConfirm}
-              onClickEdit={onClickEdit}
-              editable={editable}
-            />
-            <Header
-              title={title}
-              value={editedTitle}
-              onChange={onChangeTitle}
-              date={date}
-              participants={participants}
-              editable={editable}
-            />
-            <InnerContainer>
-              <List>
-                <Item>
-                  {editable ? (
-                    <span style={{ width: "100%" }}>
-                      <h3>Description: </h3>
+      <Query query={GROUP} variables={{ id: this.props.match.params.groupId }}>
+        {({ loading, err, data, refetch }) => {
+          if (loading) {
+            return <div>Loading...</div>;
+          }
+          if (err) {
+            return <div>Error.</div>;
+          } else {
+            const date = new Date(data.group.createdAt);
+            const { id, title, description, participants } = data.group;
+            const dateString = `${date.getDate()}. ${
+              months[date.getMonth()]
+            } ${date.getFullYear()}`;
+            return (
+              <Card style={{ margin: "40px" }}>
+                <Tabs defaultActiveKey="1">
+                  <TabPane
+                    tab={
+                      <span>
+                        <Icon type="home" theme="outlined" />
+                        Overview
+                      </span>
+                    }
+                    key="1"
+                  >
+                    <GroupEditButton
+                      closeModal={this.closeModal}
+                      title={this.state.title}
+                      description={this.state.description}
+                      id={groupId}
+                      onClickEdit={this.onClickEdit}
+                      editable={this.state.editable}
+                    />
+                    <Header
+                      title={title}
+                      value={this.state.title}
+                      onChange={this.onChangeTitle}
+                      date={dateString}
+                      participants={participants}
+                      editable={this.state.editable}
+                    />
+                    <GroupInner
+                      description={description}
+                      editedDescription={this.state.description}
+                      onChangeDescription={this.onChangeDescription}
+                      participants={participants}
+                      onClick={this._onClickShow}
+                    />
+                  </TabPane>
+                  <TabPane
+                    tab={
+                      <span>
+                        <Icon type="clock-circle" theme="outlined" />
+                        History
+                      </span>
+                    }
+                    key="2"
+                  >
+                    <History />
+                  </TabPane>
+                  <TabPane
+                    tab={
+                      <span>
+                        <Icon type="project" theme="outlined" />
+                        Create Expense
+                      </span>
+                    }
+                    key="3"
+                  >
+                    Pane 3
+                  </TabPane>
+                </Tabs>
 
-                      <Input
-                        value={editedDescription}
-                        placeholder={description}
-                        onChange={onChangeDescription}
-                      />
-                    </span>
-                  ) : (
-                    <span>
-                      <h3>Description: </h3>
-                      <p>{description}</p>
-                    </span>
-                  )}
-                </Item>
-                <Item>
-                  <div style={{ width: "100%" }}>
-                    <h3 style={{ paddingRight: "10px" }}>Members:</h3>
-                    <div
-                      style={{
-                        width: "100%"
-                      }}
-                    >
-                      {participants.map((el, index) => (
-                        <span key={index}>
-                          <a>{el.name}</a>
-                          {participants.length - 1 !== index ? (
-                            <Divider type="vertical" />
-                          ) : null}
-                        </span>
-                      ))}
-                      <Button
-                        onClick={this._onClickShow}
-                        style={{ float: "right" }}
-                        icon="plus"
-                        type="primary"
-                      >
-                        Add Member
-                      </Button>
-                    </div>
-                  </div>
-                </Item>
-
-              </List>
-            </InnerContainer>
-          </TabPane>
-          <TabPane
-            tab={
-              <span>
-                <Icon type="clock-circle" theme="outlined" />
-                History
-              </span>
-            }
-            key="2"
-          >
-            <History />
-          </TabPane>
-          <TabPane
-            tab={
-              <span>
-                <Icon type="project" theme="outlined" />
-                Create Expense
-              </span>
-            }
-            key="3"
-          >
-            Pane 3
-          </TabPane>
-        </Tabs>
-
-        <AddMemberModal
-          participants={participants}
-          groupId={groupId}
-          visible={this.state.showModal}
-          handleCancel={this._handleOk}
-          handleOk={this._handleOk}
-        />
-      </Card>
+                <AddMemberModal
+                  participants={participants}
+                  groupId={groupId}
+                  visible={this.state.showModal}
+                  handleCancel={this._handleOk}
+                  handleOk={this._handleOk}
+                  editable={this.state.editable}
+                />
+              </Card>
+            );
+          }
+        }}
+      </Query>
     );
   }
 }
-
-const InnerContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  padding: 24px 0px;
-`;
 
 export default Group;

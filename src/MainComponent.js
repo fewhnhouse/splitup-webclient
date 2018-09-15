@@ -3,7 +3,7 @@ import React from "react";
 import styled from "styled-components";
 import FooterMenu from "./footer/FooterMenu";
 import Landing from "./pages/Landing";
-import Group from "./pages/group/GroupContainer";
+import Group from "./pages/group/Group";
 import TopBarContainer from "./header/TopBarContainer";
 
 import {
