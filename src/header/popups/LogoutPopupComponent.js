@@ -2,6 +2,7 @@ import React from "react";
 import { Button, Popover, List, Avatar } from "antd";
 import styled from "styled-components";
 import { ApolloConsumer } from "react-apollo";
+import "./LogoutPopup.css";
 
 function onLogoutClick(resetMe, client) {
   localStorage.clear();
@@ -19,7 +20,7 @@ const LogoutContent = ({ resetMe }) => (
               avatar={
                 <Avatar
                   size="small"
-                  style={{ color: "#f56a00", backgroundColor: "#fde3cf" }}
+                  style={{ color: "#69c0ff", backgroundColor: "#fff" }}
                   shape="square"
                   icon="profile"
                 />
@@ -32,7 +33,7 @@ const LogoutContent = ({ resetMe }) => (
               avatar={
                 <Avatar
                   size="small"
-                  style={{ color: "#f56a00", backgroundColor: "#fde3cf" }}
+                  style={{ color: "#69c0ff", backgroundColor: "#fff" }}
                   shape="square"
                   icon="setting"
                 />
@@ -45,7 +46,7 @@ const LogoutContent = ({ resetMe }) => (
               avatar={
                 <Avatar
                   size="small"
-                  style={{ color: "#f56a00", backgroundColor: "#fde3cf" }}
+                  style={{ color: "#69c0ff", backgroundColor: "#fff" }}
                   shape="square"
                   icon="logout"
                 />
@@ -60,7 +61,7 @@ const LogoutContent = ({ resetMe }) => (
 );
 
 const LogoutTitle = ({ user }) => (
-  <div style={{ display: "flex", flexDirection: "row" }}>
+  <StyledTitleContainer>
     <Avatar
       style={{ marginTop: "8px", marginRight: "12px" }}
       icon="user"
@@ -68,13 +69,13 @@ const LogoutTitle = ({ user }) => (
       shape="square"
     />
     <div style={{ marginTop: "5px" }}>
-      <p>Logged in as {user.name}</p>
-      <p style={{ fontWeight: 200, fontSize: "12px", color: "grey" }}>
+      <p style={{ marginBottom: "5px" }}>{user.name}</p>
+      <p style={{ fontWeight: 200, fontSize: "12px", color: "lightgrey" }}>
         {user.email}
       </p>
     </div>
     <div />
-  </div>
+  </StyledTitleContainer>
 );
 
 class LogoutPopup extends React.Component {
@@ -83,6 +84,7 @@ class LogoutPopup extends React.Component {
 
     return (
       <Popover
+        overlayClassName={"auth-popup"}
         content={<LogoutContent resetMe={resetMe} />}
         title={<LogoutTitle user={user} />}
         trigger="click"
@@ -100,6 +102,15 @@ const StyledListItem = styled(List.Item)`
     color: #1890ff;
   }
   cursor: pointer;
+`;
+
+const StyledTitleContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  background: #1890ff;
+  border-radius: 4px 4px 0px 0px;
+  padding: 5px 16px 4px;
+  color: white;
 `;
 
 export default LogoutPopup;

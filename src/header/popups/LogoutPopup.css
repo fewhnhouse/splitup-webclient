@@ -1,0 +1,9 @@
+.auth-popup .ant-popover-title {
+    padding: 0;
+    border-radius: 4px 4px 0px 0px;
+    background: #1890ff;
+}
+
+.auth-popup .ant-popover-arrow {
+    background: #1890ff;
+}

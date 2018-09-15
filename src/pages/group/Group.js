@@ -191,9 +191,7 @@ class Group extends React.Component {
                     </div>
                   </div>
                 </Item>
-                <Item>
-                  <h3>Admin</h3>{" "}
-                </Item>
+
               </List>
             </InnerContainer>
           </TabPane>

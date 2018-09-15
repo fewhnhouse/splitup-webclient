@@ -48,7 +48,7 @@ export default class Groups extends Component {
                           }
                           description={
                             <span style={{ color: "lightgrey" }}>
-                              item.description
+                              {item.description}
                             </span>
                           }
                         />

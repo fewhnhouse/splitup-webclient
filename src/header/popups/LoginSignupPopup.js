@@ -3,7 +3,7 @@ import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
 import SignupFormContainer from "./SignupFormContainer";
 import LoginFormContainer from "./LoginFormContainer";
-import { Button, Popover } from "antd";
+import { Button, Popover, Icon } from "antd";
 
 const SIGNUP = gql`
   mutation Signup($email: String!, $name: String!, $password: String!) {
@@ -35,15 +35,18 @@ const Content = ({ mutation, Form, switchView }) => (
   <div style={{ width: "300px" }}>
     <Mutation mutation={mutation}>
       {(mutate, { client, loading, err, data }) => {
-        return (
-          <Form
-            mutate={mutate}
-            client={client}
-            switchView={switchView}
-          />
-        );
+        return <Form mutate={mutate} client={client} switchView={switchView} />;
       }}
     </Mutation>
+  </div>
+);
+
+const Title = ({ login }) => (
+  <div style={{ padding: "5px 16px 4px" }}>
+    <h3 style={{ color: "white" }}>
+      <Icon type="lock" style={{ marginRight: "5px" }} />
+      {login ? "Sign In" : "Sign Up"}
+    </h3>
   </div>
 );
 
@@ -65,6 +68,7 @@ export default class LoginPopup extends Component {
     return (
       <Popover
         placement="bottomRight"
+        overlayClassName="auth-popup"
         content={
           this.state.login ? (
             <Content
@@ -80,7 +84,7 @@ export default class LoginPopup extends Component {
             />
           )
         }
-        title={this.state.login ? "Sign in" : "Sign up"}
+        title={<Title login={this.state.login} />}
         trigger="click"
       >
         <Button style={{ margin: "10px" }} type="default" icon="user" key="1">
