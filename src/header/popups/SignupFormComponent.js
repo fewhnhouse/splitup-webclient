@@ -1,6 +1,5 @@
 import React from "react";
 import { Form, Icon, Input, Button, Checkbox } from "antd";
-import "./LoginForm.css";
 
 const FormItem = Form.Item;
 
@@ -49,7 +48,7 @@ class SignupForm extends React.Component {
     const { getFieldDecorator } = this.props.form;
     const { mutate } = this.props;
     return (
-      <Form onSubmit={e => this.handleSubmit(e, mutate)} className="login-form">
+      <Form onSubmit={e => this.handleSubmit(e, mutate)} style={{maxWidth: "300px"}}>
         <FormItem>
           {getFieldDecorator("name", {
             rules: [{ required: true, message: "Please input your Name!" }]
@@ -92,7 +91,7 @@ class SignupForm extends React.Component {
           <Button
             type="primary"
             htmlType="submit"
-            className="login-form-button"
+            style={{width: "100%"}}
           >
             Sign up
           </Button>

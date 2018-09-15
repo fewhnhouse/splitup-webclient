@@ -20,17 +20,27 @@ export default class Groups extends Component {
     return (
       <div>
         <Query query={GROUPS}>
-          {({ loading, err, data: { groups } }) => {
+          {({ loading, err, data }) => {
+            if (err || !data) {
+              return <div>Error.</div>;
+            }
             if (loading) {
               return <div>Loading...</div>;
-            }
-            if (err) {
-              return <div>Error.</div>;
             } else {
+              const { groups } = data;
               return (
                 <List
                   itemLayout="horizontal"
-                  dataSource={groups ? groups.filter(group => group.title.indexOf(this.props.searchValue.toLowerCase()) !== -1) : []}
+                  dataSource={
+                    groups
+                      ? groups.filter(
+                          group =>
+                            group.title.indexOf(
+                              this.props.searchValue.toLowerCase()
+                            ) !== -1
+                        )
+                      : []
+                  }
                   renderItem={item => (
                     <List.Item>
                       <Link

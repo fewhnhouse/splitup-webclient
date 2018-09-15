@@ -2,7 +2,7 @@ import { Layout, Button } from "antd";
 import React from "react";
 import styled from "styled-components";
 import FooterMenu from "./footer/FooterMenu";
-import Dashboard from "./pages/Dashboard";
+import Landing from "./pages/Landing";
 import Group from "./pages/group/GroupContainer";
 import TopBarContainer from "./header/TopBarContainer";
 
@@ -18,6 +18,12 @@ const { Footer, Header } = Layout;
 const About = () => (
   <div>
     <h2>About</h2>
+  </div>
+);
+
+const Dashboard = () => (
+  <div>
+    <h2>Dashboard</h2>
   </div>
 );
 
@@ -59,14 +65,32 @@ const PrivateRoute = ({ component: Component, loggedIn, ...rest }) => (
     render={props =>
       loggedIn ? (
         <Component {...props} />
-      ) : /*<Redirect
+      ) : (
+        <Redirect
           to={{
-            pathname: "/login",
+            pathname: "/",
             state: { from: props.location }
           }}
         />
-        */
-      null
+      )
+    }
+  />
+);
+
+const PublicOnlyRoute = ({ component: Component, loggedIn, ...rest }) => (
+  <Route
+    {...rest}
+    render={props =>
+      !loggedIn ? (
+        <Component {...props} />
+      ) : (
+        <Redirect
+          to={{
+            pathname: "/dashboard",
+            state: { from: props.location }
+          }}
+        />
+      )
     }
   />
 );
@@ -87,11 +111,11 @@ class Main extends React.Component {
     this.setState({ opened: false });
   };
 
-  componentDidMount() {
-    const token = localStorage.getItem("token");
-    const name = localStorage.getItem("name");
-    const email = localStorage.getItem("email");
-    const id = localStorage.getItem("id");
+  async componentDidMount() {
+    const token = await localStorage.getItem("token");
+    const name = await localStorage.getItem("name");
+    const email = await localStorage.getItem("email");
+    const id = await localStorage.getItem("id");
     if (token !== "" && token !== null && token !== undefined) {
       this.props.addMe(id, name, email, token);
     }
@@ -103,11 +127,23 @@ class Main extends React.Component {
     return (
       <Router>
         <Layout>
-          <Header style={{ padding: 0 }}>
-            <TopBarContainer />
-          </Header>
-          <Layout>
-            <Route exact path="/" component={Dashboard} />
+          {loggedIn ? (
+            <Header style={{ padding: 0 }}>
+              <TopBarContainer />
+            </Header>
+          ) : null}
+
+          <Layout
+            onScroll={(detail, view) => {
+              console.log("scroll: ", detail);
+            }}
+          >
+            <PublicOnlyRoute
+              loggedIn={loggedIn}
+              exact
+              path="/"
+              component={Landing}
+            />
             <Route path="/about" component={About} />
             <Route path="/login" component={Login} />
             <PrivateRoute
@@ -120,16 +156,23 @@ class Main extends React.Component {
               loggedIn={loggedIn}
               component={About}
             />
-
-            {loggedIn ? <div /> : <div>logged out.</div>}
+            <PrivateRoute
+              path="/dashboard"
+              loggedIn={loggedIn}
+              component={Dashboard}
+            />
           </Layout>
-          <StyledFooter
-            onMouseEnter={this.onMouseEnter}
-            onMouseLeave={this.onMouseLeave}
-            opened={this.state.opened}
-          >
-            {loggedIn ? <FooterMenu opened={this.state.opened} /> : null}
-          </StyledFooter>
+          {loggedIn ? (
+            <StyledFooter
+              onMouseEnter={this.onMouseEnter}
+              onMouseLeave={this.onMouseLeave}
+              opened={this.state.opened}
+            >
+              <FooterMenu opened={this.state.opened} />}
+            </StyledFooter>
+          ) : (
+            <div style={{ height: "200px" }} />
+          )}
         </Layout>
       </Router>
     );

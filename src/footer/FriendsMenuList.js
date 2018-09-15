@@ -21,20 +21,24 @@ export default class Friends extends Component {
     return (
       <div>
         <Query query={FRIENDS}>
-          {({ loading, err, data: { me } }) => {
-            if (loading) {
+          {({ loading, err, data }) => {
+            if (loading ) {
               return <div>Loading...</div>;
             }
-            if (err) {
+            if (err || !data) {
               return <div>Error.</div>;
             } else {
+              const { me } = data;
               return (
                 <List
                   itemLayout="horizontal"
                   dataSource={
                     me
-                      ? me.friends.filter(friend =>
-                          friend.name.indexOf(this.props.searchValue.toLowerCase()) !== -1
+                      ? me.friends.filter(
+                          friend =>
+                            friend.name.indexOf(
+                              this.props.searchValue.toLowerCase()
+                            ) !== -1
                         )
                       : []
                   }

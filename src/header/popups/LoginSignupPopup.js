@@ -1,45 +1,6 @@
 import React, { Component } from "react";
-import { Mutation } from "react-apollo";
-import gql from "graphql-tag";
-import SignupFormContainer from "./SignupFormContainer";
-import LoginFormContainer from "./LoginFormContainer";
+import LoginSignupContent from "./LoginSignupContent";
 import { Button, Popover, Icon } from "antd";
-
-const SIGNUP = gql`
-  mutation Signup($email: String!, $name: String!, $password: String!) {
-    signup(email: $email, name: $name, password: $password) {
-      token
-      user {
-        id
-        name
-        email
-      }
-    }
-  }
-`;
-
-const LOGIN = gql`
-  mutation Login($email: String!, $password: String!) {
-    login(email: $email, password: $password) {
-      token
-      user {
-        id
-        name
-        email
-      }
-    }
-  }
-`;
-
-const Content = ({ mutation, Form, switchView }) => (
-  <div style={{ width: "300px" }}>
-    <Mutation mutation={mutation}>
-      {(mutate, { client, loading, err, data }) => {
-        return <Form mutate={mutate} client={client} switchView={switchView} />;
-      }}
-    </Mutation>
-  </div>
-);
 
 const Title = ({ login }) => (
   <div style={{ padding: "5px 16px 4px" }}>
@@ -69,21 +30,7 @@ export default class LoginPopup extends Component {
       <Popover
         placement="bottomRight"
         overlayClassName="auth-popup"
-        content={
-          this.state.login ? (
-            <Content
-              mutation={LOGIN}
-              switchView={this.switchView}
-              Form={LoginFormContainer}
-            />
-          ) : (
-            <Content
-              mutation={SIGNUP}
-              switchView={this.switchView}
-              Form={SignupFormContainer}
-            />
-          )
-        }
+        content={<LoginSignupContent switchView={this.switchView} style={{width: "300px"}} />}
         title={<Title login={this.state.login} />}
         trigger="click"
       >
