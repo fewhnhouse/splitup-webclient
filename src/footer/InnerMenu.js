@@ -4,11 +4,14 @@ import AddFriend from "./AddFriendModalContainer";
 import AddGroup from "./AddGroupModalContainer";
 import styled from "styled-components";
 
-const dataSource = ["Burns Bay Road", "Downing Street", "Wall Street"];
-
 class InnerMenu extends React.Component {
   state = {
-    visible: false
+    visible: false,
+    value: ""
+  };
+
+  _onChange = e => {
+    this.setState({ value: e.target.value });
   };
 
   showModal = () => {
@@ -28,24 +31,18 @@ class InnerMenu extends React.Component {
     return (
       <Container opened={opened}>
         <Header>
-          <AutoComplete
+          <Input
+            value={this.state.value}
+            onChange={this._onChange}
             style={{ width: "100%", position: "relative", top: "-20px" }}
-            dataSource={dataSource}
-            placeholder="Type to filter groups"
-            filterOption={(inputValue, option) =>
-              option.props.children
-                .toUpperCase()
-                .indexOf(inputValue.toUpperCase()) !== -1
+            suffix={
+              <Icon type="search" className="custom-autocomplete-input" />
             }
-          >
-            <Input
-              suffix={
-                <Icon type="search" className="custom-autocomplete-input" />
-              }
-            />
-          </AutoComplete>
+          />
         </Header>
-        <StyledInnerMenu>{children}</StyledInnerMenu>
+        <StyledInnerMenu>
+          {children ? React.cloneElement(children, { searchValue: this.state.value }) : null}
+        </StyledInnerMenu>
         {type === "Dashboard" ? null : (
           <Footer>
             <Button

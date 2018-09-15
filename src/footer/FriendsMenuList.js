@@ -21,7 +21,7 @@ export default class Friends extends Component {
     return (
       <div>
         <Query query={FRIENDS}>
-          {({ loading, err, data }) => {
+          {({ loading, err, data: { me } }) => {
             if (loading) {
               return <div>Loading...</div>;
             }
@@ -31,7 +31,13 @@ export default class Friends extends Component {
               return (
                 <List
                   itemLayout="horizontal"
-                  dataSource={data ? data.me.friends : []}
+                  dataSource={
+                    me
+                      ? me.friends.filter(friend =>
+                          friend.name.indexOf(this.props.searchValue.toLowerCase()) !== -1
+                        )
+                      : []
+                  }
                   renderItem={item => (
                     <List.Item>
                       <Link

@@ -20,7 +20,7 @@ export default class Groups extends Component {
     return (
       <div>
         <Query query={GROUPS}>
-          {({ loading, err, data }) => {
+          {({ loading, err, data: { groups } }) => {
             if (loading) {
               return <div>Loading...</div>;
             }
@@ -30,7 +30,7 @@ export default class Groups extends Component {
               return (
                 <List
                   itemLayout="horizontal"
-                  dataSource={data ? data.groups : []}
+                  dataSource={groups ? groups.filter(group => group.title.indexOf(this.props.searchValue.toLowerCase()) !== -1) : []}
                   renderItem={item => (
                     <List.Item>
                       <Link

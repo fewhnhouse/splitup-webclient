@@ -1,4 +1,4 @@
-import { Layout , Button} from "antd";
+import { Layout, Button } from "antd";
 import React from "react";
 import styled from "styled-components";
 import FooterMenu from "./footer/FooterMenu";
@@ -126,6 +126,7 @@ class Main extends React.Component {
           <StyledFooter
             onMouseEnter={this.onMouseEnter}
             onMouseLeave={this.onMouseLeave}
+            opened={this.state.opened}
           >
             {loggedIn ? <FooterMenu opened={this.state.opened} /> : null}
           </StyledFooter>
@@ -152,7 +153,8 @@ const StyledFooter = styled(Footer)`
     position: absolute;
     right: -5%;
     transform-origin: 0 0;
-    transform: rotateZ(-4deg);
+    transform: ${props => (props.opened ? "" : "rotateZ(-4deg)")};
+    transition: 0.2s transform ease-in-out;
     box-shadow: 2px 0px 8px lightgray;
     z-index: 0;
   }
