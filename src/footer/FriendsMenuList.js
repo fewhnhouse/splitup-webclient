@@ -4,6 +4,7 @@ import gql from "graphql-tag";
 import { List, Avatar } from "antd";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import './MenuList.css';
 
 const FRIENDS = gql`
   query {
@@ -55,7 +56,7 @@ export default class Friends extends Component {
                         key={item.id}
                       >
                         <List.Item.Meta
-                          avatar={<Avatar shape="square" icon="user" />}
+                          avatar={<Avatar className="menu-list-avatar" shape="square" icon="user" />}
                           title={item.name}
                         />
                       </Link>

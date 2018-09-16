@@ -12,35 +12,35 @@ function onLogoutClick(resetMe, client) {
 
 const LogoutContent = ({ resetMe }) => (
   <div style={{ display: "flex", flexDirection: "column" }}>
-    <ApolloConsumer>
-      {client => (
-        <List>
-          <StyledListItem>
-            <List.Item.Meta
-              avatar={
-                <Avatar
-                  size="small"
-                  style={{ color: "#69c0ff", backgroundColor: "#fff" }}
-                  shape="square"
-                  icon="profile"
-                />
-              }
-              title="Profile"
+    <List>
+      <StyledListItem>
+        <List.Item.Meta
+          avatar={
+            <Avatar
+              size="small"
+              style={{ color: "#69c0ff", backgroundColor: "#fff" }}
+              shape="square"
+              icon="profile"
             />
-          </StyledListItem>
-          <StyledListItem>
-            <List.Item.Meta
-              avatar={
-                <Avatar
-                  size="small"
-                  style={{ color: "#69c0ff", backgroundColor: "#fff" }}
-                  shape="square"
-                  icon="setting"
-                />
-              }
-              title="Settings"
+          }
+          title="Profile"
+        />
+      </StyledListItem>
+      <StyledListItem>
+        <List.Item.Meta
+          avatar={
+            <Avatar
+              size="small"
+              style={{ color: "#69c0ff", backgroundColor: "#fff" }}
+              shape="square"
+              icon="setting"
             />
-          </StyledListItem>
+          }
+          title="Settings"
+        />
+      </StyledListItem>
+      <ApolloConsumer>
+        {client => (
           <StyledListItem onClick={() => onLogoutClick(resetMe, client)}>
             <List.Item.Meta
               avatar={
@@ -54,9 +54,9 @@ const LogoutContent = ({ resetMe }) => (
               title="Sign out"
             />
           </StyledListItem>
-        </List>
-      )}
-    </ApolloConsumer>
+        )}
+      </ApolloConsumer>
+    </List>
   </div>
 );
 

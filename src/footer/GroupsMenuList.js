@@ -52,7 +52,7 @@ export default class Groups extends Component {
                         key={item.id}
                       >
                         <List.Item.Meta
-                          avatar={<Avatar shape="square" icon="appstore" />}
+                          avatar={<Avatar className="menu-list-avatar" shape="square" icon="appstore" />}
                           title={item.title}
                           description={item.description}
                         />
