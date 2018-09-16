@@ -1,21 +1,22 @@
 import React from "react";
-import { Avatar, Divider, Icon, Input } from "antd";
-import Upload from "./Upload";
+import { Avatar, Divider, Icon } from "antd";
+import { Query } from "react-apollo";
+import gql from "graphql-tag";
 
-const Header = ({ title, value, onChange, date, editable, participants }) => (
+const COMMON_FRIENDS = gql`
+    query Users($where: MyUserWhereInput!) {
+        users(where: $where) {
+            
+        }
+    }
+`;
+
+
+const Header = ({ name, date }) => (
   <div style={{ display: "flex", flexDirection: "row" }}>
-    {editable ? <Upload /> : <Avatar shape="square" size={112} icon="user" />}
+    <Avatar shape="square" size={112} icon="user" />
     <div style={{ flexDirection: "column", marginLeft: "15px" }}>
-      {editable ? (
-        <Input
-          size="large"
-          placeholder={title}
-          value={value}
-          onChange={onChange}
-        />
-      ) : (
-        <h1 style={{ marginBottom: "5px" }}>{title}</h1>
-      )}
+      <h1 style={{ marginBottom: "5px" }}>{name}</h1>
 
       <div
         style={{
@@ -43,7 +44,20 @@ const Header = ({ title, value, onChange, date, editable, participants }) => (
         />
         <p>
           <Icon style={{ marginRight: "5px" }} type="team" theme="outlined" />
-          {participants.length}
+          {"COMMON FRIENDS QUERY"}
+        </p>
+        <Divider
+          style={{
+            marginTop: "5px",
+            display: "block",
+            lineHeight: "1.5",
+            fontSize: "14px"
+          }}
+          type="vertical"
+        />
+        <p>
+          <Icon style={{ marginRight: "5px" }} type="team" theme="outlined" />
+          {"COMMON GROUPS QUERY"}
         </p>
       </div>
     </div>

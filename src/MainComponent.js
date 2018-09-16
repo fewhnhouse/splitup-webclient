@@ -4,6 +4,7 @@ import styled from "styled-components";
 import FooterMenu from "./footer/FooterMenu";
 import Landing from "./pages/Landing";
 import Group from "./pages/group/Group";
+import Friend from './pages/friend/Friend';
 import TopBarContainer from "./header/TopBarContainer";
 
 import {
@@ -51,6 +52,33 @@ const Groups = ({ match }) => (
             </li>
             <li>
               <Link to={`${match.url}/3`}>Group 3</Link>
+            </li>
+          </ul>
+        </div>
+      )}
+    />
+  </div>
+);
+
+
+const Friends = ({ match }) => (
+  <div>
+    <Route path={`${match.path}/:friendId`} component={Friend} />
+    <Route
+      exact
+      path={match.path}
+      render={() => (
+        <div>
+          <h3>Please select a friend.</h3>
+          <ul>
+            <li>
+              <Link to={`${match.url}/1`}>Friend 1</Link>
+            </li>
+            <li>
+              <Link to={`${match.url}/2`}>Friend 2</Link>
+            </li>
+            <li>
+              <Link to={`${match.url}/3`}>Friend 3</Link>
             </li>
           </ul>
         </div>
@@ -154,7 +182,7 @@ class Main extends React.Component {
             <PrivateRoute
               path="/friends"
               loggedIn={loggedIn}
-              component={About}
+              component={Friends}
             />
             <PrivateRoute
               path="/dashboard"

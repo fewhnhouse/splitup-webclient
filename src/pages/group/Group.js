@@ -92,8 +92,8 @@ class Group extends React.Component {
           if (err) {
             return <div>Error.</div>;
           } else {
-            const date = new Date(data.group.createdAt);
-            const { title, description, participants } = data.group;
+            const { title, description, participants, createdAt } = data.group;
+            const date = new Date(createdAt);
             const dateString = `${date.getDate()}. ${
               months[date.getMonth()]
             } ${date.getFullYear()}`;

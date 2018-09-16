@@ -1,22 +1,24 @@
 import React from "react";
 import { Card, Icon, Tabs } from "antd";
-import GroupEditButton from "./GroupEditButton";
 import History from "./History";
-import AddMemberModal from "./AddMemberModal";
-import Header from "./GroupHeader";
-import GroupInner from "./GroupInner";
+import AddGroupModal from "./AddGroupModal";
+import Header from "./FriendHeader";
+import FriendInner from "./FriendInner";
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
 
 const TabPane = Tabs.TabPane;
 
-const FRIENDS = gql`
-  query me {
-    id
-    friends {
+const FRIEND = gql`
+  query User($id: ID) {
+    user(id: $id) {
+      id
       name
       email
-      id
+      groups {
+        id
+        title
+      }
     }
   }
 `;
@@ -36,7 +38,7 @@ const months = [
   "December"
 ];
 
-class Group extends React.Component {
+class Friend extends React.Component {
   state = {
     showModal: false
   };
@@ -53,16 +55,17 @@ class Group extends React.Component {
     const friendId = this.props.match.params.friendId;
 
     return (
-      <Query query={FRIENDS} variables={{ id: friendId }}>
+      <Query query={FRIEND} variables={{ id: friendId }}>
         {({ loading, err, data, refetch }) => {
           if (loading) {
             return <div>Loading...</div>;
           }
-          if (err) {
+          if (err || !data) {
             return <div>Error.</div>;
           } else {
-            const date = new Date(data.group.createdAt);
-            const { id, title, description, participants } = data.group;
+            const { user } = data;
+            const { name, email, createdAt, groups } = user;
+            const date = new Date(createdAt);
             const dateString = `${date.getDate()}. ${
               months[date.getMonth()]
             } ${date.getFullYear()}`;
@@ -78,29 +81,8 @@ class Group extends React.Component {
                     }
                     key="1"
                   >
-                    <GroupEditButton
-                      closeModal={this.closeModal}
-                      title={this.state.title}
-                      description={this.state.description}
-                      id={groupId}
-                      onClickEdit={this.onClickEdit}
-                      editable={this.state.editable}
-                    />
-                    <Header
-                      title={title}
-                      value={this.state.title}
-                      onChange={this.onChangeTitle}
-                      date={dateString}
-                      participants={participants}
-                      editable={this.state.editable}
-                    />
-                    <GroupInner
-                      description={description}
-                      editedDescription={this.state.description}
-                      onChangeDescription={this.onChangeDescription}
-                      participants={participants}
-                      onClick={this._onClickShow}
-                    />
+                    <Header name={name} email={email} date={dateString} />
+                    <FriendInner onClick={this._onClickShow} />
                   </TabPane>
                   <TabPane
                     tab={
@@ -126,13 +108,12 @@ class Group extends React.Component {
                   </TabPane>
                 </Tabs>
 
-                <AddMemberModal
-                  participants={participants}
-                  groupId={groupId}
+                <AddGroupModal
+                  participants={[]}
+                  groupId={friendId}
                   visible={this.state.showModal}
                   handleCancel={this._handleOk}
                   handleOk={this._handleOk}
-                  editable={this.state.editable}
                 />
               </Card>
             );
@@ -143,4 +124,4 @@ class Group extends React.Component {
   }
 }
 
-export default Group;
+export default Friend;
