@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
-import { List, Avatar } from "antd";
+import { List, Avatar, Skeleton } from "antd";
 import score from "string-score";
 import { Link } from "react-router-dom";
 
 const GROUPS = gql`
-  query Groups($where: GroupWhereInput) {
-    groups(where: $where) {
+  query {
+    groups {
       id
       title
       description
@@ -26,10 +26,9 @@ export default class Groups extends Component {
               return <div>Error.</div>;
             }
             if (loading) {
-              return <div>Loading...</div>;
+              return <Skeleton active />;
             } else {
               const { groups } = data;
-              console.log(data);
               return (
                 <List
                   itemLayout="horizontal"

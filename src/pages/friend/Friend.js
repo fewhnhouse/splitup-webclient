@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Icon, Tabs } from "antd";
+import { Card, Icon, Tabs, Skeleton } from "antd";
 import History from "./History";
 import AddGroupModal from "./AddGroupModal";
 import Header from "./FriendHeader";
@@ -58,7 +58,11 @@ class Friend extends React.Component {
       <Query query={FRIEND} variables={{ id: friendId }}>
         {({ loading, err, data, refetch }) => {
           if (loading) {
-            return <div>Loading...</div>;
+            return (
+              <Card style={{ margin: "40px" }}>
+                <Skeleton active />
+              </Card>
+            );
           }
           if (err || !data) {
             return <div>Error.</div>;
@@ -88,7 +92,11 @@ class Friend extends React.Component {
                       myId={this.props.user.id}
                       friendId={friendId}
                     />
-                    <FriendInner onClick={this._onClickShow} />
+                    <FriendInner
+                      onClick={this._onClickShow}
+                      myId={this.props.user.id}
+                      friendId={friendId}
+                    />
                   </TabPane>
                   <TabPane
                     tab={

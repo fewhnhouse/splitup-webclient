@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Icon, Tabs } from "antd";
+import { Card, Icon, Tabs, Skeleton } from "antd";
 import GroupEditButton from "./GroupEditButton";
 import History from "./History";
 import AddMemberModal from "./AddMemberModal";
@@ -87,7 +87,11 @@ class Group extends React.Component {
       <Query query={GROUP} variables={{ id: groupId }}>
         {({ loading, err, data, refetch }) => {
           if (loading) {
-            return <div>Loading...</div>;
+            return (
+              <Card style={{ margin: "40px" }}>
+                <Skeleton active />
+              </Card>
+            );
           }
           if (err) {
             return <div>Error.</div>;

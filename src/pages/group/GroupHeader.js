@@ -24,14 +24,14 @@ const Header = ({ title, value, onChange, date, editable, participants }) => (
           color: "lightgrey"
         }}
       >
-        <p>
+        <div title="Creation Date">
           <Icon
             style={{ marginRight: "5px" }}
             type="calendar"
             theme="outlined"
           />
           {date}
-        </p>
+        </div>
         <Divider
           style={{
             marginTop: "5px",
@@ -41,10 +41,10 @@ const Header = ({ title, value, onChange, date, editable, participants }) => (
           }}
           type="vertical"
         />
-        <p>
+        <div title="Participants">
           <Icon style={{ marginRight: "5px" }} type="team" theme="outlined" />
           {participants.length}
-        </p>
+        </div>
       </div>
     </div>
   </div>

@@ -1,17 +1,11 @@
 import React from "react";
-import { Avatar, Divider, Icon } from "antd";
+import { Avatar, Divider, Icon, Spin } from "antd";
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
 
 const COMMON_FRIENDS = gql`
   query UserConnection($where: MyUserWhereInput) {
     usersConnection(where: $where) {
-      edges {
-        node {
-          id
-          name
-        }
-      }
       aggregate {
         count
       }
@@ -22,12 +16,6 @@ const COMMON_FRIENDS = gql`
 const COMMON_GROUPS = gql`
   query GroupsConnection($where: GroupWhereInput) {
     groupsConnection(where: $where) {
-      edges {
-        node {
-          id
-          title
-        }
-      }
       aggregate {
         count
       }
@@ -36,7 +24,6 @@ const COMMON_GROUPS = gql`
 `;
 
 const Header = ({ name, date, friendId, myId }) => {
-  console.log(myId);
   return (
     <div style={{ display: "flex", flexDirection: "row" }}>
       <Avatar shape="square" size={112} icon="user" />
@@ -50,14 +37,14 @@ const Header = ({ name, date, friendId, myId }) => {
             color: "lightgrey"
           }}
         >
-          <p>
+          <div title="Friends since">
             <Icon
               style={{ marginRight: "5px" }}
               type="calendar"
               theme="outlined"
             />
             {date}
-          </p>
+          </div>
           <Divider
             style={{
               marginTop: "5px",
@@ -67,7 +54,7 @@ const Header = ({ name, date, friendId, myId }) => {
             }}
             type="vertical"
           />
-          <p>
+          <div title="Common Friends">
             <Icon style={{ marginRight: "5px" }} type="team" theme="outlined" />
 
             <Query
@@ -85,14 +72,14 @@ const Header = ({ name, date, friendId, myId }) => {
                 if (error || !data) {
                   return <div>Error.</div>;
                 } else if (loading) {
-                  return <div>Loading...</div>;
+                  return <Spin/>;
                 } else {
                   const count = data.usersConnection.aggregate.count;
                   return count;
                 }
               }}
             </Query>
-          </p>
+          </div>
 
           <Divider
             style={{
@@ -103,7 +90,7 @@ const Header = ({ name, date, friendId, myId }) => {
             }}
             type="vertical"
           />
-          <p>
+          <div title="Common Groups">
             <Icon style={{ marginRight: "5px" }} type="team" theme="outlined" />
             <Query
               query={COMMON_GROUPS}
@@ -120,14 +107,14 @@ const Header = ({ name, date, friendId, myId }) => {
                 if (error || !data) {
                   return <div>Error.</div>;
                 } else if (loading) {
-                  return <div>Loading...</div>;
+                  return <Spin/>;
                 } else {
                   const count = data.groupsConnection.aggregate.count;
                   return count;
                 }
               }}
             </Query>
-          </p>
+          </div>
         </div>
       </div>
     </div>

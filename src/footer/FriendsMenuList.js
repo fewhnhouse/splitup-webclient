@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
-import { List, Avatar } from "antd";
+import { List, Avatar, Skeleton } from "antd";
 import { Link } from "react-router-dom";
 import score from "string-score";
 import "./MenuList.css";
@@ -24,7 +24,7 @@ export default class Friends extends Component {
         <Query query={FRIENDS}>
           {({ loading, err, data }) => {
             if (loading) {
-              return <div>Loading...</div>;
+              return <Skeleton active />;
             }
             if (err || !data) {
               return <div>Error.</div>;
@@ -37,8 +37,12 @@ export default class Friends extends Component {
                     me
                       ? me.friends.filter(
                           friend =>
-                            this.props.searchValue === "" || score(friend.name.toLowerCase(), this.props.searchValue.toLowerCase(), 0.6) >
-                            0.6
+                            this.props.searchValue === "" ||
+                            score(
+                              friend.name.toLowerCase(),
+                              this.props.searchValue.toLowerCase(),
+                              0.6
+                            ) > 0.6
                         )
                       : []
                   }
