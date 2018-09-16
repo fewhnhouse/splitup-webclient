@@ -3,6 +3,7 @@ import { Button, List, Divider, Spin } from "antd";
 import styled from "styled-components";
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
+import { Link } from "react-router-dom";
 
 const Item = List.Item;
 
@@ -72,7 +73,9 @@ const FriendInner = ({ onClick, myId, friendId }) => (
                     <div>
                       {data.groupsConnection.edges.map((el, index) => (
                         <span key={index}>
-                          <a>{el.node.title}</a>
+                          <Link to={`/groups/${el.node.id}`}>
+                            {el.node.title}
+                          </Link>
                           {data.groupsConnection.edges.length - 1 !== index ? (
                             <Divider type="vertical" />
                           ) : null}
@@ -121,7 +124,7 @@ const FriendInner = ({ onClick, myId, friendId }) => (
                 } else {
                   return data.usersConnection.edges.map((el, index) => (
                     <span key={index}>
-                      <a>{el.node.name}</a>
+                      <Link to={`/friends/${el.node.id}`}>{el.node.name}</Link>
                       {data.usersConnection.edges.length - 1 !== index ? (
                         <Divider type="vertical" />
                       ) : null}

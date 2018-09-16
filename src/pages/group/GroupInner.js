@@ -1,6 +1,7 @@
 import React from "react";
 import { Button, List, Divider, Input } from "antd";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 const Item = List.Item;
 
@@ -45,7 +46,7 @@ const GroupInner = ({
             <div>
               {participants.map((el, index) => (
                 <span key={index}>
-                  <a>{el.name}</a>
+                  <Link to={`/friends/${el.id}`}>{el.name}</Link>
                   {participants.length - 1 !== index ? (
                     <Divider type="vertical" />
                   ) : null}
