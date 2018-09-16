@@ -6,8 +6,8 @@ import score from "string-score";
 import { Link } from "react-router-dom";
 
 const GROUPS = gql`
-  query {
-    groups {
+  query Groups($where: GroupWhereInput) {
+    groups(where: $where) {
       id
       title
       description
@@ -19,15 +19,17 @@ export default class Groups extends Component {
   render() {
     return (
       <div>
-        <Query query={GROUPS}>
+        <Query query={GROUPS} >
           {({ loading, err, data }) => {
             if (err || !data) {
+              console.error(err);
               return <div>Error.</div>;
             }
             if (loading) {
               return <div>Loading...</div>;
             } else {
               const { groups } = data;
+              console.log(data);
               return (
                 <List
                   itemLayout="horizontal"

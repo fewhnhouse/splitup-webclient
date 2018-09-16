@@ -4,7 +4,7 @@ import styled from "styled-components";
 import FooterMenu from "./footer/FooterMenu";
 import Landing from "./pages/Landing";
 import Group from "./pages/group/Group";
-import Friend from './pages/friend/Friend';
+import Friend from './pages/friend/FriendContainer';
 import TopBarContainer from "./header/TopBarContainer";
 
 import {

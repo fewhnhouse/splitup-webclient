@@ -81,7 +81,13 @@ class Friend extends React.Component {
                     }
                     key="1"
                   >
-                    <Header name={name} email={email} date={dateString} />
+                    <Header
+                      name={name}
+                      email={email}
+                      date={"24. December 2016"}
+                      myId={this.props.user.id}
+                      friendId={friendId}
+                    />
                     <FriendInner onClick={this._onClickShow} />
                   </TabPane>
                   <TabPane
