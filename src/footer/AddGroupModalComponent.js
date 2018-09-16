@@ -1,17 +1,9 @@
 import React from "react";
-import { Modal, message, Input, Form } from "antd";
+import { Modal, message } from "antd";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
 import ParticipantsSelect from "../utils/ParticipantsSelect";
 import AddGroupForm from "./AddGroupForm";
-import create from "antd/lib/icon/IconFont";
-const ADD_FRIEND = gql`
-  mutation AddFriend($id: ID!) {
-    addFriend(id: $id) {
-      name
-    }
-  }
-`;
 
 const CREATE_GROUP = gql`
   mutation CreateGroup($input: CreateGroupInput!) {
@@ -89,14 +81,12 @@ export default class AddGroup extends React.Component {
   };
 
   render() {
-    const { visible, handleOk, handleCancel, user } = this.props;
-    console.log("skip: ", user.id);
+    const { visible, handleCancel, user } = this.props;
     return (
       <Mutation
         mutation={CREATE_GROUP}
         update={(cache, { data: { createGroup } }) => {
           const { groups } = cache.readQuery({ query: GROUPS });
-          console.log("cache:",createGroup, groups);
           cache.writeQuery({
             query: GROUPS,
             data: { groups: groups.concat([createGroup]) }

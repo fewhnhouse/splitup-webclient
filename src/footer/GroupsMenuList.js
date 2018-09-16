@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
 import { List, Avatar } from "antd";
-import styled from "styled-components";
+import score from "string-score";
 import { Link } from "react-router-dom";
 
 const GROUPS = gql`
@@ -35,9 +35,12 @@ export default class Groups extends Component {
                     groups
                       ? groups.filter(
                           group =>
-                            group.title.indexOf(
-                              this.props.searchValue.toLowerCase()
-                            ) !== -1
+                            this.props.searchValue === "" ||
+                            score(
+                              group.title.toLowerCase(),
+                              this.props.searchValue.toLowerCase(),
+                              0.6
+                            ) > 0.6
                         )
                       : []
                   }
@@ -52,7 +55,13 @@ export default class Groups extends Component {
                         key={item.id}
                       >
                         <List.Item.Meta
-                          avatar={<Avatar className="menu-list-avatar" shape="square" icon="appstore" />}
+                          avatar={
+                            <Avatar
+                              className="menu-list-avatar"
+                              shape="square"
+                              icon="appstore"
+                            />
+                          }
                           title={item.title}
                           description={item.description}
                         />

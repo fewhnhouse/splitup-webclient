@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
 import { List, Avatar } from "antd";
-import styled from "styled-components";
 import { Link } from "react-router-dom";
-import './MenuList.css';
+import score from "string-score";
+import "./MenuList.css";
 
 const FRIENDS = gql`
   query {
@@ -23,7 +23,7 @@ export default class Friends extends Component {
       <div>
         <Query query={FRIENDS}>
           {({ loading, err, data }) => {
-            if (loading ) {
+            if (loading) {
               return <div>Loading...</div>;
             }
             if (err || !data) {
@@ -37,9 +37,8 @@ export default class Friends extends Component {
                     me
                       ? me.friends.filter(
                           friend =>
-                            friend.name.indexOf(
-                              this.props.searchValue.toLowerCase()
-                            ) !== -1
+                            this.props.searchValue === "" || score(friend.name.toLowerCase(), this.props.searchValue.toLowerCase(), 0.6) >
+                            0.6
                         )
                       : []
                   }
@@ -56,7 +55,13 @@ export default class Friends extends Component {
                         key={item.id}
                       >
                         <List.Item.Meta
-                          avatar={<Avatar className="menu-list-avatar" shape="square" icon="user" />}
+                          avatar={
+                            <Avatar
+                              className="menu-list-avatar"
+                              shape="square"
+                              icon="user"
+                            />
+                          }
                           title={item.name}
                         />
                       </Link>

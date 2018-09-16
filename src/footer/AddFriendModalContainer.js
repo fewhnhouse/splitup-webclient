@@ -12,35 +12,6 @@ const ADD_FRIEND = gql`
   }
 `;
 
-const CREATE_GROUP = gql`
-  mutation CreateGroup($input: CreateGroupInput!) {
-    createGroup(input: $input) {
-      id
-      title
-      participants
-    }
-  }
-`;
-
-const ADD_PARTICIPANTS = gql`
-  mutation AddGroupParticipant($groupId: ID!, $userId: ID!) {
-    addGroupParticipant(groupId: $groupId, userId: $userId) {
-      id
-      title
-      participants
-    }
-  }
-`;
-
-const REMOVE_PARTICIPANTS = gql`
-  mutation RemoveGroupParticipant($groupId: ID!, $userId: ID!) {
-    removeGroupParticipant(groupId: $groupId, userId: $userId) {
-      id
-      title
-      participants
-    }
-  }
-`;
 export default class AddFriend extends React.Component {
   state = {
     value: "",
@@ -74,7 +45,7 @@ export default class AddFriend extends React.Component {
     });
   };
   render() {
-    const { visible, handleOk, handleCancel, type } = this.props;
+    const { visible, handleCancel } = this.props;
     return (
       <Mutation mutation={ADD_FRIEND}>
         {(addFriend, { data }) => (

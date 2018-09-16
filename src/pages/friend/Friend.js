@@ -1,0 +1,146 @@
+import React from "react";
+import { Card, Icon, Tabs } from "antd";
+import GroupEditButton from "./GroupEditButton";
+import History from "./History";
+import AddMemberModal from "./AddMemberModal";
+import Header from "./GroupHeader";
+import GroupInner from "./GroupInner";
+import { Query } from "react-apollo";
+import gql from "graphql-tag";
+
+const TabPane = Tabs.TabPane;
+
+const FRIENDS = gql`
+  query me {
+    id
+    friends {
+      name
+      email
+      id
+    }
+  }
+`;
+
+const months = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December"
+];
+
+class Group extends React.Component {
+  state = {
+    showModal: false
+  };
+
+  _handleOk = () => {
+    this.setState({ showModal: false });
+  };
+
+  _onClickShow = () => {
+    this.setState(prevState => ({ showModal: !prevState.showModal }));
+  };
+
+  render() {
+    const friendId = this.props.match.params.friendId;
+
+    return (
+      <Query query={FRIENDS} variables={{ id: friendId }}>
+        {({ loading, err, data, refetch }) => {
+          if (loading) {
+            return <div>Loading...</div>;
+          }
+          if (err) {
+            return <div>Error.</div>;
+          } else {
+            const date = new Date(data.group.createdAt);
+            const { id, title, description, participants } = data.group;
+            const dateString = `${date.getDate()}. ${
+              months[date.getMonth()]
+            } ${date.getFullYear()}`;
+            return (
+              <Card style={{ margin: "40px" }}>
+                <Tabs defaultActiveKey="1">
+                  <TabPane
+                    tab={
+                      <span>
+                        <Icon type="home" theme="outlined" />
+                        Overview
+                      </span>
+                    }
+                    key="1"
+                  >
+                    <GroupEditButton
+                      closeModal={this.closeModal}
+                      title={this.state.title}
+                      description={this.state.description}
+                      id={groupId}
+                      onClickEdit={this.onClickEdit}
+                      editable={this.state.editable}
+                    />
+                    <Header
+                      title={title}
+                      value={this.state.title}
+                      onChange={this.onChangeTitle}
+                      date={dateString}
+                      participants={participants}
+                      editable={this.state.editable}
+                    />
+                    <GroupInner
+                      description={description}
+                      editedDescription={this.state.description}
+                      onChangeDescription={this.onChangeDescription}
+                      participants={participants}
+                      onClick={this._onClickShow}
+                    />
+                  </TabPane>
+                  <TabPane
+                    tab={
+                      <span>
+                        <Icon type="clock-circle" theme="outlined" />
+                        History
+                      </span>
+                    }
+                    key="2"
+                  >
+                    <History />
+                  </TabPane>
+                  <TabPane
+                    tab={
+                      <span>
+                        <Icon type="project" theme="outlined" />
+                        Create Expense
+                      </span>
+                    }
+                    key="3"
+                  >
+                    Pane 3
+                  </TabPane>
+                </Tabs>
+
+                <AddMemberModal
+                  participants={participants}
+                  groupId={groupId}
+                  visible={this.state.showModal}
+                  handleCancel={this._handleOk}
+                  handleOk={this._handleOk}
+                  editable={this.state.editable}
+                />
+              </Card>
+            );
+          }
+        }}
+      </Query>
+    );
+  }
+}
+
+export default Group;

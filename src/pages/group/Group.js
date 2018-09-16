@@ -84,7 +84,7 @@ class Group extends React.Component {
     const groupId = this.props.match.params.groupId;
 
     return (
-      <Query query={GROUP} variables={{ id: this.props.match.params.groupId }}>
+      <Query query={GROUP} variables={{ id: groupId }}>
         {({ loading, err, data, refetch }) => {
           if (loading) {
             return <div>Loading...</div>;
@@ -93,7 +93,7 @@ class Group extends React.Component {
             return <div>Error.</div>;
           } else {
             const date = new Date(data.group.createdAt);
-            const { id, title, description, participants } = data.group;
+            const { title, description, participants } = data.group;
             const dateString = `${date.getDate()}. ${
               months[date.getMonth()]
             } ${date.getFullYear()}`;

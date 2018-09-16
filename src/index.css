@@ -5,3 +5,6 @@ body {
   font-family: sans-serif;
 }
 
+.page-header .ant-layout-header {
+  box-shadow: 0 2px 8px black;
+}

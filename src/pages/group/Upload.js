@@ -1,5 +1,5 @@
 import React from "react";
-import { Upload, Button, Icon, message } from "antd";
+import { Upload, Icon, message } from "antd";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
 
@@ -29,15 +29,9 @@ export default class AvatarUpload extends React.Component {
 
   customRequest = async (addAvatar, requestData) => {
     const {
-      onProgress,
       onError,
       onSuccess,
-      data,
-      filename,
       file,
-      withCredentials,
-      action,
-      headers
     } = requestData;
 
     const imageUrl = await getBase64P(file);

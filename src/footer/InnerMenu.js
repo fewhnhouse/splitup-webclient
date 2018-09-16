@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Button, AutoComplete, Input, Icon } from "antd";
+import { Button, Input, Icon } from "antd";
 import AddFriend from "./AddFriendModalContainer";
 import AddGroup from "./AddGroupModalContainer";
 import styled from "styled-components";
@@ -41,7 +41,9 @@ class InnerMenu extends React.Component {
           />
         </Header>
         <StyledInnerMenu>
-          {children ? React.cloneElement(children, { searchValue: this.state.value }) : null}
+          {children
+            ? React.cloneElement(children, { searchValue: this.state.value })
+            : null}
         </StyledInnerMenu>
         {type === "Dashboard" ? null : (
           <Footer>

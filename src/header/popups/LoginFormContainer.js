@@ -1,6 +1,6 @@
 import LoginFormComponent from "./LoginFormComponent";
 import { connect } from "react-redux";
-import { addToken, addMe } from "../../redux/actions";
+import { addMe } from "../../redux/actions";
 
 const mapStateToProps = (state, props) => {
   return {

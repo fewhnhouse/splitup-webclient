@@ -1,4 +1,4 @@
-import { Layout, Button } from "antd";
+import { Layout } from "antd";
 import React from "react";
 import styled from "styled-components";
 import FooterMenu from "./footer/FooterMenu";
@@ -128,7 +128,7 @@ class Main extends React.Component {
       <Router>
         <Layout>
           {loggedIn ? (
-            <Header style={{ padding: 0 }}>
+            <Header className="page-header" style={{ padding: 0 }}>
               <TopBarContainer />
             </Header>
           ) : null}

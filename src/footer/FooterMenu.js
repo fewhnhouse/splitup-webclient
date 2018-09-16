@@ -3,7 +3,7 @@ import styled from "styled-components";
 import InnerMenu from "./InnerMenu";
 import Groups from "./GroupsMenuList";
 import Friends from "./FriendsMenuList";
-import { Menu, Icon, Button } from "antd";
+import { Menu, Icon } from "antd";
 import { Link } from "react-router-dom";
 
 const FooterMenu = ({ opened }) => (
