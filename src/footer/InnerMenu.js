@@ -2,6 +2,7 @@ import React from "react";
 import { Button, Input, Icon } from "antd";
 import AddFriend from "./AddFriendModalContainer";
 import AddGroup from "./AddGroupModalContainer";
+import AddExpense from './AddExpenseContainer';
 import styled from "styled-components";
 
 class InnerMenu extends React.Component {
@@ -45,31 +46,37 @@ class InnerMenu extends React.Component {
             ? React.cloneElement(children, { searchValue: this.state.value })
             : null}
         </StyledInnerMenu>
-        {type === "Dashboard" ? null : (
-          <Footer>
-            <Button
-              icon="plus"
-              style={{ width: "100%", position: "relative", bottom: "5px" }}
-              onClick={this.showModal}
-              type="primary"
-            >{`Add ${type}`}</Button>
-            {type === "Friends" ? (
-              <AddFriend
-                visible={this.state.visible}
-                handleCancel={this.handleOk}
-                handleOk={this.handleOk}
-                type={type}
-              />
-            ) : (
-              <AddGroup
-                visible={this.state.visible}
-                handleCancel={this.handleOk}
-                handleOk={this.handleOk}
-                type={type}
-              />
-            )}
-          </Footer>
-        )}
+        <Footer>
+          <Button
+            icon="plus"
+            style={{ width: "100%", position: "relative", bottom: "5px" }}
+            onClick={this.showModal}
+            type="primary"
+          >{`Add ${type}`}</Button>
+
+          {type === "Friends" ? (
+            <AddFriend
+              visible={this.state.visible}
+              handleCancel={this.handleOk}
+              handleOk={this.handleOk}
+              type={type}
+            />
+          ) : type === "Groups" ? (
+            <AddGroup
+              visible={this.state.visible}
+              handleCancel={this.handleOk}
+              handleOk={this.handleOk}
+              type={type}
+            />
+          ) : (
+            <AddExpense
+              visible={this.state.visible}
+              handleCancel={this.handleOk}
+              handleOk={this.handleOk}
+              type={type}
+            />
+          )}
+        </Footer>
       </Container>
     );
   }

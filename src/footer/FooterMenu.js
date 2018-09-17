@@ -42,7 +42,7 @@ const FooterMenu = ({ opened }) => (
           <Icon type="home" />
           Dashboard
         </StyledHeader>
-        <InnerMenu opened={opened} type="Dashboard" />
+        <InnerMenu opened={opened} type="Expense" />
       </Menu.Item>
       <Menu.Item
         style={{
