@@ -1,8 +1,20 @@
 import React from "react";
-import { Avatar, Divider, Icon, Input } from "antd";
+import { Avatar, Divider, Icon, Input, Popover } from "antd";
 import Upload from "./Upload";
+import Members from "./Members";
+import styled from 'styled-components';
 
-const Header = ({ title, value, onChange, date, editable, participants }) => (
+const Header = ({
+  title,
+  value,
+  onChange,
+  date,
+  editable,
+  participants,
+  description,
+  editedDescription,
+  onChangeDescription
+}) => (
   <div style={{ display: "flex", flexDirection: "row" }}>
     {editable ? <Upload /> : <Avatar shape="square" size={112} icon="user" />}
     <div style={{ flexDirection: "column", marginLeft: "15px" }}>
@@ -41,13 +53,39 @@ const Header = ({ title, value, onChange, date, editable, participants }) => (
           }}
           type="vertical"
         />
-        <div title="Participants">
-          <Icon style={{ marginRight: "5px" }} type="team" theme="outlined" />
-          {participants.length}
-        </div>
+        <Popover content={<Members participants={participants}/>} title="Members" trigger="click" placement="rightTop">
+          <ParticipantsContainer title="Participants">
+            <Icon style={{ marginRight: "5px" }} type="team" theme="outlined" />
+            {participants.length}
+          </ParticipantsContainer>
+        </Popover>
       </div>
+      {editable ? (
+        <div style={{ paddingTop: "20px", width: "100%" }}>
+          <Input
+            size="small"
+            value={editedDescription}
+            placeholder={description}
+            onChange={onChangeDescription}
+          />
+        </div>
+      ) : (
+        <div style={{ paddingTop: "20px" }}>
+          <h4>
+            <Icon style={{ marginRight: "5px" }} type="read" theme="outlined" />
+            {description}
+          </h4>
+        </div>
+      )}
     </div>
   </div>
 );
+
+const ParticipantsContainer = styled.div`
+        cursor: pointer;
+        &:hover {
+          color: #1890ff;
+        }
+`;
 
 export default Header;

@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Icon, Tabs, Skeleton } from "antd";
+import { Card, Icon, Tabs, Skeleton, Divider } from "antd";
 import GroupEditButton from "./GroupEditButton";
 import History from "./History";
 import AddMemberModal from "./AddMemberModal";
@@ -102,7 +102,7 @@ class Group extends React.Component {
               months[date.getMonth()]
             } ${date.getFullYear()}`;
             return (
-              <Card style={{ margin: "40px" }}>
+              <Card style={{ margin: "40px", marginBottom: "200px" }}>
                 <Tabs defaultActiveKey="1">
                   <TabPane
                     tab={
@@ -122,19 +122,28 @@ class Group extends React.Component {
                       editable={this.state.editable}
                     />
                     <Header
+                      participants={participants}
                       title={title}
                       value={this.state.title}
                       onChange={this.onChangeTitle}
                       date={dateString}
                       participants={participants}
                       editable={this.state.editable}
+                      description={description}
+                      editedDescription={this.state.description}
+                      onChangeDescription={this.onChangeDescription}
                     />
+                    <Divider type="horizontal" />
+
                     <GroupInner
+                      editable={this.state.editable}
                       description={description}
                       editedDescription={this.state.description}
                       onChangeDescription={this.onChangeDescription}
                       participants={participants}
-                      onClick={this._onClickShow}
+                      onClickMember={this._onClickShow}
+                      onClickSettle={this._onClickShow}
+                      onClickExpense={this._onClickShow}
                     />
                   </TabPane>
                   <TabPane

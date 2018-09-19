@@ -1,6 +1,14 @@
 import React from "react";
-import { Form, Input, DatePicker, Select, Tabs, Icon } from "antd";
-import Transfer from "./Transfer";
+import {
+  Form,
+  Input,
+  DatePicker,
+  Select,
+  Tabs,
+  Icon,
+  Divider,
+  Steps
+} from "antd";
 
 const FormItem = Form.Item;
 const { TextArea } = Input;
@@ -109,36 +117,22 @@ class CreateGroupForm extends React.Component {
             placeholder="Description"
           />
         </FormItem>
-        <Form layout="inline">
+
+        <FormItem>
+          <DatePicker />
+        </FormItem>
+        <Divider type="horizontal" />
+
           <FormItem>
             <Input
               value={this.state.value}
               onChange={this.onChange}
               onBlur={this.onBlur}
-              placeholder="Input a number"
-              maxLength="25"
+              placeholder="Input amount"
+              maxLength="10"
               addonAfter={selectAfter}
             />
           </FormItem>
-          <FormItem>
-            <DatePicker />
-          </FormItem>
-        </Form>
-        <Tabs defaultActiveKey="1" onChange={this.onChangeTab}>
-          <TabPane tab="Group Expense" key="1">
-            <FormItem>
-              <Select placeholder="Add expense to group" />
-            </FormItem>
-            <FormItem>
-              <Select disabled placeholder="Add participants" />
-            </FormItem>
-          </TabPane>
-          <TabPane tab="Standalone Expense" key="2">
-            <FormItem>
-              <Select placeholder="Add participants" />
-            </FormItem>
-          </TabPane>
-        </Tabs>
       </Form>
     );
   }

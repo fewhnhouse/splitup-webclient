@@ -1,9 +1,13 @@
 import React from "react";
-import { Modal, message } from "antd";
+import { Modal, message, Steps, Button, Divider } from "antd";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
 import ParticipantsSelect from "../utils/ParticipantsSelect";
-import AddExpenseForm from "./AddExpenseForm";
+import ExpenseFirstStep from "./ExpenseFirstStep";
+import ExpenseSecondStep from "./ExpenseSecondStep";
+import ExpenseThirdStep from "./ExpenseThirdStep";
+
+const { Step } = Steps;
 
 const CReATE_EXPENSE = gql`
   mutation CreateExpense($input: CreateExpenseInput!) {
@@ -34,9 +38,10 @@ const GROUPS_AND_FRIENDS = gql`
 export default class AddExpense extends React.Component {
   state = {
     searchValue: "",
-    values: [],
+    value: "",
     title: "",
-    description: ""
+    description: "",
+    step: 0
   };
 
   _handleSearch = searchValue => {
@@ -44,9 +49,9 @@ export default class AddExpense extends React.Component {
       searchValue
     });
   };
-  _handleChange = data => {
+  _handleChange = value => {
     this.setState({
-      values: data
+      value
     });
   };
 
@@ -86,23 +91,79 @@ export default class AddExpense extends React.Component {
     });
   };
 
+  next = () => {
+    this.setState(prevState => ({
+      step: prevState.step < 2 ? prevState.step + 1 : prevState.step
+    }));
+  };
+
+  prev = () => {
+    this.setState(prevState => ({
+      step: prevState.step > 0 ? prevState.step - 1 : prevState.step
+    }));
+  };
+
   render() {
     const { visible, handleCancel, user } = this.props;
+    const steps = [
+      {
+        title: "First",
+        content: (
+          <ExpenseFirstStep
+            onChangeDescription={this._onChangeDescription}
+            onChangeTitle={this._onChangeTitle}
+            handleChange={this._handleChange}
+            groupValue={this.state.value}
+            searchValue={this.state.searchValue}
+            description={this.state.description}
+            title={this.state.title}
+          />
+        )
+      },
+      {
+        title: "Second",
+        content: <ExpenseSecondStep />
+      },
+      {
+        title: "Last",
+        content: <ExpenseThirdStep />
+      }
+    ];
     return (
       <Mutation mutation={CReATE_EXPENSE}>
         {(createExpense, { data }) => (
           <Modal
+            style={{ width: "60%" }}
             title={`Add Expense`}
             visible={visible}
-            onOk={() => this._handleOk(createExpense)}
-            onCancel={handleCancel}
+            footer={[
+              this.state.step > 0 ? (
+                <Button key="back" onClick={this.prev}>
+                  Back
+                </Button>
+              ) : null,
+              this.state.step < 2 ? (
+                <Button key="submit" type="primary" onClick={this.next}>
+                  Next
+                </Button>
+              ) : (
+                <Button key="submit" type="primary" onClick={this.next}>
+                  Submit
+                </Button>
+              )
+            ]}
           >
-            <AddExpenseForm
-              onChangeDescription={this._onChangeDescription}
-              onChangeTitle={this._onChangeTitle}
-              description={this.state.description}
-              title={this.state.title}
-            />
+            <div style={{ height: "100%", overflowY: "scroll" }}>
+              <Steps current={this.state.step} style={{ marginBottom: "10px" }}>
+                {steps.map(item => (
+                  <Step key={item.title} title={item.title} />
+                ))}
+              </Steps>
+              <Divider type="horizontal" />
+              <div className="steps-content">
+                {steps[this.state.step].content}
+              </div>
+            </div>
           </Modal>
         )}
       </Mutation>
