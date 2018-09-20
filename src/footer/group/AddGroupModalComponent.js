@@ -2,7 +2,7 @@ import React from "react";
 import { Modal, message } from "antd";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
-import ParticipantsSelect from "../utils/ParticipantsSelect";
+import ParticipantsSelect from "../../utils/ParticipantsSelect";
 import AddGroupForm from "./AddGroupForm";
 
 const CREATE_GROUP = gql`

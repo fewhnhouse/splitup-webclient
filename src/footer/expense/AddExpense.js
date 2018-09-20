@@ -2,14 +2,14 @@ import React from "react";
 import { Modal, message, Steps, Button, Divider } from "antd";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
-import ParticipantsSelect from "../utils/ParticipantsSelect";
+import ParticipantsSelect from "../../utils/ParticipantsSelect";
 import ExpenseFirstStep from "./ExpenseFirstStep";
 import ExpenseSecondStep from "./ExpenseSecondStep";
 import ExpenseThirdStep from "./ExpenseThirdStep";
 
 const { Step } = Steps;
 
-const CReATE_EXPENSE = gql`
+const CREATE_EXPENSE = gql`
   mutation CreateExpense($input: CreateExpenseInput!) {
     createExpense(input: $input) {
       id
@@ -37,11 +37,24 @@ const GROUPS_AND_FRIENDS = gql`
 
 export default class AddExpense extends React.Component {
   state = {
+    amount: "",
     searchValue: "",
     value: "",
     title: "",
     description: "",
-    step: 0
+    step: 0,
+    searchGroup: "",
+    group: { key: "", label: "" },
+    searchParticipants: "",
+    participants: [],
+    standaloneParticipants: [],
+    standaloneSearchParticipants: ""
+  };
+
+  _handleAmountChange = amount => {
+    this.setState({
+      amount
+    });
   };
 
   _handleSearch = searchValue => {
@@ -53,6 +66,42 @@ export default class AddExpense extends React.Component {
     this.setState({
       value
     });
+  };
+
+  handleGroupChange = group => {
+    this.setState({
+      group,
+      participants: [],
+      searchParticipants: ""
+    });
+  };
+
+  handleParticipantsChange = participants => {
+    this.setState({
+      participants
+    });
+  };
+
+  handleGroupSearch = searchGroup => {
+    this.setState({
+      searchGroup
+    });
+  };
+
+  handleParticipantsSearch = searchParticipants => {
+    this.setState({
+      searchParticipants
+    });
+  };
+
+  handleStandaloneParticipantsSearch = standaloneSearchParticipants => {
+    this.setState({
+      standaloneSearchParticipants
+    });
+  };
+
+  handleStandaloneParticipantsChange = standaloneParticipants => {
+    this.setState({ standaloneParticipants });
   };
 
   _handleOk = async createGroup => {
@@ -103,13 +152,40 @@ export default class AddExpense extends React.Component {
     }));
   };
 
+  isNextEnabled = () => {
+    const {
+      step,
+      description,
+      title,
+      participants,
+      standaloneParticipants,
+      group
+    } = this.state;
+    let test = false;
+    switch (step) {
+      case 0:
+        test = description && title;
+        break;
+      case 1:
+        test =
+          (participants.length && group.key) || standaloneParticipants.length;
+        break;
+      default:
+        break;
+    }
+    return test;
+  };
+
   render() {
     const { visible, handleCancel, user } = this.props;
+
     const steps = [
       {
         title: "First",
         content: (
           <ExpenseFirstStep
+            amount={this.state.amount}
+            handleAmountChange={this._handleAmountChange}
             onChangeDescription={this._onChangeDescription}
             onChangeTitle={this._onChangeTitle}
             handleChange={this._handleChange}
@@ -122,15 +198,45 @@ export default class AddExpense extends React.Component {
       },
       {
         title: "Second",
-        content: <ExpenseSecondStep />
+        content: (
+          <ExpenseSecondStep
+            amount={this.state.amount}
+            handleAmountChange={this._handleAmountChange}
+            handleGroupChange={this.handleGroupChange}
+            handleGroupSearch={this.handleGroupSearch}
+            group={this.state.group}
+            searchGroup={this.state.searchGroup}
+            participants={this.state.participants}
+            searchParticipants={this.state.searchParticipants}
+            handleParticipantsChange={this.handleParticipantsChange}
+            handleParticipantsSearch={this.handleParticipantsSearch}
+            handleStandaloneParticipantsChange={
+              this.handleStandaloneParticipantsChange
+            }
+            handleStandaloneParticipantsSearch={
+              this.handleStandaloneParticipantsSearch
+            }
+            standaloneParticipants={this.state.standaloneParticipants}
+            standaloneSearchParticipants={
+              this.state.standaloneSearchParticipants
+            }
+          />
+        )
       },
       {
         title: "Last",
-        content: <ExpenseThirdStep />
+        content: (
+          <ExpenseThirdStep
+            amount={this.state.amount}
+            handleAmountChange={this._handleAmountChange}
+            participants={this.state.participants}
+            amount={this.state.amount}
+          />
+        )
       }
     ];
     return (
-      <Mutation mutation={CReATE_EXPENSE}>
+      <Mutation mutation={CREATE_EXPENSE}>
         {(createExpense, { data }) => (
           <Modal
             style={{ width: "60%" }}
@@ -143,9 +249,20 @@ export default class AddExpense extends React.Component {
                 </Button>
               ) : null,
               this.state.step < 2 ? (
-                <Button key="submit" type="primary" onClick={this.next}>
-                  Next
-                </Button>
+                this.isNextEnabled() ? (
+                  <Button
+                    key="submit"
+                    type="primary"
+                    disabled={this.isNextDisabled}
+                    onClick={this.next}
+                  >
+                    Next
+                  </Button>
+                ) : (
+                  <Button disabled type="primary">
+                    Next
+                  </Button>
+                )
               ) : (
                 <Button key="submit" type="primary" onClick={this.next}>
                   Submit

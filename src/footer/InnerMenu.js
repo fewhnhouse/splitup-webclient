@@ -1,8 +1,8 @@
 import React from "react";
 import { Button, Input, Icon } from "antd";
-import AddFriend from "./AddFriendModalContainer";
-import AddGroup from "./AddGroupModalContainer";
-import AddExpense from './AddExpenseContainer';
+import AddFriend from "./friend/AddFriendModalContainer";
+import AddGroup from "./group/AddGroupModalContainer";
+import AddExpense from './expense/AddExpenseContainer';
 import styled from "styled-components";
 
 class InnerMenu extends React.Component {

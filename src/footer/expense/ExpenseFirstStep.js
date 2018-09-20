@@ -9,41 +9,13 @@ import {
   Divider,
   Steps
 } from "antd";
+import AddAmount from "./AddAmount";
 
 const FormItem = Form.Item;
 const { TextArea } = Input;
 const TabPane = Tabs.TabPane;
 const Option = Select.Option;
 
-function formatNumber(value) {
-  value += "";
-  const list = value.split(".");
-  const prefix = list[0].charAt(0) === "-" ? "-" : "";
-  let num = prefix ? list[0].slice(1) : list[0];
-  let result = "";
-  while (num.length > 3) {
-    result = `,${num.slice(-3)}${result}`;
-    num = num.slice(0, num.length - 3);
-  }
-  if (num) {
-    result = num + result;
-  }
-  return `${prefix}${result}${list[1] ? `.${list[1]}` : ""}`;
-}
-
-const selectAfter = (
-  <Select defaultValue="euro" style={{ width: 60 }}>
-    <Option value="euro">
-      <Icon type="euro" style={{ fontSize: "14px" }} />
-    </Option>
-    <Option value="dollar">
-      <Icon type="dollar" style={{ fontSize: "14px" }} />
-    </Option>
-    <Option value="pound">
-      <Icon type="pound" style={{ fontSize: "14px" }} />
-    </Option>
-  </Select>
-);
 
 class CreateGroupForm extends React.Component {
   constructor(props) {
@@ -93,18 +65,13 @@ class CreateGroupForm extends React.Component {
       title,
       onChangeTitle,
       onChangeDescription,
-      description
+      description,
+      amount,
+      handleAmountChange
     } = this.props;
 
     const { value } = this.state;
 
-    const numberTitle = value ? (
-      <span className="numeric-input-title">
-        {value !== "-" ? formatNumber(value) : "-"}
-      </span>
-    ) : (
-      "Input a number"
-    );
     return (
       <Form>
         <FormItem>
@@ -123,16 +90,9 @@ class CreateGroupForm extends React.Component {
         </FormItem>
         <Divider type="horizontal" />
 
-          <FormItem>
-            <Input
-              value={this.state.value}
-              onChange={this.onChange}
-              onBlur={this.onBlur}
-              placeholder="Input amount"
-              maxLength="10"
-              addonAfter={selectAfter}
-            />
-          </FormItem>
+        <FormItem>
+          <AddAmount value={amount} handleChange={handleAmountChange} />
+        </FormItem>
       </Form>
     );
   }

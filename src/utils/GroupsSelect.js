@@ -6,15 +6,15 @@ import { Select, Spin } from "antd";
 const Option = Select.Option;
 
 const GROUPS = gql`
-  query Groups($title: String!) {
-    groups(title: $title) {
+  query {
+    groups {
       title
       id
     }
   }
 `;
 
-export default class AddUser extends React.Component {
+export default class GroupSelect extends React.Component {
   render() {
     const { value, searchValue, handleChange, handleSearch, skip } = this.props;
     const where = {
@@ -37,8 +37,8 @@ export default class AddUser extends React.Component {
               : [];
             return (
               <Select
-                value={values}
-                placeholder={"Search for friends to add"}
+                value={value}
+                placeholder={"Search for group"}
                 style={{ width: "100%", marginBottom: "24px" }}
                 onSearch={handleSearch}
                 labelInValue
@@ -47,7 +47,7 @@ export default class AddUser extends React.Component {
                 notFoundContent={
                   loading ? (
                     <Spin size="small" />
-                  ) : data.users.length === 0 ? (
+                  ) : options.length === 0 ? (
                     <span>Nothing found.</span>
                   ) : null
                 }
@@ -55,7 +55,7 @@ export default class AddUser extends React.Component {
                 {options.length ? (
                   options.map((d, index) => (
                     <Option key={d.id} value={d.id}>
-                      {d.name}
+                      {d.title}
                     </Option>
                   ))
                 ) : (

@@ -35,3 +35,7 @@ header:before {
     transform: none;
   }
 }
+
+.menu-list-avatar .anticon {
+  margin: 0;
+}

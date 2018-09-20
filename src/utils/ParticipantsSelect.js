@@ -21,11 +21,13 @@ export default class AddUser extends React.Component {
       searchValue,
       handleChange,
       handleSearch,
-      skip
+      skip,
+      include
     } = this.props;
     const where = {
       name_contains: searchValue,
-      id_not_in: skip
+      id_not_in: skip,
+      id_in: include
     };
 
     return (
@@ -50,13 +52,11 @@ export default class AddUser extends React.Component {
                 onSearch={handleSearch}
                 labelInValue
                 filterOption={false}
-                onChange={value =>
-                  handleChange(value, data.users ? data.users : [])
-                }
+                onChange={handleChange}
                 notFoundContent={
                   loading ? (
                     <Spin size="small" />
-                  ) : data.users.length === 0 ? (
+                  ) : options.length === 0 ? (
                     <span>Nothing found.</span>
                   ) : null
                 }

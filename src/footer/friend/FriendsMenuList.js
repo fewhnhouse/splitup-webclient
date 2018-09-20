@@ -4,7 +4,6 @@ import gql from "graphql-tag";
 import { List, Avatar, Skeleton } from "antd";
 import { Link } from "react-router-dom";
 import score from "string-score";
-import "./MenuList.css";
 
 const FRIENDS = gql`
   query {
