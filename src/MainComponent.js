@@ -13,6 +13,7 @@ import {
   Link,
   Redirect
 } from "react-router-dom";
+import TestPage from "./pages/TestPage";
 
 const { Footer, Header } = Layout;
 
@@ -174,6 +175,7 @@ class Main extends React.Component {
             />
             <Route path="/about" component={About} />
             <Route path="/login" component={Login} />
+            <Route path="/test" component={TestPage}/>
             <PrivateRoute
               path="/groups"
               loggedIn={loggedIn}

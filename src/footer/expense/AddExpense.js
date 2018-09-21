@@ -152,6 +152,10 @@ export default class AddExpense extends React.Component {
     }));
   };
 
+  submit = () => {
+    console.log("submit");
+  }
+
   isNextEnabled = () => {
     const {
       step,
@@ -159,16 +163,17 @@ export default class AddExpense extends React.Component {
       title,
       participants,
       standaloneParticipants,
-      group
+      group,
+      amount
     } = this.state;
     let test = false;
     switch (step) {
       case 0:
-        test = description && title;
+        test = description && title && amount;
         break;
       case 1:
         test =
-          (participants.length && group.key) || standaloneParticipants.length;
+          ((participants.length && group.key) || standaloneParticipants.length) && amount;
         break;
       default:
         break;
@@ -264,7 +269,7 @@ export default class AddExpense extends React.Component {
                   </Button>
                 )
               ) : (
-                <Button key="submit" type="primary" onClick={this.next}>
+                <Button key="submit" type="primary" onClick={this.submit}>
                   Submit
                 </Button>
               )
