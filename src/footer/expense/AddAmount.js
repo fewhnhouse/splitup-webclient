@@ -6,31 +6,30 @@ const Option = Select.Option;
 export default class AddAmount extends React.Component {
   _onChange = e => {
     const { value } = e.target;
-    const { handleChange } = this.props;
+    const { setAmount } = this.props;
     const reg = /^(0|[1-9]\d*)(\.\d*)?$/;
     if ((!isNaN(value) && reg.test(value)) || value === "") {
-      handleChange(value);
+      setAmount(value);
     }
   };
 
   _onBlur = () => {
-    const { onBlur, handleChange, value } = this.props;
-    const index = value.indexOf(".");
-    if (index === value.length - 1) {
-      handleChange(value.slice(0, -1));
+    const { onBlur, setAmount, amount } = this.props;
+    const index = amount.indexOf(".");
+    if (index === amount.length - 1) {
+      setAmount(amount.slice(0, -1));
     } else if (index > -1) {
-      handleChange(value.slice(0, index + 3));
+      setAmount(amount.slice(0, index + 3));
     }
     if (onBlur) {
       this.onBlur();
     }
   };
   render() {
-    const { value } = this.props;
-    console.log(value, this.props.handleChange);
+    const { amount } = this.props;
     return (
       <Input
-        value={value}
+        value={amount}
         onChange={this._onChange}
         onBlur={this._onBlur}
         placeholder="Input amount"

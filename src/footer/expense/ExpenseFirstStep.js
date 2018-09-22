@@ -9,13 +9,12 @@ import {
   Divider,
   Steps
 } from "antd";
-import AddAmount from "./AddAmount";
+import AddAmount from "./AddAmountContainer";
 
 const FormItem = Form.Item;
 const { TextArea } = Input;
 const TabPane = Tabs.TabPane;
 const Option = Select.Option;
-
 
 class CreateGroupForm extends React.Component {
   constructor(props) {
@@ -28,59 +27,30 @@ class CreateGroupForm extends React.Component {
     };
   }
 
-  onChangeTab(key) {
-    console.log(key);
-  }
-
-  onChange = e => {
-    const { value } = e.target;
-    const reg = /^(0|[1-9]\d*)(\.\d*)?$/;
-    if ((!isNaN(value) && reg.test(value)) || value === "") {
-      this.setState({
-        value
-      });
-    }
+  _onChangeTitle = e => {
+    this.props.setTitle(e.target.value);
   };
 
-  onBlur = () => {
-    const { onBlur } = this.props;
-    const { value } = this.state;
-    const index = value.indexOf(".");
-    if (index === value.length - 1) {
-      this.setState({
-        value: value.slice(0, -1)
-      });
-    } else if (index > -1) {
-      this.setState({
-        value: value.slice(0, index + 3)
-      });
-    }
-    if (onBlur) {
-      this.onBlur();
-    }
+  _onChangeDescription = e => {
+    this.props.setDescription(e.target.value);
   };
 
   render() {
-    const {
-      title,
-      onChangeTitle,
-      onChangeDescription,
-      description,
-      amount,
-      handleAmountChange
-    } = this.props;
-
-    const { value } = this.state;
+    const { title, description } = this.props;
 
     return (
       <Form>
         <FormItem>
-          <Input value={title} onChange={onChangeTitle} placeholder="Title" />
+          <Input
+            value={title}
+            onChange={this._onChangeTitle}
+            placeholder="Title"
+          />
         </FormItem>
         <FormItem>
           <TextArea
             value={description}
-            onChange={onChangeDescription}
+            onChange={this._onChangeDescription}
             placeholder="Description"
           />
         </FormItem>
@@ -91,7 +61,7 @@ class CreateGroupForm extends React.Component {
         <Divider type="horizontal" />
 
         <FormItem>
-          <AddAmount value={amount} handleChange={handleAmountChange} />
+          <AddAmount />
         </FormItem>
       </Form>
     );

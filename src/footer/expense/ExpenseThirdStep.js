@@ -1,11 +1,9 @@
 import React from "react";
 import { Form, Select, Icon, Divider, Checkbox, Input, Tabs, List } from "antd";
-import AddAmount from "./AddAmount";
+import AddAmount from "./AddAmountContainer";
 import Dinero from "dinero.js";
 
-const CheckboxGroup = Checkbox.Group;
 const Option = Select.Option;
-const FormItem = Form.Item;
 const TabPane = Tabs.TabPane;
 const ListItem = List.Item;
 
@@ -38,31 +36,56 @@ class CreateGroupForm extends React.Component {
   onChange = (e, index) => {
     let currentChecked = this.state.checked;
     currentChecked[index] = e.target.checked;
-    this.setState({
-      checked: currentChecked
-    });
+    this.setState(
+      {
+        checked: currentChecked
+      },
+      () => this.setSplits()
+    );
   };
 
-  componentDidMount() {
-    this.setState({
-      checked: this.props.participants.map(el => true)
-    });
-  }
-
-  render() {
-    const { participants, amount, handleAmountChange } = this.props;
-    const integerAmount = parseInt(parseFloat(amount) * 100);
-    const price = Dinero({ amount: integerAmount, currency: "EUR" });
-    let split = [];
+  setSplits = () => {
+    const { amount, participants, setSplits } = this.props;
     const splitArray = this.state.checked
       .filter(el => el === true)
       .map(el => 1);
     try {
+      const integerAmount = parseInt(parseFloat(amount) * 100);
+      const price = Dinero({ amount: integerAmount, currency: "EUR" });
+
+      const split = price.allocate(splitArray);
+      const parentSplits = split.map((el, index) => {
+        return { amount: el.getAmount(), id: participants[index].key };
+      });
+      setSplits(parentSplits);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  componentDidMount() {
+    this.setState(
+      {
+        checked: this.props.participants.map(el => true)
+      },
+      () => this.setSplits()
+    );
+  }
+
+  render() {
+    const { participants, amount, handleAmountChange, setSplits } = this.props;
+    const integerAmount = parseInt(parseFloat(amount) * 100);
+    let split = [];
+
+    try {
+      const splitArray = this.state.checked
+        .filter(el => el === true)
+        .map(el => 1);
+      const price = Dinero({ amount: integerAmount, currency: "EUR" });
       split = price.allocate(splitArray);
     } catch (error) {
       console.error(error);
     }
-    split.forEach(el => console.log(el.getAmount()));
     return (
       <Tabs defaultActiveKey="1" onChange={this.onChangeTab}>
         <TabPane tab="Split Equally" key="1">
@@ -103,7 +126,7 @@ class CreateGroupForm extends React.Component {
           />
 
           <Divider type="horizontal" />
-          <AddAmount value={amount} handleChange={handleAmountChange} />
+          <AddAmount />
         </TabPane>
         <TabPane tab="Split exactly" key="2" />
         <TabPane tab="Split percentually" key="3" />

@@ -4,7 +4,7 @@ import GroupsSelect from "../../utils/GroupsSelect";
 import ParticipantsSelect from "../../utils/ParticipantsSelect";
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
-import AddAmount from "./AddAmount";
+import AddAmount from "./AddAmountContainer";
 
 const Option = Select.Option;
 
@@ -38,7 +38,7 @@ const FormItem = Form.Item;
 const TabPane = Tabs.TabPane;
 
 class CreateGroupForm extends React.Component {
-  onChangeTab = (key) => {
+  onChangeTab = key => {
     const {
       handleStandaloneParticipantsChange,
       handleParticipantsChange,
@@ -46,35 +46,64 @@ class CreateGroupForm extends React.Component {
     } = this.props;
     handleStandaloneParticipantsChange([]);
     handleParticipantsChange([]);
-    handleGroupChange({key: "", label: ""});
-  }
+    handleGroupChange({ key: "", label: "" });
+  };
+
+  state = {
+    searchGroup: "",
+    searchParticipants: "",
+    searchStandaloneParticipants: ""
+  };
+
+  _handleGroupSearch = e => {
+    this.setState({
+      searchGroup: e.target.value
+    });
+  };
+
+  _handleParticipantsSearch = e => {
+    this.setState({
+      searchParticipants: e.target.value
+    });
+  };
+
+  _handleStandaloneParticipantsSearch = e => {
+    this.setState({
+      searchStandaloneParticipants: e.target.value
+    });
+  };
+
+  _handleGroupChange = group => {
+    this.props.setGroup(group);
+    this.props.setParticipants([]);
+    this.setState({
+      searchParticipants: ""
+    });
+  };
+
+  _handleParticipantsChange = participants => {
+    this.props.setParticipants(participants);
+  };
+
+  _handleStandaloneParticipantsChange = standaloneParticipants => {
+    this.props.setStandaloneParticipants(standaloneParticipants);
+  };
 
   render() {
+    const { group, participants, standaloneParticipants } = this.props;
     const {
-      group,
       searchGroup,
-      participants,
       searchParticipants,
-      handleGroupChange,
-      handleParticipantsChange,
-      handleGroupSearch,
-      handleParticipantsSearch,
-      handleStandaloneParticipantsChange,
-      handleStandaloneParticipantsSearch,
-      standaloneParticipants,
-      standaloneSearchParticipants,
-      amount,
-      handleAmountChange
-
-    } = this.props;
+      searchStandaloneParticipants
+    } = this.state;
     return (
       <Form>
         <Tabs defaultActiveKey="1" onChange={this.onChangeTab}>
           <TabPane tab="Group Expense" key="1">
             <FormItem>
               <GroupsSelect
-                handleChange={handleGroupChange}
-                handleSearch={handleGroupSearch}
+                handleChange={this._handleGroupChange}
+                handleSearch={this._handleGroupSearch}
                 value={group}
                 searchValue={searchGroup}
               />
@@ -90,8 +119,8 @@ class CreateGroupForm extends React.Component {
                     return (
                       <ParticipantsSelect
                         disabled={group.key === ""}
-                        handleChange={handleParticipantsChange}
-                        handleSearch={handleParticipantsSearch}
+                        handleChange={this._handleParticipantsChange}
+                        handleSearch={this._handleParticipantsSearch}
                         values={participants}
                         searchValue={searchParticipants}
                         include={
@@ -110,10 +139,10 @@ class CreateGroupForm extends React.Component {
           <TabPane tab="Standalone Expense" key="2">
             <FormItem>
               <ParticipantsSelect
-                handleChange={handleStandaloneParticipantsChange}
-                handleSearch={handleStandaloneParticipantsSearch}
+                handleChange={this._handleStandaloneParticipantsChange}
+                handleSearch={this._handleStandaloneParticipantsSearch}
                 values={standaloneParticipants}
-                searchValue={standaloneSearchParticipants}
+                searchValue={searchStandaloneParticipants}
                 placeholder="Add participants"
               />
             </FormItem>
@@ -122,8 +151,7 @@ class CreateGroupForm extends React.Component {
         <Divider type="horizontal" />
 
         <FormItem>
-        <AddAmount value={amount} handleChange={handleAmountChange} />
-
+          <AddAmount />
         </FormItem>
       </Form>
     );
