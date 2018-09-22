@@ -7,7 +7,7 @@ import {
   setDescription
 } from "../../redux/actions";
 
-const mapStateToProps = (state, props) => {
+const mapStateToProps = state => {
   const { title, description } = state.expenses;
   return {
     user: state.me,
@@ -16,22 +16,12 @@ const mapStateToProps = (state, props) => {
   };
 };
 
-const mapDispatchToProps = (dispatch, props) => {
-  return {
-    setAmount(amount) {
-      dispatch(setAmount(amount));
-    },
-    setTitle(title) {
-      dispatch(setTitle(title));
-    },
-    setDate(date) {
-      dispatch(setDate(date));
-    },
-    setDescription(description) {
-      dispatch(setDescription(description));
-    }
-  };
-};
+const mapDispatchToProps = dispatch => ({
+  setAmount: amount => dispatch(setAmount(amount)),
+  setTitle: title => dispatch(setTitle(title)),
+  setDate: date => dispatch(setDate(date)),
+  setDescription: description => dispatch(setDescription(description))
+});
 
 export default connect(
   mapStateToProps,

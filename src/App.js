@@ -9,10 +9,14 @@ import { ApolloLink } from "apollo-link";
 import { Provider } from "react-redux";
 import { createStore } from "redux";
 import reducers from "./redux/reducers";
+import { devToolsEnhancer } from "redux-devtools-extension";
 
 import Main from "./MainContainer";
 
-const store = createStore(reducers);
+const store = createStore(
+  reducers,
+  devToolsEnhancer() // Specify custom devTools options
+);
 
 const uploadLink = createUploadLink({
   uri: "http://localhost:4000",

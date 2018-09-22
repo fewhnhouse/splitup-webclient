@@ -2,6 +2,7 @@ import MainComponent from "./MainComponent";
 import { connect } from "react-redux";
 import { addMe } from "./redux/actions";
 
+
 const mapStateToProps = (state, props) => {
   return {
     user: state.me

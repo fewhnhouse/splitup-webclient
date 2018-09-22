@@ -12,7 +12,8 @@ import {
   SET_STEP,
   SET_DESCRIPTION,
   SET_TITLE,
-  SET_DATE
+  SET_DATE,
+  RESET_EXPENSE
 } from "./actionTypes";
 
 const initialMe = {
@@ -59,6 +60,8 @@ function me(state = initialMe, action) {
 
 function expenses(state = initialExpenses, action) {
   switch (action.type) {
+    case RESET_EXPENSE:
+      return initialExpenses;
     case SET_AMOUNT:
       return { ...state, amount: action.amount };
     case SET_GROUP:

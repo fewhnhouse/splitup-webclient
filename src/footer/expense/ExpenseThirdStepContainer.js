@@ -7,8 +7,13 @@ import {
   setSplits
 } from "../../redux/actions";
 
-const mapStateToProps = (state, props) => {
-  const { splits, participants, standaloneParticipants, amount } = state.expenses;
+const mapStateToProps = state => {
+  const {
+    splits,
+    participants,
+    standaloneParticipants,
+    amount
+  } = state.expenses;
   return {
     user: state.me,
     splits,
@@ -18,13 +23,9 @@ const mapStateToProps = (state, props) => {
   };
 };
 
-const mapDispatchToProps = (dispatch, props) => {
-  return {
-    setSplits(splits) {
-      dispatch(setSplits(splits));
-    }
-  };
-};
+const mapDispatchToProps = dispatch => ({
+  setSplits: splits => dispatch(setSplits(splits))
+});
 
 export default connect(
   mapStateToProps,

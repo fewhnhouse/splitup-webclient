@@ -6,7 +6,7 @@ import {
   setGroup
 } from "../../redux/actions";
 
-const mapStateToProps = (state, props) => {
+const mapStateToProps = state => {
   const { group, participants, standaloneParticipants } = state.expenses;
   return {
     user: state.me,
@@ -16,19 +16,12 @@ const mapStateToProps = (state, props) => {
   };
 };
 
-const mapDispatchToProps = (dispatch, props) => {
-  return {
-    setParticipants(participants) {
-      dispatch(setParticipants(participants));
-    },
-    setStandaloneParticipants(title) {
-      dispatch(setStandaloneParticipants(title));
-    },
-    setGroup(date) {
-      dispatch(setGroup(date));
-    }
-  };
-};
+const mapDispatchToProps = dispatch => ({
+  setParticipants: participants => dispatch(setParticipants(participants)),
+  setStandaloneParticipants: title =>
+    dispatch(setStandaloneParticipants(title)),
+  setGroup: date => dispatch(setGroup(date))
+});
 
 export default connect(
   mapStateToProps,

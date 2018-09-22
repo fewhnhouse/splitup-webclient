@@ -11,9 +11,13 @@ import {
   SET_DESCRIPTION,
   SET_TITLE,
   SET_DATE,
-  SET_SPLITS
+  SET_SPLITS,
+  RESET_EXPENSE
 } from "./actionTypes";
 
+export function resetExpense() {
+  return { type: RESET_EXPENSE };
+}
 export function addGroup(id) {
   return { type: ADD_GROUP, id };
 }

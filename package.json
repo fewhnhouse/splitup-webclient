@@ -35,5 +35,8 @@
     "build": "react-app-rewired build",
     "test": "react-app-rewired test --env=jsdom",
     "eject": "react-scripts eject"
+  },
+  "devDependencies": {
+    "redux-devtools-extension": "^2.13.5"
   }
 }
