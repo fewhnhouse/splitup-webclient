@@ -8,9 +8,17 @@ import ExpenseThirdStep from "./ExpenseThirdStepContainer";
 
 const { Step } = Steps;
 
-const CREATE_EXPENSE = gql`
+const CREATE_LINKED_EXPENSE = gql`
   mutation CreateLinkedExpense($input: CreateLinkedExpenseInput!) {
     createLinkedExpense(input: $input) {
+      id
+    }
+  }
+`;
+
+const CREATE_EXPENSE = gql`
+  mutation CreateExpense($input: CreateExpenseInput!) {
+    createExpense(input: $input) {
       id
     }
   }
@@ -34,19 +42,33 @@ export default class AddExpense extends React.Component {
       description,
       title,
       participants,
+      standaloneParticipants,
       group,
       amount,
-      resetExpense
+      resetExpense,
+      isLinked
     } = this.props;
     handleOk();
-    const input = {
-      title,
-      description,
-      groupId: group.key,
-      currency: "EURO",
-      amount,
-      participants: participants.map(val => val.key)
-    };
+    let input = {};
+    if (isLinked) {
+      input = {
+        title,
+        description,
+        groupId: group.key,
+        currency: "EURO",
+        amount,
+        participants: participants.map(val => val.key)
+      };
+    } else {
+      input = {
+        title,
+        description,
+        currency: "EURO",
+        amount,
+        participants: standaloneParticipants.map(val => val.key)
+      };
+    }
+
     const then = await createExpense({
       variables: {
         input
@@ -72,7 +94,7 @@ export default class AddExpense extends React.Component {
   };
 
   render() {
-    const { visible, isNextEnabled, step, handleOk } = this.props;
+    const { visible, isNextEnabled, step, handleOk, isLinked } = this.props;
 
     const steps = [
       {
@@ -104,7 +126,9 @@ export default class AddExpense extends React.Component {
           step < 2 ? (
             <NextButton next={isNextEnabled} nextTab={this.nextTab} />
           ) : (
-            <Mutation mutation={CREATE_EXPENSE}>
+            <Mutation
+              mutation={isLinked ? CREATE_LINKED_EXPENSE : CREATE_EXPENSE}
+            >
               {(createExpense, { data }) => (
                 <Button
                   key="submit"

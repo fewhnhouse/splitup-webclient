@@ -44,9 +44,9 @@ class CreateGroupForm extends React.Component {
       handleParticipantsChange,
       handleGroupChange
     } = this.props;
-    handleStandaloneParticipantsChange([]);
-    handleParticipantsChange([]);
-    handleGroupChange({ key: "", label: "" });
+    this._handleParticipantsChange([]);
+    this._handleStandaloneParticipantsChange([]);
+    this._handleGroupChange({ key: "", label: "" });
   };
 
   state = {

@@ -59,7 +59,8 @@ const mapStateToProps = state => {
     date,
     splits,
     step,
-    isNextEnabled: isNextEnabled(state.expenses)
+    isNextEnabled: isNextEnabled(state.expenses),
+    isLinked: group.key !== ""
   };
 };
 

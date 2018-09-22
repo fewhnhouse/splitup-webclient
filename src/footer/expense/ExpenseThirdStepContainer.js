@@ -12,14 +12,16 @@ const mapStateToProps = state => {
     splits,
     participants,
     standaloneParticipants,
-    amount
+    amount,
+    group
   } = state.expenses;
   return {
     user: state.me,
     splits,
     participants,
     standaloneParticipants,
-    amount
+    amount,
+    isLinked: group.key !== ""
   };
 };
 

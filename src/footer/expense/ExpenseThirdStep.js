@@ -73,7 +73,13 @@ class CreateGroupForm extends React.Component {
   }
 
   render() {
-    const { participants, amount, handleAmountChange, setSplits } = this.props;
+    const {
+      participants,
+      standaloneParticipants,
+      isLinked,
+      amount,
+      setSplits
+    } = this.props;
     const integerAmount = parseInt(parseFloat(amount) * 100);
     let split = [];
 
@@ -94,7 +100,7 @@ class CreateGroupForm extends React.Component {
               maxHeight: "200px",
               overflowY: "scroll"
             }}
-            dataSource={participants}
+            dataSource={isLinked ? participants : standaloneParticipants}
             renderItem={(item, index) => {
               return (
                 <ListItem>
