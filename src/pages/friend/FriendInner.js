@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, List } from "antd";
+import { Button } from "antd";
 import styled from "styled-components";
 
 const FriendInner = ({ onClickMember, onClickSettle, onClickExpense }) => (
@@ -21,10 +21,5 @@ const OuterContainer = styled.div`
   flex-direction: row;
 `;
 
-const InnerContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-right: 24px;
-`;
 
 export default FriendInner;

@@ -42,7 +42,6 @@ export default class AddExpense extends React.Component {
       description,
       title,
       participants,
-      standaloneParticipants,
       group,
       amount,
       resetExpense,

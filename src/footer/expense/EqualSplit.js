@@ -1,6 +1,14 @@
 import React from "react";
 import Dinero from "dinero.js";
-import { List, Checkbox, Input, InputNumber, Icon, Button } from "antd";
+import {
+  List,
+  Checkbox,
+  Input,
+  InputNumber,
+  Icon,
+  Button,
+  Progress
+} from "antd";
 
 const ListItem = List.Item;
 export default class EqualSplit extends React.Component {
@@ -55,7 +63,7 @@ export default class EqualSplit extends React.Component {
       .filter(el => el === true)
       .map(el => 1);
     try {
-      const integerAmount = parseInt(parseFloat(amount) * 100);
+      const integerAmount = parseInt(parseFloat(amount) * 100, 10);
       const price = Dinero({ amount: integerAmount, currency: "EUR" });
       const split = price.allocate(splitArray);
       const parentSplits = split.map((el, index) => {
@@ -80,7 +88,6 @@ export default class EqualSplit extends React.Component {
   };
 
   onNumberInputChange = (e, index) => {
-    console.log(e);
     let currentNumberInputs = this.state.numberInputs;
     currentNumberInputs[index] = e;
     this.setState({
@@ -88,10 +95,28 @@ export default class EqualSplit extends React.Component {
     });
   };
 
+  checkPercentageSum = () => {
+    return this.state.numberInputs.length
+      ? this.state.numberInputs.reduce((acc, curr) => acc + curr)
+      : 0;
+  };
+
+  checkNumberSum = () => {
+    const { amount } = this.props;
+    if(amount === "") {
+        return 0;
+    }
+    const sum = this.state.inputs.length
+      ? this.state.inputs.reduce((acc, curr) => parseFloat(acc) + parseFloat(curr))
+      : 0;
+      const percent =  sum / parseFloat(amount) * 100;
+    return percent.toFixed(2)
+  };
+
   render() {
     const { participants, amount, splitKey } = this.props;
 
-    const integerAmount = parseInt(parseFloat(amount) * 100);
+    const integerAmount = parseInt(parseFloat(amount) * 100, 10);
     let split = [];
 
     try {
@@ -105,128 +130,134 @@ export default class EqualSplit extends React.Component {
     }
 
     return (
-      <List
-        style={{
-          maxHeight: "200px",
-          overflowY: "scroll"
-        }}
-        dataSource={participants}
-        renderItem={(item, index) => {
-          console.log(split, index);
-          return (
-            <ListItem>
-              <div
-                style={{
-                  display: "flex",
-                  width: "100%",
-                  flexDirection: "row",
-                  justifyContent: "space-between"
-                }}
-              >
+      <div>
+        <List
+          style={{
+            maxHeight: "200px",
+            overflowY: "scroll"
+          }}
+          dataSource={participants}
+          renderItem={(item, index) => {
+            return (
+              <ListItem>
                 <div
                   style={{
                     display: "flex",
+                    width: "100%",
                     flexDirection: "row",
-                    justifyContent: "flex-start"
+                    justifyContent: "space-between"
                   }}
                 >
-                  <Checkbox
-                    checked={this.state.checked[index]}
-                    onChange={checked => this.onChange(checked, index)}
-                  />
-                  <h2 style={{ marginLeft: "20px" }}>{item.label}</h2>
-                </div>
-                {splitKey === "1" ? (
-                  <h2 style={{ position: "absolute", right: "0px" }}>
-                    {this.state.checked[index]
-                      ? Dinero({
-                          amount: split[0] ? split[0].getAmount() : 0,
-                          currency: "EUR"
-                        }).toFormat("$0,0.00")
-                      : Dinero({ amount: 0, currency: "EUR" }).toFormat(
-                          "$0,0.00"
-                        )}
-                  </h2>
-                ) : splitKey === "2" ? (
-                  <Input
-                    style={{
-                      position: "absolute",
-                      right: "0px",
-                      width: "150px"
-                    }}
-                    addonAfter={<Icon type="euro" />}
-                    value={this.state.inputs[index]}
-                    onChange={value => this.onInputChange(value, index)}
-                    onBlur={() => this._onBlur(index)}
-                  />
-                ) : (
                   <div
                     style={{
                       display: "flex",
-                      justifyContent: "flex-end",
-                      width: "60%"
+                      flexDirection: "row",
+                      justifyContent: "flex-start"
                     }}
                   >
+                    <Checkbox
+                      checked={this.state.checked[index]}
+                      onChange={checked => this.onChange(checked, index)}
+                    />
+                    <h2 style={{ marginLeft: "20px" }}>{item.label}</h2>
+                  </div>
+                  {splitKey === "1" ? (
+                    <h2 style={{ position: "absolute", right: "0px" }}>
+                      {this.state.checked[index]
+                        ? Dinero({
+                            amount: split[0] ? split[0].getAmount() : 0,
+                            currency: "EUR"
+                          }).toFormat("$0,0.00")
+                        : Dinero({ amount: 0, currency: "EUR" }).toFormat(
+                            "$0,0.00"
+                          )}
+                    </h2>
+                  ) : splitKey === "2" ? (
+                    <Input
+                      style={{
+                        position: "absolute",
+                        right: "0px",
+                        width: "150px"
+                      }}
+                      addonAfter={<Icon type="euro" />}
+                      value={this.state.inputs[index]}
+                      onChange={value => this.onInputChange(value, index)}
+                      onBlur={() => this._onBlur(index)}
+                    />
+                  ) : (
                     <div
                       style={{
                         display: "flex",
-                        overflow: "auto",
-                        maxWidth: "200px",
-                        paddingBottom: "10px"
+                        justifyContent: "flex-end",
+                        width: "60%"
                       }}
                     >
-                      <Button
-                        type="primary"
-                        onClick={() => this.onNumberInputChange(10, index)}
-                        ghost
-                        style={{ marginLeft: "20px" }}
+                      <div
+                        style={{
+                          display: "flex",
+                          overflow: "auto",
+                          maxWidth: "200px",
+                          paddingBottom: "10px"
+                        }}
                       >
-                        10%
-                      </Button>
-                      <Button
-                        onClick={() => this.onNumberInputChange(25, index)}
-                        type="primary"
-                        ghost
-                        style={{ marginLeft: "20px" }}
-                      >
-                        25%
-                      </Button>
-                      <Button
-                        onClick={() => this.onNumberInputChange(50, index)}
-                        type="primary"
-                        ghost
-                        style={{ marginLeft: "20px" }}
-                      >
-                        50%
-                      </Button>
-                      <Button
-                        onClick={() => this.onNumberInputChange(75, index)}
-                        type="primary"
-                        ghost
-                        style={{ marginLeft: "20px" }}
-                      >
-                        75%
-                      </Button>
-                    </div>
+                        <Button
+                          type="primary"
+                          onClick={() => this.onNumberInputChange(10, index)}
+                          ghost
+                          style={{ marginLeft: "20px" }}
+                        >
+                          10%
+                        </Button>
+                        <Button
+                          onClick={() => this.onNumberInputChange(25, index)}
+                          type="primary"
+                          ghost
+                          style={{ marginLeft: "20px" }}
+                        >
+                          25%
+                        </Button>
+                        <Button
+                          onClick={() => this.onNumberInputChange(50, index)}
+                          type="primary"
+                          ghost
+                          style={{ marginLeft: "20px" }}
+                        >
+                          50%
+                        </Button>
+                        <Button
+                          onClick={() => this.onNumberInputChange(75, index)}
+                          type="primary"
+                          ghost
+                          style={{ marginLeft: "20px" }}
+                        >
+                          75%
+                        </Button>
+                      </div>
 
-                    <InputNumber
-                      min={0}
-                      max={100}
-                      formatter={value => `${value}%`}
-                      style={{
-                        marginLeft: "20px",
-                        width: "75px"
-                      }}
-                      value={this.state.numberInputs[index]}
-                      onChange={value => this.onNumberInputChange(value, index)}
-                    />
-                  </div>
-                )}
-              </div>
-            </ListItem>
-          );
-        }}
-      />
+                      <InputNumber
+                        min={0}
+                        max={100}
+                        formatter={value => `${value}%`}
+                        style={{
+                          marginLeft: "20px",
+                          width: "75px"
+                        }}
+                        value={this.state.numberInputs[index]}
+                        onChange={value =>
+                          this.onNumberInputChange(value, index)
+                        }
+                      />
+                    </div>
+                  )}
+                </div>
+              </ListItem>
+            );
+          }}
+        />
+        {splitKey !== "1" ? (
+          <Progress percent={ splitKey === "2" ? this.checkNumberSum() : this.checkPercentageSum()} />
+        ) : null}
+      </div>
     );
   }
 }

@@ -68,7 +68,7 @@ class Friend extends React.Component {
             return <div>Error.</div>;
           } else {
             const { user } = data;
-            const { name, email, createdAt, groups } = user;
+            const { name, email, createdAt } = user;
             const date = new Date(createdAt);
             const dateString = `${date.getDate()}. ${
               months[date.getMonth()]

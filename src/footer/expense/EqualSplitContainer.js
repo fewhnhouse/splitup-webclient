@@ -7,10 +7,7 @@ const mapStateToProps = state => {
   return {
     user: state.me,
     splits,
-    participants: [
-      { key: "123123123", label: "asdasd" },
-      { key: "12312314", label: "def" }
-    ],
+    participants,
     amount,
     isLinked: group.key !== ""
   };

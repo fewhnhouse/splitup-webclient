@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, List } from "antd";
+import {  List } from "antd";
 import { Link } from "react-router-dom";
 
 const Item = List.Item;

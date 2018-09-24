@@ -1,19 +1,12 @@
 import React from "react";
-import { Select, Divider, Radio } from "antd";
+import { Divider, Radio } from "antd";
 import AddAmount from "./AddAmountContainer";
 import EqualSplit from "./EqualSplitContainer";
-import Dinero from "dinero.js";
 
-const Option = Select.Option;
 
 class CreateGroupForm extends React.Component {
-  constructor(props) {
-    super(props);
-  }
 
-  onChangeTab(key) {
-    console.log(key);
-  }
+
 
   state = {
     checked: [],
@@ -27,9 +20,6 @@ class CreateGroupForm extends React.Component {
   };
 
   render() {
-    const {
-      amount,
-    } = this.props;
     
     return (
       <div>

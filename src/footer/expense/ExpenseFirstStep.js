@@ -3,18 +3,13 @@ import {
   Form,
   Input,
   DatePicker,
-  Select,
-  Tabs,
-  Icon,
   Divider,
-  Steps
 } from "antd";
 import AddAmount from "./AddAmountContainer";
 
 const FormItem = Form.Item;
 const { TextArea } = Input;
-const TabPane = Tabs.TabPane;
-const Option = Select.Option;
+
 
 class CreateGroupForm extends React.Component {
   constructor(props) {

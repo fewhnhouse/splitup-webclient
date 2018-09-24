@@ -3,15 +3,7 @@ import { connect } from "react-redux";
 import { setStep, resetExpense } from "../../redux/actions";
 
 const isNextEnabled = expenses => {
-  const {
-    step,
-    participants,
-    standaloneParticipants,
-    group,
-    description,
-    title,
-    amount
-  } = expenses;
+  const { step, participants, description, title, amount } = expenses;
   let result = false;
   switch (step) {
     case 0:
@@ -24,7 +16,6 @@ const isNextEnabled = expenses => {
       result = false;
       break;
   }
-  console.log(result);
   return result;
 };
 
@@ -35,7 +26,6 @@ const mapStateToProps = state => {
     amount,
     group,
     participants,
-    standaloneParticipants,
     date,
     splits,
     step

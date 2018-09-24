@@ -1,6 +1,6 @@
 import ExpenseThirdStep from "./ExpenseThirdStep";
 import { connect } from "react-redux";
-import { setParticipants, setGroup, setSplits } from "../../redux/actions";
+import { setSplits } from "../../redux/actions";
 
 const mapStateToProps = state => {
   const { splits, participants, amount, group } = state.expenses;

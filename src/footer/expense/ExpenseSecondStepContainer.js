@@ -1,17 +1,13 @@
 import ExpenseSecondStep from "./ExpenseSecondStep";
 import { connect } from "react-redux";
-import {
-  setParticipants,
-  setStandaloneParticipants,
-  setGroup
-} from "../../redux/actions";
+import { setParticipants, setGroup } from "../../redux/actions";
 
 const mapStateToProps = state => {
-  const { group, participants, standaloneParticipants } = state.expenses;
+  const { group, participants } = state.expenses;
   return {
     user: state.me,
     group,
-    participants,
+    participants
   };
 };
 

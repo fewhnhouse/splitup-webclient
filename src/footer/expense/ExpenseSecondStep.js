@@ -1,26 +1,10 @@
 import React from "react";
-import { Form, Select, Tabs, Icon, Divider, Input } from "antd";
+import { Form, Select, Tabs, Divider } from "antd";
 import GroupsSelect from "../../utils/GroupsSelect";
 import ParticipantsSelect from "../../utils/ParticipantsSelect";
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
 import AddAmount from "./AddAmountContainer";
-
-const Option = Select.Option;
-
-const selectAfter = (
-  <Select defaultValue="euro" style={{ width: 60 }}>
-    <Option value="euro">
-      <Icon type="euro" style={{ fontSize: "14px" }} />
-    </Option>
-    <Option value="dollar">
-      <Icon type="dollar" style={{ fontSize: "14px" }} />
-    </Option>
-    <Option value="pound">
-      <Icon type="pound" style={{ fontSize: "14px" }} />
-    </Option>
-  </Select>
-);
 
 const GROUP = gql`
   query Group($id: ID!) {
@@ -39,11 +23,6 @@ const TabPane = Tabs.TabPane;
 
 class CreateGroupForm extends React.Component {
   onChangeTab = key => {
-    const {
-      handleStandaloneParticipantsChange,
-      handleParticipantsChange,
-      handleGroupChange
-    } = this.props;
     this._handleParticipantsChange([]);
     this._handleGroupChange({ key: "", label: "" });
   };

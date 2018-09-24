@@ -127,7 +127,6 @@ class Group extends React.Component {
                       value={this.state.title}
                       onChange={this.onChangeTitle}
                       date={dateString}
-                      participants={participants}
                       editable={this.state.editable}
                       description={description}
                       editedDescription={this.state.description}
