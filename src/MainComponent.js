@@ -4,7 +4,7 @@ import styled from "styled-components";
 import FooterMenu from "./footer/FooterMenu";
 import Landing from "./pages/Landing";
 import Group from "./pages/group/Group";
-import Friend from './pages/friend/FriendContainer';
+import Friend from "./pages/friend/FriendContainer";
 import TopBarContainer from "./header/TopBarContainer";
 
 import {
@@ -60,7 +60,6 @@ const Groups = ({ match }) => (
     />
   </div>
 );
-
 
 const Friends = ({ match }) => (
   <div>
@@ -162,11 +161,7 @@ class Main extends React.Component {
             </Header>
           ) : null}
 
-          <Layout
-            onScroll={(detail, view) => {
-              console.log("scroll: ", detail);
-            }}
-          >
+          <Layout>
             <PublicOnlyRoute
               loggedIn={loggedIn}
               exact
@@ -175,7 +170,7 @@ class Main extends React.Component {
             />
             <Route path="/about" component={About} />
             <Route path="/login" component={Login} />
-            <Route path="/test" component={TestPage}/>
+            <Route path="/test" component={TestPage} />
             <PrivateRoute
               path="/groups"
               loggedIn={loggedIn}

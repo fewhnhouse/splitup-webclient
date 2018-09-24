@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Icon, Tabs, Skeleton } from "antd";
+import { Card, Icon, Tabs, Skeleton, Divider } from "antd";
 import History from "./History";
 import AddGroupModal from "./AddGroupModal";
 import Header from "./FriendHeader";
@@ -92,6 +92,8 @@ class Friend extends React.Component {
                       myId={this.props.user.id}
                       friendId={friendId}
                     />
+                    <Divider type="horizontal" />
+
                     <FriendInner
                       onClick={this._onClickShow}
                       myId={this.props.user.id}
