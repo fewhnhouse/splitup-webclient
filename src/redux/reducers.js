@@ -8,7 +8,6 @@ import {
   SET_AMOUNT,
   SET_GROUP,
   SET_PARTICIPANTS,
-  SET_ST_PARTICIPANTS,
   SET_STEP,
   SET_DESCRIPTION,
   SET_TITLE,
@@ -68,11 +67,6 @@ function expenses(state = initialExpenses, action) {
       return { ...state, group: action.group };
     case SET_PARTICIPANTS:
       return { ...state, participants: action.participants };
-    case SET_ST_PARTICIPANTS:
-      return {
-        ...state,
-        standaloneParticipants: action.standaloneParticipants
-      };
     case SET_STEP:
       return {
         ...state,

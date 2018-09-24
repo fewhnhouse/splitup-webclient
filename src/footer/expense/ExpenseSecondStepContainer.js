@@ -12,14 +12,11 @@ const mapStateToProps = state => {
     user: state.me,
     group,
     participants,
-    standaloneParticipants
   };
 };
 
 const mapDispatchToProps = dispatch => ({
   setParticipants: participants => dispatch(setParticipants(participants)),
-  setStandaloneParticipants: title =>
-    dispatch(setStandaloneParticipants(title)),
   setGroup: date => dispatch(setGroup(date))
 });
 

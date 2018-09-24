@@ -65,7 +65,7 @@ export default class AddExpense extends React.Component {
         description,
         currency: "EURO",
         amount,
-        participants: standaloneParticipants.map(val => val.key)
+        participants: participants.map(val => val.key)
       };
     }
 

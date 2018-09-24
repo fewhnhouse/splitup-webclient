@@ -45,7 +45,6 @@ class CreateGroupForm extends React.Component {
       handleGroupChange
     } = this.props;
     this._handleParticipantsChange([]);
-    this._handleStandaloneParticipantsChange([]);
     this._handleGroupChange({ key: "", label: "" });
   };
 
@@ -61,15 +60,9 @@ class CreateGroupForm extends React.Component {
     });
   };
 
-  _handleParticipantsSearch = e => {
+  _handleParticipantsSearch = searchParticipants => {
     this.setState({
-      searchParticipants: e.target.value
-    });
-  };
-
-  _handleStandaloneParticipantsSearch = e => {
-    this.setState({
-      searchStandaloneParticipants: e.target.value
+      searchParticipants
     });
   };
 
@@ -85,17 +78,9 @@ class CreateGroupForm extends React.Component {
     this.props.setParticipants(participants);
   };
 
-  _handleStandaloneParticipantsChange = standaloneParticipants => {
-    this.props.setStandaloneParticipants(standaloneParticipants);
-  };
-
   render() {
-    const { group, participants, standaloneParticipants } = this.props;
-    const {
-      searchGroup,
-      searchParticipants,
-      searchStandaloneParticipants
-    } = this.state;
+    const { group, participants } = this.props;
+    const { searchGroup, searchParticipants } = this.state;
     return (
       <Form>
         <Tabs defaultActiveKey="1" onChange={this.onChangeTab}>
@@ -139,10 +124,10 @@ class CreateGroupForm extends React.Component {
           <TabPane tab="Standalone Expense" key="2">
             <FormItem>
               <ParticipantsSelect
-                handleChange={this._handleStandaloneParticipantsChange}
-                handleSearch={this._handleStandaloneParticipantsSearch}
-                values={standaloneParticipants}
-                searchValue={searchStandaloneParticipants}
+                handleChange={this._handleParticipantsChange}
+                handleSearch={this._handleParticipantsSearch}
+                values={participants}
+                searchValue={searchParticipants}
                 placeholder="Add participants"
               />
             </FormItem>

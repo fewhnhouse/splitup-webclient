@@ -18,14 +18,7 @@ const isNextEnabled = expenses => {
       result = description !== "" && title !== "" && amount !== "";
       break;
     case 1:
-      if (!participants || !group) {
-        result = false;
-      } else {
-        result =
-          ((participants.length && group.key) ||
-            standaloneParticipants.length) &&
-          amount !== "";
-      }
+      result = participants.length && true;
       break;
     default:
       result = false;
@@ -55,7 +48,6 @@ const mapStateToProps = state => {
     amount,
     group,
     participants,
-    standaloneParticipants,
     date,
     splits,
     step,

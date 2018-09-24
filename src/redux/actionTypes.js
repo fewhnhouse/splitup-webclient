@@ -5,7 +5,6 @@ export const RESET_ME = "RESET_ME";
 export const SET_SPLITS = "SET_SPLITS";
 export const SET_PARTICIPANTS = "SET_PARTICIPANTS";
 export const SET_GROUP = "SET_GROUP";
-export const SET_ST_PARTICIPANTS = "SET_ST_PARTICIPANTS";
 export const SET_AMOUNT = "SET_AMOUNT";
 export const SET_STEP = "SET_STEP";
 export const SET_DESCRIPTION = "SET_DESCRIPTION";

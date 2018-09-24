@@ -1,14 +1,9 @@
 import React from "react";
-import AddExpense from "../footer/expense/AddExpense";
+import ExpenseThirdStepContainer from "../footer/expense/ExpenseThirdStepContainer";
 
 const TestPage = () => (
-  <div>
-    <AddExpense
-      visible={true}
-      handleCancel={() => {}}
-      handleOk={() => {}}
-      type={"type"}
-    />
+  <div style={{margin: "30px", padding: "30px"}}>
+    <ExpenseThirdStepContainer />
   </div>
 );
 

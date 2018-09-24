@@ -6,7 +6,6 @@ import {
   SET_AMOUNT,
   SET_GROUP,
   SET_PARTICIPANTS,
-  SET_ST_PARTICIPANTS,
   SET_STEP,
   SET_DESCRIPTION,
   SET_TITLE,
@@ -50,10 +49,6 @@ export function setSplits(splits) {
 
 export function setParticipants(participants) {
   return { type: SET_PARTICIPANTS, participants };
-}
-
-export function setStandaloneParticipants(standaloneParticipants) {
-  return { type: SET_ST_PARTICIPANTS, standaloneParticipants };
 }
 
 export function setDate(date) {

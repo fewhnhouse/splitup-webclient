@@ -1,13 +1,16 @@
-import ExpenseThirdStep from "./ExpenseThirdStep";
+import EqualSplit from "./EqualSplit";
 import { connect } from "react-redux";
-import { setParticipants, setGroup, setSplits } from "../../redux/actions";
+import { setSplits } from "../../redux/actions";
 
 const mapStateToProps = state => {
   const { splits, participants, amount, group } = state.expenses;
   return {
     user: state.me,
     splits,
-    participants,
+    participants: [
+      { key: "123123123", label: "asdasd" },
+      { key: "12312314", label: "def" }
+    ],
     amount,
     isLinked: group.key !== ""
   };
@@ -20,4 +23,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(ExpenseThirdStep);
+)(EqualSplit);
