@@ -1,12 +1,13 @@
 import React from "react";
 import Dinero from "dinero.js";
-import { List, Checkbox, Input } from "antd";
+import { List, Checkbox, Input, InputNumber, Icon, Button } from "antd";
 
 const ListItem = List.Item;
 export default class EqualSplit extends React.Component {
   state = {
     checked: [],
-    inputs: []
+    inputs: [],
+    numberInputs: []
   };
 
   onChange = (e, index) => {
@@ -20,11 +21,29 @@ export default class EqualSplit extends React.Component {
     );
   };
 
+  _onBlur = index => {
+    const { onBlur } = this.props;
+    const amount = this.state.inputs[index];
+    const commaIndex = amount.indexOf(".");
+    let currentInputs = this.state.inputs;
+    if (commaIndex === amount.length - 1) {
+      currentInputs[index] = amount.slice(0, -1);
+      this.setState({ inputs: currentInputs });
+    } else if (commaIndex > -1) {
+      currentInputs[index] = amount.slice(0, commaIndex + 3);
+      this.setState({ inputs: currentInputs });
+    }
+    if (onBlur) {
+      this.onBlur();
+    }
+  };
+
   componentDidMount() {
     this.setState(
       {
         checked: this.props.participants.map(el => true),
-        inputs: this.props.participants.map(el => 0)
+        inputs: this.props.participants.map(el => 0),
+        numberInputs: this.props.participants.map(el => 0)
       },
       () => this.setSplits()
     );
@@ -50,12 +69,25 @@ export default class EqualSplit extends React.Component {
 
   onInputChange = (e, index) => {
     let currentInputs = this.state.inputs;
-    currentInputs[index] = e.target.value;
+    const { value } = e.target;
+    const reg = /^(0|[1-9]\d*)(\.\d*)?$/;
+    if ((!isNaN(value) && reg.test(value)) || value === "") {
+      currentInputs[index] = value;
+      this.setState({
+        inputs: currentInputs
+      });
+    }
+  };
 
+  onNumberInputChange = (e, index) => {
+    console.log(e);
+    let currentNumberInputs = this.state.numberInputs;
+    currentNumberInputs[index] = e;
     this.setState({
-      inputs: currentInputs
+      numberInputs: currentNumberInputs
     });
   };
+
   render() {
     const { participants, amount, splitKey } = this.props;
 
@@ -88,14 +120,22 @@ export default class EqualSplit extends React.Component {
                   display: "flex",
                   width: "100%",
                   flexDirection: "row",
-                  justifyContent: "flex-start"
+                  justifyContent: "space-between"
                 }}
               >
-                <Checkbox
-                  checked={this.state.checked[index]}
-                  onChange={checked => this.onChange(checked, index)}
-                />
-                <h2 style={{ marginLeft: "20px" }}>{item.label}</h2>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "flex-start"
+                  }}
+                >
+                  <Checkbox
+                    checked={this.state.checked[index]}
+                    onChange={checked => this.onChange(checked, index)}
+                  />
+                  <h2 style={{ marginLeft: "20px" }}>{item.label}</h2>
+                </div>
                 {splitKey === "1" ? (
                   <h2 style={{ position: "absolute", right: "0px" }}>
                     {this.state.checked[index]
@@ -109,12 +149,79 @@ export default class EqualSplit extends React.Component {
                   </h2>
                 ) : splitKey === "2" ? (
                   <Input
-                    style={{ position: "absolute", right: "0px" }}
+                    style={{
+                      position: "absolute",
+                      right: "0px",
+                      width: "150px"
+                    }}
+                    addonAfter={<Icon type="euro" />}
                     value={this.state.inputs[index]}
                     onChange={value => this.onInputChange(value, index)}
+                    onBlur={() => this._onBlur(index)}
                   />
-                ) : null}
-                <h2 />
+                ) : (
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-end",
+                      width: "60%"
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        overflow: "auto",
+                        maxWidth: "200px",
+                        paddingBottom: "10px"
+                      }}
+                    >
+                      <Button
+                        type="primary"
+                        onClick={() => this.onNumberInputChange(10, index)}
+                        ghost
+                        style={{ marginLeft: "20px" }}
+                      >
+                        10%
+                      </Button>
+                      <Button
+                        onClick={() => this.onNumberInputChange(25, index)}
+                        type="primary"
+                        ghost
+                        style={{ marginLeft: "20px" }}
+                      >
+                        25%
+                      </Button>
+                      <Button
+                        onClick={() => this.onNumberInputChange(50, index)}
+                        type="primary"
+                        ghost
+                        style={{ marginLeft: "20px" }}
+                      >
+                        50%
+                      </Button>
+                      <Button
+                        onClick={() => this.onNumberInputChange(75, index)}
+                        type="primary"
+                        ghost
+                        style={{ marginLeft: "20px" }}
+                      >
+                        75%
+                      </Button>
+                    </div>
+
+                    <InputNumber
+                      min={0}
+                      max={100}
+                      formatter={value => `${value}%`}
+                      style={{
+                        marginLeft: "20px",
+                        width: "75px"
+                      }}
+                      value={this.state.numberInputs[index]}
+                      onChange={value => this.onNumberInputChange(value, index)}
+                    />
+                  </div>
+                )}
               </div>
             </ListItem>
           );
