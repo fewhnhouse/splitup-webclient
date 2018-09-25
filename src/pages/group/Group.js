@@ -96,7 +96,13 @@ class Group extends React.Component {
           if (err) {
             return <div>Error.</div>;
           } else {
-            const { title, description, participants, createdAt } = data.group;
+            const {
+              title,
+              description,
+              participants,
+              createdAt,
+              id
+            } = data.group;
             const date = new Date(createdAt);
             const dateString = `${date.getDate()}. ${
               months[date.getMonth()]
@@ -154,7 +160,7 @@ class Group extends React.Component {
                     }
                     key="2"
                   >
-                    <History />
+                    <History id={id} />
                   </TabPane>
                   <TabPane
                     tab={

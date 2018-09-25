@@ -255,7 +255,7 @@ export default class EqualSplit extends React.Component {
           }}
         />
         {splitKey !== "1" ? (
-          <Progress percent={ splitKey === "2" ? this.checkNumberSum() : this.checkPercentageSum()} />
+          <Progress style={{width: "90%"}} percent={ splitKey === "2" ? this.checkNumberSum() : this.checkPercentageSum()} />
         ) : null}
       </div>
     );

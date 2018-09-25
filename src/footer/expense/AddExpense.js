@@ -45,9 +45,13 @@ export default class AddExpense extends React.Component {
       group,
       amount,
       resetExpense,
-      isLinked
+      isLinked,
+      splits
     } = this.props;
+    console.log("splits:", splits);
     handleOk();
+    const finalAmount = parseInt(parseFloat(amount) * 100);
+
     let input = {};
     if (isLinked) {
       input = {
@@ -55,7 +59,8 @@ export default class AddExpense extends React.Component {
         description,
         groupId: group.key,
         currency: "EURO",
-        amount,
+        amount: finalAmount,
+        splits,
         participants: participants.map(val => val.key)
       };
     } else {
@@ -63,7 +68,8 @@ export default class AddExpense extends React.Component {
         title,
         description,
         currency: "EURO",
-        amount,
+        amount: finalAmount,
+        splits,
         participants: participants.map(val => val.key)
       };
     }
