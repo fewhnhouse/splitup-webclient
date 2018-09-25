@@ -1,9 +1,9 @@
 import React from "react";
-import ExpenseThirdStepContainer from "../footer/expense/ExpenseThirdStepContainer";
+import History from './group/History';
 
 const TestPage = () => (
   <div style={{margin: "30px", padding: "30px"}}>
-    <ExpenseThirdStepContainer />
+    <History id="cjltdd92o006z0861gy2xzjmp" />
   </div>
 );
 

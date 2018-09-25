@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Icon, Tabs, Skeleton, Divider } from "antd";
+import { Card, Icon, Tabs, Skeleton, Divider, Alert } from "antd";
 import GroupEditButton from "./GroupEditButton";
 import History from "./History";
 import AddMemberModal from "./AddMemberModal";
@@ -137,6 +137,13 @@ class Group extends React.Component {
                       description={description}
                       editedDescription={this.state.description}
                       onChangeDescription={this.onChangeDescription}
+                    />
+                    <Divider type="horizontal" />
+                    <Alert
+                      message="Error"
+                      description="You owe $23.21."
+                      type="error"
+                      showIcon
                     />
                     <Divider type="horizontal" />
 
